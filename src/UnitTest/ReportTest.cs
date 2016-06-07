@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Coder.Object2Report;
+using Microsoft.DotNet.ProjectModel;
 using UnitTest.Helper;
 using Xunit;
 using Xunit.Abstractions;
@@ -18,17 +20,20 @@ namespace UnitTest
 
         };
 
-
-
+        private class Test
+        {
+            public object model;
+        }
+        
         [Fact]
         public void TestMethod1()
         {
             var report = new Report<Order>(render, true);
 
             report.Column(item => item.Amount);
-            report.Column(item => item.Amount*item.SuggestAmount);
+            report.Column(item => item.Amount * item.SuggestAmount);
             report.WriteHeader();
-            report.Write(_orders);
+            report.WriteBody(_orders);
 
         }
     }

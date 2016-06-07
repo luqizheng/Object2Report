@@ -6,6 +6,7 @@ namespace UnitTest.Helper
     {
         [Display(Name = "购买价")]
         public decimal Amount { get; set; }
+
         [Display(Name = "建议价格")]
         public decimal SuggestAmount { get; set; }
 

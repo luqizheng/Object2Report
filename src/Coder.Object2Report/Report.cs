@@ -3,41 +3,46 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Reflection;
+using Coder.Object2Report.Footers;
 
 namespace Coder.Object2Report
 {
     public class Report<T>
+        where T : new()
     {
-        private readonly bool _builderHeader;
-        private readonly IList<IColumn> _columns;
+        private readonly IList<IColumn<T>> _columns;
+        private readonly IList<IColumn<T>> _footerColumns;
         private readonly IRender _render;
         private int _cellIndex;
         private int _rowIndex;
 
-        public Report(IRender render, bool builderHeader)
+        public Report(IRender render)
         {
             if (render == null)
                 throw new ArgumentNullException(nameof(render));
             _render = render;
-            _builderHeader = builderHeader;
-            _columns = new List<IColumn>();
+
+            _columns = new List<IColumn<T>>();
+            _footerColumns = new List<IColumn<T>>();
         }
 
-        public Report<T> Column<TResult>(Expression<Func<T, TResult>> expression)
+        public IColumn<T> Column<TResult>(Expression<Func<T, TResult>> expression)
         {
             return Column(GetTilte(expression), expression);
         }
 
 
-        public Report<T> Column<TResult>(string headerTitle, Expression<Func<T, TResult>> expression)
+        public IColumn<T> Column<TResult>(string headerTitle, Expression<Func<T, TResult>> expression)
         {
-            _columns.Add(new Column<T, TResult>(headerTitle, expression));
-            return this;
+            var column = new Column<T, TResult>(headerTitle, expression);
+            _columns.Add(column);
+            column.Index = _columns.Count - 1;
+            return column;
         }
 
-        public Report<T> Footer()
+        public void AddFooter(FooterColumn<T> column)
         {
-            return this;
+            _footerColumns.Add(column);
         }
 
         private string GetTilte<TResult>(Expression<Func<T, TResult>> expression)
@@ -53,15 +58,20 @@ namespace Coder.Object2Report
             }
         }
 
-        public void Write(IEnumerable<T> data)
+        public void WriteBody(IEnumerable<T> data)
         {
             foreach (var item in data)
             {
                 foreach (var col in _columns)
                 {
                     _cellIndex = 0;
-                    var obj = col.GetObject(item);
-                    _render.Write(_cellIndex, _rowIndex, obj);
+                    var obj = col.GetValue(item);
+                    var currentPosition = new Point
+                    {
+                        Cell = _cellIndex,
+                        Row = _rowIndex
+                    };
+                    _render.Write(currentPosition, obj);
                     _cellIndex++;
                 }
                 _rowIndex++;
@@ -70,10 +80,38 @@ namespace Coder.Object2Report
 
         public void WriteFooter()
         {
+            _cellIndex = 0;
+            foreach (var col in _footerColumns)
+            {
+                if (_cellIndex == col.Index)
+                {
+                    object title = col.Title;
+                    var currentPosition = new Point
+                    {
+                        Cell = _cellIndex,
+                        Row = _rowIndex
+                    };
+                    _render.Write(currentPosition, title);
+                }
+                _cellIndex++;
+                _rowIndex++;
+            }
         }
 
         public void WriteHeader()
         {
+            foreach (var col in _columns)
+            {
+                object title = col.Title;
+                var currentPosition = new Point
+                {
+                    Cell = _cellIndex,
+                    Row = _rowIndex
+                };
+                _render.Write(currentPosition, title);
+                _rowIndex++;
+                _cellIndex++;
+            }
         }
     }
 }
