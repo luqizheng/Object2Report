@@ -1,6 +1,6 @@
-﻿namespace Coder.Object2Report.Footers.Sum
+﻿namespace Coder.Object2Report.Footers.Avg
 {
-    public class DecimalColumn : CalculateFooterColumn<decimal>
+    public class AvgDecimalColumn : AvgBase<decimal>
     {
         protected override decimal Calculate(decimal result, decimal mergeValue)
         {

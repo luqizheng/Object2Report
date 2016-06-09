@@ -1,30 +1,22 @@
-﻿using System;
-using System.Linq.Expressions;
-
-namespace Coder.Object2Report.Footers
+﻿namespace Coder.Object2Report.Footers
 {
-    public abstract class CalculateFooterColumn<T, TResult> : FooterColumn<T>
-        where T : new()
+    public abstract class CalculateFooterColumn<T> : FooterColumn
+
     {
-        private readonly Func<T, TResult> _tFunc;
-        protected TResult Result;
+        protected T Result;
 
-        protected CalculateFooterColumn(Expression<Func<T, TResult>> tFunc)
-        {
-            _tFunc = tFunc.Compile();
-        }
 
-        public override object GetValue(T t)
+        public override object GetValue()
         {
             return Result;
         }
 
-        public override void Merge(T c)
+        public override void Merge(object c)
         {
-            var f = _tFunc(c);
-            Calculate(Result, f);
+            Calculate(Result, (T)c);
         }
 
-        protected abstract TResult Calculate(TResult result, TResult mergeValue);
+        protected abstract T Calculate(T result, T mergeValue);
     }
+    
 }

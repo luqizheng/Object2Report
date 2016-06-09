@@ -1,31 +1,55 @@
 ﻿using System;
-using System.Linq.Expressions;
+using System.Collections.Generic;
 using Coder.Object2Report.Footers;
 using Coder.Object2Report.Footers.Sum;
 
 namespace Coder.Object2Report
 {
+    public static class DataColumnExtend
+    {
+        public static IColumn<T> Format<T>(this IColumn<T> column, string format)
+            where T : new()
+        {
+            column.Format = "{0:" + format + "}";
+            return column;
+        }
+    }
     public static class FooterExtend
     {
-        public static FooterColumn<T> Sum<T>(this IColumn<T> column, Expression<Func<T, decimal>> c) where T : new()
-        {
-            return new DecimalColumn<T>(c)
+        private static readonly Dictionary<Type, Func<FooterColumn>> SumFactory =
+            new Dictionary<Type, Func<FooterColumn>>
             {
-                Index = column.Index
+                {typeof(decimal), () => new DecimalColumn()},
+                {typeof(int), () => new DecimalColumn()},
+                {typeof(long), () => new DecimalColumn()},
+                {typeof(float), () => new DecimalColumn()},
+                {typeof(double), () => new DecimalColumn()}
             };
+
+        private static readonly Dictionary<Type, Func<FooterColumn>> AvgFactory =
+            new Dictionary<Type, Func<FooterColumn>>
+            {
+                {typeof(decimal), () => new DecimalColumn()},
+                {typeof(int), () => new DecimalColumn()},
+                {typeof(long), () => new DecimalColumn()},
+                {typeof(float), () => new DecimalColumn()},
+                {typeof(double), () => new DecimalColumn()}
+            };
+
+        public static FooterColumn Sum<T>(this IColumnResult<T> column)
+            where T : new()
+        {
+            var result= SumFactory[typeof(T)]();
+            column.Footer = result;
+            return result;
         }
 
-        public static FooterColumn<T> Sum<T>(this IColumn<T> column, Expression<Func<T, int>> c) where T : new()
+        public static FooterColumn Avg<T>(this IColumnResult<T> column)
+            where T : new()
         {
-            return new Int32Column<T>(c)
-            {
-                Index = column.Index
-            };
-        }
-
-        public static FooterColumn<T> Sum<T>(this IColumn<T> column, Expression<Func<T, long>> c) where T : new()
-        {
-            return new Int64Column<T>(c);
+            var result= AvgFactory[typeof(T)]();
+            column.Footer = result;
+            return result;
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Reflection;
-using Coder.Object2Report.Footers;
 
 namespace Coder.Object2Report
 {
@@ -11,7 +10,7 @@ namespace Coder.Object2Report
         where T : new()
     {
         private readonly IList<IColumn<T>> _columns;
-        private readonly IList<IColumn<T>> _footerColumns;
+
         private readonly IRender _render;
         private int _cellIndex;
         private int _rowIndex;
@@ -23,16 +22,15 @@ namespace Coder.Object2Report
             _render = render;
 
             _columns = new List<IColumn<T>>();
-            _footerColumns = new List<IColumn<T>>();
         }
 
-        public IColumn<T> Column<TResult>(Expression<Func<T, TResult>> expression)
+        public IColumnResult<TResult> Column<TResult>(Expression<Func<T, TResult>> expression)
         {
             return Column(GetTilte(expression), expression);
         }
 
 
-        public IColumn<T> Column<TResult>(string headerTitle, Expression<Func<T, TResult>> expression)
+        public IColumnResult<TResult> Column<TResult>(string headerTitle, Expression<Func<T, TResult>> expression)
         {
             var column = new Column<T, TResult>(headerTitle, expression);
             _columns.Add(column);
@@ -40,10 +38,15 @@ namespace Coder.Object2Report
             return column;
         }
 
-        public void AddFooter(FooterColumn<T> column)
+        public void Render(IEnumerable<T> data)
         {
-            _footerColumns.Add(column);
+            _render.OnWritting();
+            WriteHeader();
+            WriteBody(data);
+            WriteFooter();
+            _render.OnWrote();
         }
+
 
         private string GetTilte<TResult>(Expression<Func<T, TResult>> expression)
         {
@@ -60,58 +63,62 @@ namespace Coder.Object2Report
 
         public void WriteBody(IEnumerable<T> data)
         {
+            _render.OnBodyBuilding();
             foreach (var item in data)
             {
                 foreach (var col in _columns)
                 {
                     _cellIndex = 0;
                     var obj = col.GetValue(item);
-                    var currentPosition = new Point
-                    {
-                        Cell = _cellIndex,
-                        Row = _rowIndex
-                    };
-                    _render.Write(currentPosition, obj);
+                    var currentPosition = GetCurrentCell();
+                    _render.WriteBodyCell(currentPosition, obj, col.Format);
+                    col.Footer?.Merge(obj);
                     _cellIndex++;
                 }
                 _rowIndex++;
             }
+            _render.OnBodyBuilt();
         }
 
         public void WriteFooter()
         {
             _cellIndex = 0;
-            foreach (var col in _footerColumns)
+
+            foreach (var col in _columns)
             {
-                if (_cellIndex == col.Index)
-                {
-                    object title = col.Title;
-                    var currentPosition = new Point
-                    {
-                        Cell = _cellIndex,
-                        Row = _rowIndex
-                    };
-                    _render.Write(currentPosition, title);
-                }
+                var currentPosition = GetCurrentCell();
+                var value = col.Footer != null ? col.Footer.GetValue() : "";
+
+                _render.WriteFooterCell(currentPosition, value, col.Format);
                 _cellIndex++;
-                _rowIndex++;
+
             }
+            _rowIndex++;
         }
 
         public void WriteHeader()
         {
+            _render.OnHeaderBuilding();
             foreach (var col in _columns)
             {
                 object title = col.Title;
-                var currentPosition = new Point
-                {
-                    Cell = _cellIndex,
-                    Row = _rowIndex
-                };
-                _render.Write(currentPosition, title);
-                _rowIndex++;
+
+                _render.WriteHeader(GetCurrentCell(), title);
+
                 _cellIndex++;
             }
+            _rowIndex++;
+            _render.OnHeaderBuilt();
+        }
+
+        private Cell GetCurrentCell()
+        {
+            return new Cell
+            {
+                Index = _cellIndex,
+                RowIndex = _rowIndex,
+                MaxCell = _columns.Count
+            };
         }
     }
 }

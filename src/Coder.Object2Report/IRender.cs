@@ -2,12 +2,23 @@
 {
     public interface IRender
     {
-        void Write(Point currentPosition, object v);
-    }
+        /// <summary>
+        /// 
+        /// </summary>
+        void OnWritting();
 
-    public struct Point
-    {
-        public int Cell { get; set; }
-        public int Row { get; set; }
+        void OnHeaderBuilding();
+        void WriteHeader(Cell currentPosition, object v);
+        void OnHeaderBuilt();
+
+        void OnBodyBuilding();
+        void WriteBodyCell(Cell currentPosition, object v, string format);
+        void OnBodyBuilt();
+
+        void OnFooterBuilding();
+        void WriteFooterCell(Cell currentPosition, object v, string format);
+        void OnFooterBuilt();
+
+        void OnWrote();
     }
 }

@@ -4,7 +4,7 @@ namespace UnitTest.Helper
 {
     public class Order
     {
-        [Display(Name = "购买价")]
+        [Display(Name = "实际支付")]
         public decimal Amount { get; set; }
 
         [Display(Name = "建议价格")]
@@ -12,5 +12,7 @@ namespace UnitTest.Helper
 
         [Display(Name = "数量")]
         public decimal Quantity { get; set; }
+        [Display(Name = "单价")]
+        public decimal UnitPrice { get; set; }
     }
 }

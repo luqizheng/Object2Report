@@ -1,6 +1,6 @@
-namespace Coder.Object2Report.Footers.Sum
+namespace Coder.Object2Report.Footers.Avg
 {
-    public class Int32Column : CalculateFooterColumn<int>
+    public class AvgInt32Column : AvgBase<int>
     {
         protected override int Calculate(int result, int mergeValue)
         {

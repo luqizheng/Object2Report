@@ -1,18 +1,24 @@
 ﻿namespace Coder.Object2Report.Footers
 {
-    public abstract class FooterColumn<T> : IColumn<T>
-        where T : new()
+    public abstract class FooterColumn
+
     {
-        public virtual string Title { get; set; }
+        /// <summary>
+        ///     Format for output
+        /// </summary>
+        public string Format { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public abstract object GetValue();
 
 
-        public virtual object GetValue(T t)
-        {
-            return Title;
-        }
-
-        public int Index { get; set; }
-
-        public abstract void Merge(T c);
+        /// <summary>
+        ///     Calculate of c
+        /// </summary>
+        /// <param name="value"></param>
+        public abstract void Merge(object value);
     }
 }

@@ -1,4 +1,7 @@
 ﻿{
+  "title": "Coder.Object2Report",
+  "copyright": "MIT",
+  "description": "Build a report for object",
   "version": "1.0.0-*",
 
   "dependencies": {
