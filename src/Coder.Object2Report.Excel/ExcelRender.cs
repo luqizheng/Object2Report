@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
 using NPOI.HSSF.UserModel;
-using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 
 namespace Coder.Object2Report.Renders.Excel
 {
-    public class ExcelRender : IRender
+    public class ExcelRender : RenderBase
     {
         private readonly Stream _stream;
         private readonly HSSFWorkbook _workbook;
@@ -21,11 +20,13 @@ namespace Coder.Object2Report.Renders.Excel
             _stream = stream;
             _workbook = new HSSFWorkbook();
             _worksheet = _workbook.CreateSheet(worksheetName);
-            this.HeaderStyle = _workbook.CreateCellStyle();
-            this.HeaderStyle.FillBackgroundColor = Convert.ToInt16(0xDCE0E2);
 
-            this.FooterStyle = _workbook.CreateCellStyle();
-            this.FooterStyle.FillBackgroundColor = Convert.ToInt16(0xDCE0E2);
+            HeaderStyle = _workbook.CreateCellStyle();
+            FooterStyle = _workbook.CreateCellStyle();
+
+            const short color = 0xDC;
+            HeaderStyle.FillBackgroundColor = color;
+            HeaderStyle.FillBackgroundColor = color;
         }
 
         public ExcelInfo Info
@@ -37,35 +38,8 @@ namespace Coder.Object2Report.Renders.Excel
         public ICellStyle HeaderStyle { get; set; }
         public ICellStyle FooterStyle { get; set; }
 
-        public void OnBodyBuilding()
-        {
-        }
 
-        public void OnBodyBuilt()
-        {
-        }
-
-        public void OnFooterBuilding()
-        {
-        }
-
-        public void OnFooterBuilt()
-        {
-        }
-
-        public void OnHeaderBuilding()
-        {
-        }
-
-        public void OnHeaderBuilt()
-        {
-        }
-
-        public void OnWritting()
-        {
-        }
-
-        public void OnWrote()
+        public override void OnReportWrote()
         {
             if (_info != null)
             {
@@ -75,12 +49,12 @@ namespace Coder.Object2Report.Renders.Excel
             _workbook.Write(_stream);
         }
 
-        public void WriteBodyCell(ReportCell currentPosition, object v, string format)
+        public override void WriteBodyCell(ReportCell currentPosition, object v, string format)
         {
             Write(currentPosition, v, format);
         }
 
-        public void WriteFooterCell(ReportCell currentPosition, object v, string format)
+        public override void WriteFooterCell(ReportCell currentPosition, object v, string format)
         {
             var cell = Write(currentPosition, v, format);
             if (FooterStyle != null)
@@ -89,22 +63,23 @@ namespace Coder.Object2Report.Renders.Excel
             }
         }
 
-        public void WriteHeader(ReportCell currentPosition, object v)
+        public override void WriteHeader(ReportCell currentPosition, object v)
         {
             var cell = Write(currentPosition, v, null);
-            if (FooterStyle != null)
+            if (HeaderStyle != null)
             {
-                cell.CellStyle = FooterStyle;
+                cell.CellStyle = HeaderStyle;
             }
+        }
+
+        public override void OnRowWritting(Report report, int rowIndex)
+        {
+            _currentRow = _worksheet.CreateRow(rowIndex);
         }
 
         private ICell Write(ReportCell currentPosition, object v, string format)
         {
-            if (currentPosition.Index == 0)
-            {
-                _currentRow = _worksheet.CreateRow(currentPosition.RowIndex);
-            }
-            var cell = _currentRow.CreateCell(currentPosition.RowIndex);
+            var cell = _currentRow.CreateCell(currentPosition.Index);
             SetCellValue(cell, v, format);
             return cell;
         }
@@ -132,11 +107,11 @@ namespace Coder.Object2Report.Renders.Excel
             }
             else if (valType == typeof(bool))
             {
-                cell.SetCellValue((bool)v);
+                cell.SetCellValue((bool) v);
             }
             else if (valType == typeof(char))
             {
-                cell.SetCellValue((char)v);
+                cell.SetCellValue((char) v);
             }
             else
             {

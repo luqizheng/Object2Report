@@ -1,21 +1,41 @@
 ﻿namespace Coder.Object2Report
 {
-    public struct ReportCell
+    public class ReportCell
     {
-        public IColumn Column { get; set; }
+        private readonly Report _report;
+
+        public ReportCell(Report report)
+        {
+            _report = report;
+        }
+
+        public IColumn Column { get; internal set; }
         /// <summary>
         ///     Get or set the cell index
         /// </summary>
-        public int Index { get; set; }
+        public int Index => this.Column?.Index ?? -1;
 
         /// <summary>
         ///     Get or set RowIndex
         /// </summary>
-        public int RowIndex { get; set; }
+        public int RowIndex { get; internal set; }
 
         /// <summary>
         ///     Number of this Row.
         /// </summary>
-        public int MaxCell { get; set; }
+        public int MaxCell => this._report.Columns.Count;
+
+
+        internal void SetCell(IColumn column)
+        {
+            this.Column = column;
+        }
+
+        internal void NextRow()
+        {
+            this.RowIndex++;
+            this.Column = null;
+        }
+
     }
 }

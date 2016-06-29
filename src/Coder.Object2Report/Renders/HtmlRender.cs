@@ -13,17 +13,17 @@ namespace Coder.Object2Report.Renders
             _writer = writer;
         }
 
-        public override void OnWritting()
+        public override void OnReportWritting()
         {
             _writer.Write("<table>");
         }
 
-        public override void OnHeaderBuilding()
+        public override void OnHeaderWritting()
         {
             _writer.Write("<thead>");
         }
 
-        public override void OnHeaderBuilt()
+        public override void OnHeaderWrote()
         {
             _writer.Write("</thead>");
         }
@@ -43,7 +43,7 @@ namespace Coder.Object2Report.Renders
             Write("td", currentPosition, v);
         }
 
-        public override void OnWrote()
+        public override void OnReportWrote()
         {
             _writer.Write("</table>");
         }

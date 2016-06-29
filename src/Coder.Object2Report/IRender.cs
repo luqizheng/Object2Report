@@ -5,20 +5,22 @@
         /// <summary>
         /// 
         /// </summary>
-        void OnWritting();
+        void OnReportWritting();
 
-        void OnHeaderBuilding();
+        void OnHeaderWritting();
         void WriteHeader(ReportCell currentPosition, object v);
-        void OnHeaderBuilt();
+        void OnHeaderWrote();
 
         void OnBodyBuilding();
         void WriteBodyCell(ReportCell currentPosition, object v, string format);
         void OnBodyBuilt();
 
-        void OnFooterBuilding();
+        void OnFooterWritting();
         void WriteFooterCell(ReportCell currentPosition, object v, string format);
-        void OnFooterBuilt();
+        void OnFooterWrote();
 
-        void OnWrote();
+        void OnReportWrote();
+        void OnRowWorte();
+        void OnRowWritting(Report report, int rowIndex);
     }
 }

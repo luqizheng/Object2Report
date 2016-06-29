@@ -2,18 +2,18 @@
 {
     public abstract class RenderBase : IRender
     {
-        public virtual void OnWritting()
+        public virtual void OnReportWritting()
         {
         }
 
-        public virtual void OnHeaderBuilding()
+        public virtual void OnHeaderWritting()
         {
         }
 
         public abstract void WriteHeader(ReportCell currentPosition, object v);
 
 
-        public virtual void OnHeaderBuilt()
+        public virtual void OnHeaderWrote()
         {
         }
 
@@ -28,19 +28,29 @@
         {
         }
 
-        public virtual void OnFooterBuilding()
+        public virtual void OnFooterWritting()
         {
         }
 
         public abstract void WriteFooterCell(ReportCell currentPosition, object v, string format);
 
 
-        public virtual void OnFooterBuilt()
+        public virtual void OnFooterWrote()
         {
         }
 
-        public virtual void OnWrote()
+        public virtual void OnReportWrote()
         {
+        }
+
+        public virtual void OnRowWorte()
+        {
+
+        }
+
+        public virtual void OnRowWritting(Report report, int rowIndex)
+        {
+
         }
     }
 }

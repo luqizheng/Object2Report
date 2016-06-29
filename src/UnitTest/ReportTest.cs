@@ -33,7 +33,20 @@ namespace UnitTest
             report.Render = new ExcelRender(File.Open("a.xls", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test");
             report.Write(_orders);
         }
+        [Fact]
+        public void ExcelWrite()
+        {
+            var report = new Report<Order>(new ExcelRender(File.Open("a.xls", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test"));
 
+            report.Column(item => item.UnitPrice);
+            report.Column(item => item.Quantity).FooterName("合计");
+            report.Column("合计", item => item.UnitPrice * item.Quantity).Sum();
+            report.Column(item => item.Amount).Sum();
+
+            report.Write(_orders);
+
+     
+        }
         [Fact]
         public void TestMethod1()
         {
@@ -59,8 +72,8 @@ namespace UnitTest
 
 
             Assert.Equal(4.1m, _render.Table[2][0]);
-            Assert.Equal(5, _render.Table[2][1]);
-            Assert.Equal((4.1m*5).ToString(), _render.Table[2][2]);
+            Assert.Equal(5m, _render.Table[2][1]);
+            Assert.Equal((4.1m*5), _render.Table[2][2]);
             Assert.Equal(18m, _render.Table[2][3]);
 
             report.WriteFooter();

@@ -6,29 +6,38 @@ namespace Coder.Object2Report
 {
     public class Report
     {
-        private int _rowIndex;
 
+        private IRender _render;
+        private readonly ReportCell _currentCell;
         public Report(IRender render)
         {
             if (render == null)
                 throw new ArgumentNullException(nameof(render));
-            Render = render;
-
             Columns = new List<IColumn>();
+            _currentCell = new ReportCell(this);
+            Render = render;
         }
 
-        public IRender Render { get; set; }
+        public IRender Render
+        {
+            get { return _render; }
+            set
+            {
+                _render = value;
+                _currentCell.RowIndex = 0;
+            }
+        }
 
         public IList<IColumn> Columns { get; }
 
 
         public void Write(IEnumerable data)
         {
-            Render.OnWritting();
+            Render.OnReportWritting();
             WriteHeader();
             WriteBody(data);
             WriteFooter();
-            Render.OnWrote();
+            Render.OnReportWrote();
         }
 
 
@@ -37,58 +46,53 @@ namespace Coder.Object2Report
             Render.OnBodyBuilding();
             foreach (var item in data)
             {
-                var cellIndex = 0;
+                Render.OnRowWritting(this,_currentCell.RowIndex);
                 foreach (var col in Columns)
                 {
-                    var currentPosition = GetCurrentCell(cellIndex);
-                    var obj = col.GetValue(item);
-                    Render.WriteBodyCell(currentPosition, obj, col.Format);
-                    col.Footer?.Merge(obj);
-                    cellIndex++;
+                    _currentCell.SetCell(col);
+                    var value = col.GetValue(item);
+                    Render.WriteBodyCell(_currentCell, value, col.Format);
+                    col.Footer?.Merge(value);
                 }
-                _rowIndex++;
+                Render.OnRowWorte();
+                _currentCell.NextRow();
             }
             Render.OnBodyBuilt();
         }
 
         public void WriteFooter()
         {
-            var cellIndex = 0;
-
+            Render.OnFooterWritting();
+            Render.OnRowWritting(this, _currentCell.RowIndex);
             foreach (var col in Columns)
             {
-                var value = col.Footer != null ? col.Footer.GetValue() : "";
-                var currentPosition = GetCurrentCell(cellIndex);
-                Render.WriteFooterCell(currentPosition, value, col.Format);
-                cellIndex++;
+                if (col.Footer == null)
+                    continue;
+                object value = col.Footer.GetValue() ?? "";
+                _currentCell.SetCell(col);
+                Render.WriteFooterCell(_currentCell, value, col.Format);
             }
-            _rowIndex++;
+            Render.OnRowWorte();
+            Render.OnFooterWrote();
+            this._currentCell.NextRow();
         }
 
         public void WriteHeader()
         {
-            Render.OnHeaderBuilding();
-            var cellIndex = 0;
+            Render.OnHeaderWritting();
+            Render.OnRowWritting(this, _currentCell.RowIndex);
             foreach (var col in Columns)
             {
                 object title = col.Title;
-                Render.WriteHeader(GetCurrentCell(cellIndex), title);
-
-                cellIndex++;
+                _currentCell.SetCell(col);
+                Render.WriteHeader(_currentCell, title);
             }
-            _rowIndex++;
-            Render.OnHeaderBuilt();
+            Render.OnRowWorte();
+            Render.OnHeaderWrote();
+            _currentCell.NextRow();
         }
 
-        private ReportCell GetCurrentCell(int cellIndex)
-        {
-            return new ReportCell
-            {
-                Index = cellIndex,
-                RowIndex = _rowIndex,
-                MaxCell = Columns.Count
-            };
-        }
+
     }
 
     public class Report<T> : Report

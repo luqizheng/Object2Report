@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Coder.Object2Report.Renders
@@ -38,41 +39,42 @@ namespace Coder.Object2Report.Renders
 
         public override void WriteHeader(ReportCell currentPosition, object v)
         {
-            Write(currentPosition, v, null);
+            Write(currentPosition, v);
         }
 
         public override void WriteBodyCell(ReportCell currentPosition, object v, string format)
         {
-            Write(currentPosition, v, format);
+            Write(currentPosition, v);
         }
 
         public override void WriteFooterCell(ReportCell currentPosition, object v, string format)
         {
-            Write(currentPosition, v, format);
+            Write(currentPosition, v);
         }
 
-        private void Write(ReportCell currentPosition, object v, string format)
+        public override void OnRowWritting(Report report, int rowIndex)
         {
-            if (string.IsNullOrEmpty(format))
-            {
-                format = "{0}";
-            }
-            var value = currentPosition.Index == 0
-                ? string.Format(format, v)
-                : string.Format("," + format, v);
+            _curRows = new string[report.Columns.Count];
+        }
+
+        private string[] _curRows;
+        private void Write(ReportCell currentPosition, object v)
+        {
+            var value = v.ToString();
             if (v.ToString().IndexOf("\"", StringComparison.Ordinal) != -1)
             {
-                value = string.Format("\"{0}\"", value.Replace("\"", "\"\""));
+                value = $"\"{value.Replace("\"", "\"\"")}\"";
             }
-
-            _writer.Write(value);
-            if (currentPosition.Index == currentPosition.MaxCell - 1)
-            {
-                _writer.WriteLine();
-            }
+            _curRows[currentPosition.Index] = value;
         }
 
-        public override void OnWrote()
+        public override void OnRowWorte()
+        {
+            var s = string.Join(",", _curRows);
+            _writer.WriteLine(s);
+        }
+
+        public override void OnReportWrote()
         {
             _writer.Flush();
             _writer.Dispose();

@@ -47,5 +47,13 @@ namespace Coder.Object2Report
             column.Footer = result;
             return result;
         }
+
+        public static FooterCell FooterName<T>(this IColumnFooterInfo<T> column,string footerName)
+        {
+            if (footerName == null)
+                throw new ArgumentNullException(nameof(footerName));
+            column.Footer=new FooterComment(footerName);
+            return column.Footer;
+        }
     }
 }
