@@ -1,23 +1,20 @@
-﻿using System;
-using Coder.Object2Report.Footers;
+﻿using Coder.Object2Report.Footers;
 
 namespace Coder.Object2Report
 {
-    public interface IColumn<in T>
-        where T : new()
+    public interface IColumn
     {
-        string Title { get; set; }
+        string Title { get; }
         int Index { get; }
         string Format { get; set; }
+        FooterCell Footer { get; }
 
-        FooterColumn Footer { get; }
-        object GetValue(T t);
-
+        object GetValue(object item);
     }
 
-    public interface IColumnResult<TResult>
+    public interface IColumn<in T> : IColumn
+        where T : new()
     {
-        FooterColumn Footer { get; set; }
-
+        object GetValue(T t);
     }
 }

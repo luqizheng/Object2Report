@@ -10,7 +10,7 @@
         {
         }
 
-        public abstract void WriteHeader(Cell currentPosition, object v);
+        public abstract void WriteHeader(ReportCell currentPosition, object v);
 
 
         public virtual void OnHeaderBuilt()
@@ -21,7 +21,7 @@
         {
         }
 
-        public abstract void WriteBodyCell(Cell currentPosition, object v, string format);
+        public abstract void WriteBodyCell(ReportCell currentPosition, object v, string format);
 
 
         public virtual void OnBodyBuilt()
@@ -32,7 +32,7 @@
         {
         }
 
-        public abstract void WriteFooterCell(Cell currentPosition, object v, string format);
+        public abstract void WriteFooterCell(ReportCell currentPosition, object v, string format);
 
 
         public virtual void OnFooterBuilt()

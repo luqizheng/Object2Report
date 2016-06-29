@@ -36,26 +36,26 @@ namespace Coder.Object2Report.Renders
             _writer = new StreamWriter(writer, Encoding.UTF8);
         }
 
-        public override void WriteHeader(Cell currentPosition, object v)
+        public override void WriteHeader(ReportCell currentPosition, object v)
         {
             Write(currentPosition, v, null);
         }
 
-        public override void WriteBodyCell(Cell currentPosition, object v, string format)
+        public override void WriteBodyCell(ReportCell currentPosition, object v, string format)
         {
             Write(currentPosition, v, format);
         }
 
-        public override void WriteFooterCell(Cell currentPosition, object v, string format)
+        public override void WriteFooterCell(ReportCell currentPosition, object v, string format)
         {
             Write(currentPosition, v, format);
         }
 
-        private void Write(Cell currentPosition, object v, string format)
+        private void Write(ReportCell currentPosition, object v, string format)
         {
             if (string.IsNullOrEmpty(format))
             {
-                throw new ArgumentNullException(nameof(format));
+                format = "{0}";
             }
             var value = currentPosition.Index == 0
                 ? string.Format(format, v)
@@ -70,6 +70,12 @@ namespace Coder.Object2Report.Renders
             {
                 _writer.WriteLine();
             }
+        }
+
+        public override void OnWrote()
+        {
+            _writer.Flush();
+            _writer.Dispose();
         }
     }
 }

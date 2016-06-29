@@ -8,15 +8,15 @@
         void OnWritting();
 
         void OnHeaderBuilding();
-        void WriteHeader(Cell currentPosition, object v);
+        void WriteHeader(ReportCell currentPosition, object v);
         void OnHeaderBuilt();
 
         void OnBodyBuilding();
-        void WriteBodyCell(Cell currentPosition, object v, string format);
+        void WriteBodyCell(ReportCell currentPosition, object v, string format);
         void OnBodyBuilt();
 
         void OnFooterBuilding();
-        void WriteFooterCell(Cell currentPosition, object v, string format);
+        void WriteFooterCell(ReportCell currentPosition, object v, string format);
         void OnFooterBuilt();
 
         void OnWrote();

@@ -5,7 +5,6 @@
     "emitEntryPoint": false
   },
   "dependencies": {
-    
     "System.Diagnostics.Process": "4.1.0-*",
     "Coder.Object2Report": "1.0.0-*",
     "xunit": "2.1.0",
@@ -13,12 +12,13 @@
     "Microsoft.NETCore.App": {
       "type": "platform",
       "version": "1.0.0-rc2-3002702"
-    }
+    },
+    "Coder.Object2Report.Excel": "1.0.0-*"
   },
   "testRunner": "xunit",
   "frameworks": {
-    "netcoreapp1.0": {
-      "imports": [ "dnxcore50","net451" ]
+    "net461": {
+      "imports": [ "dnxcore50","net461" ]
     }
   }
 }

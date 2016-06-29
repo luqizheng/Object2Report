@@ -2,52 +2,48 @@
 using System.Collections.Generic;
 using Coder.Object2Report.Footers;
 using Coder.Object2Report.Footers.Sum;
+using System.Data;
 
 namespace Coder.Object2Report
 {
-    public static class DataColumnExtend
-    {
-        public static IColumn<T> Format<T>(this IColumn<T> column, string format)
-            where T : new()
-        {
-            column.Format = "{0:" + format + "}";
-            return column;
-        }
-    }
     public static class FooterExtend
     {
-        private static readonly Dictionary<Type, Func<FooterColumn>> SumFactory =
-            new Dictionary<Type, Func<FooterColumn>>
+        private static readonly Dictionary<Type, Func<FooterCell>> SumFactory =
+            new Dictionary<Type, Func<FooterCell>>
             {
-                {typeof(decimal), () => new DecimalColumn()},
-                {typeof(int), () => new DecimalColumn()},
-                {typeof(long), () => new DecimalColumn()},
-                {typeof(float), () => new DecimalColumn()},
-                {typeof(double), () => new DecimalColumn()}
+                {typeof(decimal), () => new DecimalCell()},
+                {typeof(int), () => new DecimalCell()},
+                {typeof(long), () => new DecimalCell()},
+                {typeof(float), () => new DecimalCell()},
+                {typeof(double), () => new DecimalCell()}
             };
 
-        private static readonly Dictionary<Type, Func<FooterColumn>> AvgFactory =
-            new Dictionary<Type, Func<FooterColumn>>
+        private static readonly Dictionary<Type, Func<FooterCell>> AvgFactory =
+            new Dictionary<Type, Func<FooterCell>>
             {
-                {typeof(decimal), () => new DecimalColumn()},
-                {typeof(int), () => new DecimalColumn()},
-                {typeof(long), () => new DecimalColumn()},
-                {typeof(float), () => new DecimalColumn()},
-                {typeof(double), () => new DecimalColumn()}
+                {typeof(decimal), () => new DecimalCell()},
+                {typeof(int), () => new DecimalCell()},
+                {typeof(long), () => new DecimalCell()},
+                {typeof(float), () => new DecimalCell()},
+                {typeof(double), () => new DecimalCell()}
             };
 
-        public static FooterColumn Sum<T>(this IColumnResult<T> column)
+        public static FooterCell Comment(string message)
+        {
+            return new FooterComment(message);
+        }
+        public static FooterCell Sum<T>(this IColumnFooterInfo<T> column)
             where T : new()
         {
-            var result= SumFactory[typeof(T)]();
+            var result = SumFactory[typeof(T)]();
             column.Footer = result;
             return result;
         }
 
-        public static FooterColumn Avg<T>(this IColumnResult<T> column)
+        public static FooterCell Avg<T>(this IColumnFooterInfo<T> column)
             where T : new()
         {
-            var result= AvgFactory[typeof(T)]();
+            var result = AvgFactory[typeof(T)]();
             column.Footer = result;
             return result;
         }

@@ -28,17 +28,17 @@ namespace Coder.Object2Report.Renders
             _writer.Write("</thead>");
         }
 
-        public override void WriteHeader(Cell currentPosition, object v)
+        public override void WriteHeader(ReportCell currentPosition, object v)
         {
             Write("th", currentPosition, v);
         }
 
-        public override void WriteBodyCell(Cell currentPosition, object v, string format)
+        public override void WriteBodyCell(ReportCell currentPosition, object v, string format)
         {
             Write("td", currentPosition, v);
         }
 
-        public override void WriteFooterCell(Cell currentPosition, object v, string format)
+        public override void WriteFooterCell(ReportCell currentPosition, object v, string format)
         {
             Write("td", currentPosition, v);
         }
@@ -48,7 +48,7 @@ namespace Coder.Object2Report.Renders
             _writer.Write("</table>");
         }
 
-        private void Write(string tag, Cell currentPosition, object v)
+        protected virtual void Write(string tag, ReportCell currentPosition, object v)
         {
             if (currentPosition.Index == 0)
                 _writer.Write("<tr>");

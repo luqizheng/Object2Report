@@ -1,7 +1,8 @@
 ﻿namespace Coder.Object2Report
 {
-    public class Cell
+    public struct ReportCell
     {
+        public IColumn Column { get; set; }
         /// <summary>
         ///     Get or set the cell index
         /// </summary>

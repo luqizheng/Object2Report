@@ -1,6 +1,6 @@
 ﻿namespace Coder.Object2Report.Footers
 {
-    public abstract class CalculateFooterColumn<T> : FooterColumn
+    public abstract class CalculateFooterCell<T> : FooterCell
 
     {
         protected T Result;
@@ -13,10 +13,10 @@
 
         public override void Merge(object c)
         {
-            Calculate(Result, (T)c);
+            Result = Calculate(Result, (T)c);
         }
 
         protected abstract T Calculate(T result, T mergeValue);
     }
-    
+
 }

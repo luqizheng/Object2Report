@@ -1,6 +1,6 @@
 namespace Coder.Object2Report.Footers.Avg
 {
-    public abstract class AvgBase<T> : CalculateFooterColumn<T>
+    public abstract class AvgBase<T> : CalculateFooterCell<T>
     {
         private int _total;
 
@@ -12,7 +12,7 @@ namespace Coder.Object2Report.Footers.Avg
 
         public override object GetValue()
         {
-            var re = (float)GetValue();
+            var re = (float)base.GetValue();
             return re / _total;
         }
     }
