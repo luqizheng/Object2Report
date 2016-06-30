@@ -27,10 +27,6 @@ namespace UnitTest
             report.Column(item => item.Quantity);
             report.Column("合计", item => item.UnitPrice*item.Quantity).Sum();
             report.Column(item => item.Amount).Sum();
-
-            report.Write(_orders);
-
-            report.Render = new ExcelRender(File.Open("a.xls", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test");
             report.Write(_orders);
         }
         [Fact]

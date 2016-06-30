@@ -1,10 +1,14 @@
 ﻿using System;
 using System.IO;
 using NPOI.HSSF.UserModel;
+using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 
 namespace Coder.Object2Report.Renders.Excel
 {
+    /// <summary>
+    /// By NPOI HSSF Excel.
+    /// </summary>
     public class ExcelRender : RenderBase
     {
         private readonly Stream _stream;
@@ -22,11 +26,13 @@ namespace Coder.Object2Report.Renders.Excel
             _worksheet = _workbook.CreateSheet(worksheetName);
 
             HeaderStyle = _workbook.CreateCellStyle();
-            FooterStyle = _workbook.CreateCellStyle();
+            HeaderStyle.FillForegroundColor = HSSFColor.Grey25Percent.Index;
+            HeaderStyle.FillPattern = FillPattern.SolidForeground;
 
-            const short color = 0xDC;
-            HeaderStyle.FillBackgroundColor = color;
-            HeaderStyle.FillBackgroundColor = color;
+            FooterStyle = _workbook.CreateCellStyle();
+            FooterStyle.FillForegroundColor = HSSFColor.Grey25Percent.Index;
+            FooterStyle.FillPattern = FillPattern.SolidForeground;
+
         }
 
         public ExcelInfo Info
@@ -107,11 +113,11 @@ namespace Coder.Object2Report.Renders.Excel
             }
             else if (valType == typeof(bool))
             {
-                cell.SetCellValue((bool) v);
+                cell.SetCellValue((bool)v);
             }
             else if (valType == typeof(char))
             {
-                cell.SetCellValue((char) v);
+                cell.SetCellValue((char)v);
             }
             else
             {
