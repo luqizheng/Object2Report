@@ -18,7 +18,7 @@ public class Order
 }
 
 ```
-I Defined output with Coder.Object2Report.Renders.CSVRender
+Defined format and output them by Coder.Object2Report.Renders.CSVRender
 
 ```
 var report = new Report<Order>(new CsvRender(File.OpenWrite("a.csv")));
