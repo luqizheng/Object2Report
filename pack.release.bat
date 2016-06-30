@@ -1,0 +1,1 @@
+dotnet pack src/Coder.Object2Report -c:release -o:./

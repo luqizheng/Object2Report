@@ -39,7 +39,7 @@ namespace UnitTest
             var report = new Report<Order>(new ExcelRender(File.Open("a.xls", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test"));
 
             report.Column(item => item.UnitPrice);
-            report.Column(item => item.Quantity).FooterName("合计");
+            report.Column(item => item.Quantity).Comment("合计");
             report.Column("合计", item => item.UnitPrice * item.Quantity).Sum();
             report.Column(item => item.Amount).Sum();
 
