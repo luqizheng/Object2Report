@@ -2,9 +2,9 @@
 {
     public class AvgSingleColumn : AvgBase<float>
     {
-        protected override float Calculate(float result, float mergeValue)
+        protected override float Calculate(float currentResult, float mergeValue)
         {
-            return result + mergeValue;
+            return currentResult + mergeValue;
         }
     }
 }

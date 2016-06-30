@@ -6,9 +6,10 @@ namespace Coder.Object2Report
 {
     public class Report
     {
+        private readonly ReportCell _currentCell;
 
         private IRender _render;
-        private readonly ReportCell _currentCell;
+
         public Report(IRender render)
         {
             if (render == null)
@@ -46,7 +47,7 @@ namespace Coder.Object2Report
             Render.OnBodyBuilding();
             foreach (var item in data)
             {
-                Render.OnRowWritting(this,_currentCell.RowIndex);
+                Render.OnRowWritting(this, _currentCell.RowIndex);
                 foreach (var col in Columns)
                 {
                     _currentCell.SetCell(col);
@@ -68,13 +69,13 @@ namespace Coder.Object2Report
             {
                 if (col.Footer == null)
                     continue;
-                object value = col.Footer.GetValue() ?? "";
+                var value = col.Footer.GetValue() ?? "";
                 _currentCell.SetCell(col);
                 Render.WriteFooterCell(_currentCell, value, col.Format);
             }
             Render.OnRowWorte();
             Render.OnFooterWrote();
-            this._currentCell.NextRow();
+            _currentCell.NextRow();
         }
 
         public void WriteHeader()
@@ -91,8 +92,6 @@ namespace Coder.Object2Report
             Render.OnHeaderWrote();
             _currentCell.NextRow();
         }
-
-
     }
 
     public class Report<T> : Report

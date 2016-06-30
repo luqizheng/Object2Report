@@ -38,9 +38,9 @@ namespace Coder.Object2Report
 
         public Func<T, TResult> Func { get; set; }
 
-        public object GetValue(T t)
+        public object GetValue(T model)
         {
-            var result = Func(t);
+            var result = Func(model);
             return result;
         }
 

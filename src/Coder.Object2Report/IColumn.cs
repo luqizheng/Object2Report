@@ -15,6 +15,11 @@ namespace Coder.Object2Report
     public interface IColumn<in T> : IColumn
         where T : new()
     {
-        object GetValue(T t);
+        /// <summary>
+        ///     get the output value from T Model
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        object GetValue(T model);
     }
 }

@@ -2,9 +2,9 @@
 {
     public class AvgInt64Column : AvgBase<long>
     {
-        protected override long Calculate(long result, long mergeValue)
+        protected override long Calculate(long currentResult, long mergeValue)
         {
-            return result + mergeValue;
+            return currentResult + mergeValue;
         }
     }
 }

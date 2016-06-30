@@ -12,8 +12,8 @@ namespace Coder.Object2Report.Footers.Avg
 
         public override object GetValue()
         {
-            var re = (float)base.GetValue();
-            return re / _total;
+            var re = (float) base.GetValue();
+            return re/_total;
         }
     }
 }

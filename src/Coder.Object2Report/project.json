@@ -1,7 +1,7 @@
 ﻿{
   "title": "Coder.Object2Report.Excel",
   "copyright": "MIT",
-  "description": "Build a report from object",
+  "description": "Build a report from model",
   "version": "1.0.0-*",
 
   "dependencies": {
@@ -14,9 +14,9 @@
         "System.Linq.Expressions": "4.0.11-rc2-24027",
         "System.ComponentModel.Annotations": "4.1.0-rc2-24027",
         "System.Data.Common": "4.0.1-rc2-24027"
-        
+
       },
-      "imports": [ "dnxcore50", "net461", "net451" ]
+      "imports": ["dnxcore50", "net461", "net451"]
     },
     "net461": {
       "frameworkAssemblies": {

@@ -2,9 +2,9 @@
 {
     public class DoubleCell : CalculateFooterCell<double>
     {
-        protected override double Calculate(double result, double mergeValue)
+        protected override double Calculate(double currentResult, double mergeValue)
         {
-            return result + mergeValue;
+            return currentResult + mergeValue;
         }
     }
 }

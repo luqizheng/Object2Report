@@ -12,6 +12,7 @@
         /// </summary>
         /// <returns></returns>
         public abstract object GetValue();
+
         /// <summary>
         ///     Calculate of c
         /// </summary>

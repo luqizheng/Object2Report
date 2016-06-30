@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace Coder.Object2Report.Renders
@@ -19,6 +18,8 @@ namespace Coder.Object2Report.Renders
     public class CsvRender : RenderBase
     {
         private readonly StreamWriter _writer;
+
+        private string[] _curRows;
 
         public CsvRender(Stream writer, Encoding encoding)
         {
@@ -57,7 +58,6 @@ namespace Coder.Object2Report.Renders
             _curRows = new string[report.Columns.Count];
         }
 
-        private string[] _curRows;
         private void Write(ReportCell currentPosition, object v)
         {
             var value = v.ToString();

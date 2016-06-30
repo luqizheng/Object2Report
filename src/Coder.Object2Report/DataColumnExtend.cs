@@ -1,8 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Linq;
+
 namespace Coder.Object2Report
 {
     public static class DataColumnExtend
@@ -14,7 +15,8 @@ namespace Coder.Object2Report
             return column;
         }
 
-        public static IColumnFooterInfo<TResult> Column<T, TResult>(this Report<T> report, string headerTitle, Expression<Func<T, TResult>> expression)
+        public static IColumnFooterInfo<TResult> Column<T, TResult>(this Report<T> report, string headerTitle,
+            Expression<Func<T, TResult>> expression)
             where T : new()
         {
             if (headerTitle == null)
@@ -28,7 +30,8 @@ namespace Coder.Object2Report
             return column;
         }
 
-        public static IColumnFooterInfo<TResult> Column<T,TResult>(this Report<T> report, Expression<Func<T, TResult>> expression)
+        public static IColumnFooterInfo<TResult> Column<T, TResult>(this Report<T> report,
+            Expression<Func<T, TResult>> expression)
             where T : new()
         {
             return report.Column(GetTilte(expression), expression);
@@ -39,9 +42,9 @@ namespace Coder.Object2Report
             switch (expression.Body.NodeType)
             {
                 case ExpressionType.MemberAccess:
-                    var memberExpresion = (MemberExpression)expression.Body;
+                    var memberExpresion = (MemberExpression) expression.Body;
                     var attr = memberExpresion.Member.GetCustomAttributes<DisplayAttribute>().FirstOrDefault();
-                    return attr != null ? ((DisplayAttribute)attr).Name : memberExpresion.Member.Name;
+                    return attr != null ? attr.Name : memberExpresion.Member.Name;
                 default:
                     return expression.Name ?? "";
             }

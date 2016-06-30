@@ -45,12 +45,10 @@
 
         public virtual void OnRowWorte()
         {
-
         }
 
         public virtual void OnRowWritting(Report report, int rowIndex)
         {
-
         }
     }
 }

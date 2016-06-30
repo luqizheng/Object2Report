@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Coder.Object2Report.Footers;
 using Coder.Object2Report.Footers.Sum;
-using System.Data;
 
 namespace Coder.Object2Report
 {
@@ -28,10 +27,7 @@ namespace Coder.Object2Report
                 {typeof(double), () => new DecimalCell()}
             };
 
-        public static FooterCell Comment(string message)
-        {
-            return new FooterComment(message);
-        }
+
         public static FooterCell Sum<T>(this IColumnFooterInfo<T> column)
             where T : new()
         {
@@ -48,11 +44,11 @@ namespace Coder.Object2Report
             return result;
         }
 
-        public static FooterCell FooterName<T>(this IColumnFooterInfo<T> column,string footerName)
+        public static FooterCell Comment<T>(this IColumnFooterInfo<T> column, string footerName)
         {
             if (footerName == null)
                 throw new ArgumentNullException(nameof(footerName));
-            column.Footer=new FooterComment(footerName);
+            column.Footer = new FooterComment(footerName);
             return column.Footer;
         }
     }

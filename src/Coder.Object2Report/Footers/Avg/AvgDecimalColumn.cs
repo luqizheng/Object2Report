@@ -2,9 +2,9 @@
 {
     public class AvgDecimalColumn : AvgBase<decimal>
     {
-        protected override decimal Calculate(decimal result, decimal mergeValue)
+        protected override decimal Calculate(decimal currentResult, decimal mergeValue)
         {
-            return result + mergeValue;
+            return currentResult + mergeValue;
         }
     }
 }

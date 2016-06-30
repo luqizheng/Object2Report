@@ -10,10 +10,11 @@
         }
 
         public IColumn Column { get; internal set; }
+
         /// <summary>
         ///     Get or set the cell index
         /// </summary>
-        public int Index => this.Column?.Index ?? -1;
+        public int Index => Column?.Index ?? -1;
 
         /// <summary>
         ///     Get or set RowIndex
@@ -23,19 +24,18 @@
         /// <summary>
         ///     Number of this Row.
         /// </summary>
-        public int MaxCell => this._report.Columns.Count;
+        public int MaxCell => _report.Columns.Count;
 
 
         internal void SetCell(IColumn column)
         {
-            this.Column = column;
+            Column = column;
         }
 
         internal void NextRow()
         {
-            this.RowIndex++;
-            this.Column = null;
+            RowIndex++;
+            Column = null;
         }
-
     }
 }
