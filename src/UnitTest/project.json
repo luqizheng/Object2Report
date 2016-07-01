@@ -1,12 +1,12 @@
 {
 
-  "version": "1.0.0-*",
+  "version": "1.0.1-*",
   "buildOptions": {
     "emitEntryPoint": false
   },
   "dependencies": {
     "System.Diagnostics.Process": "4.1.0-*",
-    "Coder.Object2Report": "1.0.1" ,
+    "Coder.Object2Report": "1.0.*" ,
     "xunit": "2.1.0",
     "dotnet-test-xunit": "1.0.0-rc2-build10025",
     "Microsoft.NETCore.App": {

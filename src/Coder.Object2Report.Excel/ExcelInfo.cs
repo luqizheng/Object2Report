@@ -4,29 +4,31 @@ namespace Coder.Object2Report.Renders.Excel
 {
     public class ExcelInfo
     {
+        /// <summary>
+        ///     Excel
+        /// </summary>
         public string Company { get; set; }
+
         public string Subject { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
         public string Comment { get; set; }
 
-        public DocumentSummaryInformation CreateDocumentInfo()
+        internal DocumentSummaryInformation CreateDocumentInfo()
         {
-            DocumentSummaryInformation dsi = PropertySetFactory.CreateDocumentSummaryInformation();
-            dsi.Company = this.Company ?? "";
+            var dsi = PropertySetFactory.CreateDocumentSummaryInformation();
+            dsi.Company = Company ?? "";
             return dsi;
-
-
         }
 
-        public SummaryInformation CreateWorkBookInfo()
+        internal SummaryInformation CreateWorkBookInfo()
         {
             ////create a entry of SummaryInformation
-            SummaryInformation si = PropertySetFactory.CreateSummaryInformation();
-            si.Subject = this.Subject ?? "";
-            si.Title = this.Title ?? "";
-            si.Author = this.Author ?? "";
-            si.Comments = this.Comment ?? "";
+            var si = PropertySetFactory.CreateSummaryInformation();
+            si.Subject = Subject ?? "";
+            si.Title = Title ?? "";
+            si.Author = Author ?? "";
+            si.Comments = Comment ?? "";
             return si;
         }
     }

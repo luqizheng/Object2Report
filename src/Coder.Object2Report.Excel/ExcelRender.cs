@@ -1,38 +1,33 @@
 ﻿using System;
 using System.IO;
-using NPOI.HSSF.UserModel;
-using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 
 namespace Coder.Object2Report.Renders.Excel
 {
-    /// <summary>
-    /// By NPOI HSSF Excel.
-    /// </summary>
-    public class ExcelRender : RenderBase
+    public abstract class ExcelRender : RenderBase
     {
         private readonly Stream _stream;
-        private readonly HSSFWorkbook _workbook;
-        private readonly ISheet _worksheet;
 
         private IRow _currentRow;
-
         private ExcelInfo _info;
+        private IWorkbook _workbook;
+        private ISheet _worksheet;
+        private readonly string _workSheetName;
 
-        public ExcelRender(Stream stream, string worksheetName)
+        /// <summary>
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="worksheetName"></param>
+        /// <exception cref="ArgumentNullException">stream is null</exception>
+        protected ExcelRender(Stream stream, string worksheetName = "sheet1")
         {
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
+            if (worksheetName == null)
+                throw new ArgumentNullException(nameof(worksheetName));
             _stream = stream;
-            _workbook = new HSSFWorkbook();
-            _worksheet = _workbook.CreateSheet(worksheetName);
-
-            HeaderStyle = _workbook.CreateCellStyle();
-            HeaderStyle.FillForegroundColor = HSSFColor.Grey25Percent.Index;
-            HeaderStyle.FillPattern = FillPattern.SolidForeground;
-
-            FooterStyle = _workbook.CreateCellStyle();
-            FooterStyle.FillForegroundColor = HSSFColor.Grey25Percent.Index;
-            FooterStyle.FillPattern = FillPattern.SolidForeground;
-
         }
 
         public ExcelInfo Info
@@ -44,13 +39,26 @@ namespace Coder.Object2Report.Renders.Excel
         public ICellStyle HeaderStyle { get; set; }
         public ICellStyle FooterStyle { get; set; }
 
+        public override void OnReportWritting()
+        {
+            _workbook = CreateWorkBook();
+            _worksheet = _workbook.CreateSheet(_workSheetName);
+
+            HeaderStyle = _workbook.CreateCellStyle();
+            HeaderStyle.FillPattern = FillPattern.SolidForeground;
+
+            FooterStyle = _workbook.CreateCellStyle();
+            FooterStyle.FillPattern = FillPattern.SolidForeground;
+        }
+
+        protected abstract IWorkbook CreateWorkBook();
+        protected abstract void InitWorkbookInfo(IWorkbook book, ExcelInfo info);
 
         public override void OnReportWrote()
         {
             if (_info != null)
             {
-                _workbook.DocumentSummaryInformation = _info.CreateDocumentInfo();
-                _workbook.SummaryInformation = _info.CreateWorkBookInfo();
+                InitWorkbookInfo(_workbook, _info);
             }
             _workbook.Write(_stream);
         }
@@ -83,6 +91,7 @@ namespace Coder.Object2Report.Renders.Excel
             _currentRow = _worksheet.CreateRow(rowIndex);
         }
 
+
         private ICell Write(ReportCell currentPosition, object v, string format)
         {
             var cell = _currentRow.CreateCell(currentPosition.Index);
@@ -113,11 +122,11 @@ namespace Coder.Object2Report.Renders.Excel
             }
             else if (valType == typeof(bool))
             {
-                cell.SetCellValue((bool)v);
+                cell.SetCellValue((bool) v);
             }
             else if (valType == typeof(char))
             {
-                cell.SetCellValue((char)v);
+                cell.SetCellValue((char) v);
             }
             else
             {

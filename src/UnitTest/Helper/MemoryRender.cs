@@ -15,28 +15,23 @@ namespace UnitTest.Helper
 
         public override void WriteHeader(ReportCell currentPosition, object v)
         {
-            if (currentPosition.Index == 0)
-            {
-                Table.Add(new List<object>());
-            }
+           
             Table[currentPosition.RowIndex].Add(v);
+        }
+
+        public override void OnRowWritting(Report report, int rowIndex)
+        {
+            Table.Add(new List<object>());
         }
 
         public override void WriteFooterCell(ReportCell currentPosition, object v, string format)
         {
-            if (currentPosition.Index == 0)
-            {
-                Table.Add(new List<object>());
-            }
             Table[currentPosition.RowIndex].Add(v);
         }
 
         public override void WriteBodyCell(ReportCell currentPosition, object v, string format)
         {
-            if (currentPosition.Index == 0)
-            {
-                Table.Add(new List<object>());
-            }
+          
             Table[currentPosition.RowIndex].Add(v);
         }
     }

@@ -31,7 +31,13 @@ namespace Coder.Object2Report
         public static FooterCell Sum<T>(this IColumnFooterInfo<T> column)
             where T : new()
         {
-            var result = SumFactory[typeof(T)]();
+            var tType = typeof(T);
+            if (!SumFactory.ContainsKey(tType))
+            {
+                throw new ArgumentOutOfRangeException("column", "Do not support type of " + tType.Name);
+            }
+
+            var result = SumFactory[tType]();
             column.Footer = result;
             return result;
         }
@@ -39,7 +45,13 @@ namespace Coder.Object2Report
         public static FooterCell Avg<T>(this IColumnFooterInfo<T> column)
             where T : new()
         {
-            var result = AvgFactory[typeof(T)]();
+            var tType=typeof(T);
+            if(!AvgFactory.ContainsKey(tType))
+            { 
+                throw new ArgumentOutOfRangeException("column","Do not support type of "+tType.Name);
+
+            }
+            var result = AvgFactory[tType]();
             column.Footer = result;
             return result;
         }

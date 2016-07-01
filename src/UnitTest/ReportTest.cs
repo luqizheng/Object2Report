@@ -30,9 +30,32 @@ namespace UnitTest
             report.Write(_orders);
         }
         [Fact]
-        public void ExcelWrite()
+        public void MarkDownWrite()
         {
-            var report = new Report<Order>(new ExcelRender(File.Open("a.xls", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test"));
+            var report = new Report<Order>(new MarkDownRender(File.OpenWrite("a.md")));
+
+            report.Column(item => item.UnitPrice);
+            report.Column(item => item.Quantity);
+            report.Column("合计", item => item.UnitPrice * item.Quantity).Sum();
+            report.Column(item => item.Amount).Sum();
+            report.Write(_orders);
+        }
+        [Fact]
+        public void HssfExcelWrite()
+        {
+            var report = new Report<Order>(new HssfExcelRender(File.Open("a.xls", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test"));
+
+            report.Column(item => item.UnitPrice);
+            report.Column(item => item.Quantity).Comment("合计");
+            report.Column("合计", item => item.UnitPrice * item.Quantity).Sum();
+            report.Column(item => item.Amount).Sum();
+
+            report.Write(_orders);
+        }
+        [Fact]
+        public void XssfExcelWrite()
+        {
+            var report = new Report<Order>(new XssfExcelReader(File.Open("a.xlsx", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test"));
 
             report.Column(item => item.UnitPrice);
             report.Column(item => item.Quantity).Comment("合计");
@@ -41,8 +64,9 @@ namespace UnitTest
 
             report.Write(_orders);
 
-     
+
         }
+
         [Fact]
         public void TestMethod1()
         {
@@ -74,8 +98,8 @@ namespace UnitTest
 
             report.WriteFooter();
 
-            Assert.Equal("", _render.Table[3][0]);
-            Assert.Equal("", _render.Table[3][1]);
+            Assert.Equal(null, _render.Table[3][0]);
+            Assert.Equal(null, _render.Table[3][1]);
             Assert.Equal(120.5m, _render.Table[3][2]);
             Assert.Equal(118m, _render.Table[3][3]);
         }

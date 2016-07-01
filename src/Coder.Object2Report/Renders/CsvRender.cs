@@ -60,6 +60,8 @@ namespace Coder.Object2Report.Renders
 
         private void Write(ReportCell currentPosition, object v)
         {
+            if (v == null)
+                return;
             var value = v.ToString();
             if (v.ToString().IndexOf("\"", StringComparison.Ordinal) != -1)
             {

@@ -67,9 +67,8 @@ namespace Coder.Object2Report
             Render.OnRowWritting(this, _currentCell.RowIndex);
             foreach (var col in Columns)
             {
-                if (col.Footer == null)
-                    continue;
-                var value = col.Footer.GetValue() ?? "";
+
+                var value = col.Footer != null ? col.Footer.GetValue() ?? "" : null;
                 _currentCell.SetCell(col);
                 Render.WriteFooterCell(_currentCell, value, col.Format);
             }

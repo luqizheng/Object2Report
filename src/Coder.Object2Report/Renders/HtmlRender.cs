@@ -9,13 +9,21 @@ namespace Coder.Object2Report.Renders
 
         public HtmlRender(StreamWriter writer)
         {
-            if (writer == null) throw new ArgumentNullException(nameof(writer));
+            if (writer == null)
+            {
+                throw new ArgumentNullException(nameof(writer));
+            }
             _writer = writer;
         }
 
+        public string TableClass { get; set; }
+
         public override void OnReportWritting()
         {
-            _writer.Write("<table>");
+            if (string.IsNullOrEmpty(TableClass))
+                _writer.Write("<table>");
+            else
+                _writer.Write(string.Format("<table class=\"{0}\">", TableClass));
         }
 
         public override void OnHeaderWritting()
@@ -36,6 +44,16 @@ namespace Coder.Object2Report.Renders
         public override void WriteBodyCell(ReportCell currentPosition, object v, string format)
         {
             Write("td", currentPosition, v);
+        }
+
+        public override void OnBodyBuilding()
+        {
+            _writer.Write("<tbody>");
+        }
+
+        public override void OnFooterWrote()
+        {
+            _writer.Write("</tbody>");
         }
 
         public override void WriteFooterCell(ReportCell currentPosition, object v, string format)
