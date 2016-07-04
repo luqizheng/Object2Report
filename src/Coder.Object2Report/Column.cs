@@ -4,25 +4,12 @@ using Coder.Object2Report.Footers;
 
 namespace Coder.Object2Report
 {
-    public abstract class Column : IColumn
+    public class Column<T, TResult>
+        : IColumn<T>,
+            IColumnSetting<TResult>
     {
-        public int ColSpan { get; set; }
+        private Expression<Func<T, TResult>> _expression;
 
-        public int RowSpan { get; set; }
-
-        public string Title { get; set; }
-
-        public FooterCell Footer { get; set; }
-        public abstract object GetValue(object item);
-
-        public int Index { get; internal set; }
-        public string Format { get; set; }
-    }
-
-    public class Column<T, TResult> : Column,
-        IColumnFooterInfo<TResult>,
-        IColumn<T> where T : new()
-    {
         public Column(string title, Expression<Func<T, TResult>> itemExpression)
         {
             if (title == null)
@@ -30,28 +17,39 @@ namespace Coder.Object2Report
             if (title == null)
                 throw new ArgumentNullException(nameof(title));
             Title = title;
-            Expression = itemExpression;
+            _expression = itemExpression;
             Func = itemExpression.Compile();
         }
 
-        public Expression<Func<T, TResult>> Expression { get; }
+        public Column(string title, Func<T, TResult> func)
+        {
+            if (title == null)
+                throw new ArgumentNullException(nameof(title));
+            if (title == null)
+                throw new ArgumentNullException(nameof(title));
+            Title = title;
+            Func = func;
+        }
 
         public Func<T, TResult> Func { get; set; }
 
-        public object GetValue(T model)
+        public string Title { get; }
+        public int Index { get; internal set; }
+        public string Format { get; set; }
+
+        public void Write(T t, Action<ReportCell, object, string> action, ReportCell cell)
         {
-            var result = Func(model);
-            return result;
+            var value = Func(t);
+            action(cell, value, Format);
+            this.Footer?.Calculate(value);
         }
 
-        object IColumn.GetValue(object o)
+        public void WriteFooter(Action<ReportCell, object, string> action, ReportCell cell)
         {
-            return GetValue((T) o);
+            this.Footer?.Write(action, cell);
         }
+        public FooterCell<TResult> Footer { get; set; }
 
-        public override object GetValue(object item)
-        {
-            return GetValue((T) item);
-        }
+
     }
 }

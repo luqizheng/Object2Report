@@ -2,20 +2,11 @@
 {
     public class ReportCell
     {
-        private readonly Report _report;
-
-        public ReportCell(Report report)
+        public ReportCell(int maxCell)
         {
-            _report = report;
+            MaxCell = maxCell;
         }
-
-        public IColumn Column { get; internal set; }
-
-        /// <summary>
-        ///     Get or set the cell index
-        /// </summary>
-        public int Index => Column?.Index ?? -1;
-
+     
         /// <summary>
         ///     Get or set RowIndex
         /// </summary>
@@ -24,18 +15,14 @@
         /// <summary>
         ///     Number of this Row.
         /// </summary>
-        public int MaxCell => _report.Columns.Count;
+        public int MaxCell { get; }
 
+        public int Index { get; internal set; }
 
-        internal void SetCell(IColumn column)
-        {
-            Column = column;
-        }
 
         internal void NextRow()
         {
             RowIndex++;
-            Column = null;
         }
     }
 }

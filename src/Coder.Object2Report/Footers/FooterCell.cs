@@ -1,41 +1,18 @@
-﻿namespace Coder.Object2Report.Footers
-{
-    public abstract class FooterCell
+﻿using System;
 
+namespace Coder.Object2Report.Footers
+{
+    public abstract class FooterCell<TResult>
     {
-        /// <summary>
-        ///     Format for output
-        /// </summary>
         public string Format { get; set; }
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        public abstract object GetValue();
+        public TResult CellValue { get; set; }
 
-        /// <summary>
-        ///     Calculate of c
-        /// </summary>
-        /// <param name="value"></param>
-        public abstract void Merge(object value);
-    }
-
-    public class FooterComment : FooterCell
-    {
-        private readonly string _message;
-
-        public FooterComment(string message)
+        public virtual void Write(Action<ReportCell, object, string> action, ReportCell cell)
         {
-            _message = message;
+            action(cell, CellValue, Format);
         }
 
-        public override object GetValue()
-        {
-            return _message;
-        }
-
-        public override void Merge(object value)
-        {
-        }
+        public abstract void Calculate(TResult t);
     }
 }

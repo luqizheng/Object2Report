@@ -36,14 +36,15 @@ namespace Coder.Object2Report.Renders
             _writer.Write("</thead>");
         }
 
-        public override void WriteHeader(ReportCell currentPosition, object v)
+        public override void WriteHeader(ReportCell currentPosition, string title, string format)
         {
-            Write("th", currentPosition, v);
+            Write("th", currentPosition, title);
         }
 
-        public override void WriteBodyCell(ReportCell currentPosition, object v, string format)
+        public override void WriteBodyCell<T>(ReportCell currentPosition, T v, string format)
         {
-            Write("td", currentPosition, v);
+            var value = string.Format(GetFormatPatten(format), v);
+            Write("td", currentPosition, value);
         }
 
         public override void OnBodyBuilding()
@@ -56,9 +57,10 @@ namespace Coder.Object2Report.Renders
             _writer.Write("</tbody>");
         }
 
-        public override void WriteFooterCell(ReportCell currentPosition, object v, string format)
+        public override void WriteFooterCell<T>(ReportCell currentPosition, T v, string format)
         {
-            Write("td", currentPosition, v);
+            var value = string.Format(GetFormatPatten(format), v);
+            Write("td", currentPosition, value);
         }
 
         public override void OnReportWrote()
@@ -66,7 +68,7 @@ namespace Coder.Object2Report.Renders
             _writer.Write("</table>");
         }
 
-        protected virtual void Write(string tag, ReportCell currentPosition, object v)
+        protected virtual void Write(string tag, ReportCell currentPosition, string v)
         {
             if (currentPosition.Index == 0)
                 _writer.Write("<tr>");
@@ -75,6 +77,17 @@ namespace Coder.Object2Report.Renders
             {
                 _writer.Write("</tr>");
             }
+        }
+
+        private string GetFormatPatten(string format)
+        {
+            if (string.IsNullOrEmpty(format))
+                return "{0}";
+            if (format.Contains("{"))
+            {
+                return format;
+            }
+            return "{0:" + format + "}";
         }
     }
 }

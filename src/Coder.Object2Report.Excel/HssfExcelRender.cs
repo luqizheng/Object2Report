@@ -27,5 +27,6 @@ namespace Coder.Object2Report.Renders.Excel
             workbook.DocumentSummaryInformation = info.CreateDocumentInfo();
             workbook.SummaryInformation = info.CreateWorkBookInfo();
         }
+
     }
 }

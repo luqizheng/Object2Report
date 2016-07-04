@@ -30,32 +30,39 @@ namespace Coder.Object2Report.Renders
             _writer = new StreamWriter(writer, encoding);
         }
 
-        public CsvRender(Stream writer)
+        public CsvRender(Stream writer) : this(writer, new UTF8Encoding())
         {
-            if (writer == null)
-                throw new ArgumentNullException(nameof(writer));
-
-            _writer = new StreamWriter(writer, Encoding.UTF8);
         }
 
-        public override void WriteHeader(ReportCell currentPosition, object v)
+        public override void WriteHeader(ReportCell currentPosition, string title, string fromat)
         {
-            Write(currentPosition, v);
+            Write(currentPosition, title);
         }
 
-        public override void WriteBodyCell(ReportCell currentPosition, object v, string format)
+        public override void WriteBodyCell<T>(ReportCell currentPosition, T v, string format)
         {
-            Write(currentPosition, v);
+            Write(currentPosition, string.Format(GetFormatPatten(format), v));
         }
 
-        public override void WriteFooterCell(ReportCell currentPosition, object v, string format)
+        private string GetFormatPatten(string format)
         {
-            Write(currentPosition, v);
+            if (String.IsNullOrEmpty(format))
+                return "{0}";
+            if (format.Contains("{"))
+            {
+                return format;
+            }
+            return "{0:" + format + "}";
         }
 
-        public override void OnRowWritting(Report report, int rowIndex)
+        public override void WriteFooterCell<T>(ReportCell currentPosition, T v, string format)
         {
-            _curRows = new string[report.Columns.Count];
+            Write(currentPosition, string.Format(GetFormatPatten(format), v));
+        }
+
+        public override void OnRowWritting(ReportCell cell, int rowIndex)
+        {
+            _curRows = new string[cell.MaxCell];
         }
 
         private void Write(ReportCell currentPosition, object v)

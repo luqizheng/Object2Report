@@ -1,15 +1,15 @@
 {
   "title": "Coder.Object2Report",
   "copyright": "MIT",
-  "description": "Build a report from model",
+  "description": "Build a cell from model",
   "version": "1.0.2-*",
   "packOptions": {
     "repository": {
       "url": "https://github.com/luqizheng/Object2Report"
     },
     "projectUrl": "https://github.com/luqizheng/Object2Report",
-    "tags": [ "CSV", "Object buidl report" ],
-    "summary": "Build csv report from Model.and support avg sum function to calculate column value"
+    "tags": [ "CSV", "Object buidl cell","MarkDown","Table" ],
+    "summary": "Build csv cell from Model.and support avg sum function to calculate column value"
   },  
   "dependencies": {
     "NETStandard.Library": "1.5.0-rc2-24027"

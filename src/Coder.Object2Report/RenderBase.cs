@@ -10,7 +10,7 @@
         {
         }
 
-        public abstract void WriteHeader(ReportCell currentPosition, object v);
+        public abstract void WriteHeader(ReportCell currentPosition, string title,string format);
 
 
         public virtual void OnHeaderWrote()
@@ -21,7 +21,7 @@
         {
         }
 
-        public abstract void WriteBodyCell(ReportCell currentPosition, object v, string format);
+        public abstract void WriteBodyCell<T>(ReportCell currentPosition, T v, string format);
 
 
         public virtual void OnBodyBuilt()
@@ -32,7 +32,7 @@
         {
         }
 
-        public abstract void WriteFooterCell(ReportCell currentPosition, object v, string format);
+        public abstract void WriteFooterCell<T>(ReportCell currentPosition, T v, string format);
 
 
         public virtual void OnFooterWrote()
@@ -47,8 +47,9 @@
         {
         }
 
-        public virtual void OnRowWritting(Report report, int rowIndex)
+        public virtual void OnRowWritting(ReportCell cell, int rowIndex)
         {
+            
         }
     }
 }

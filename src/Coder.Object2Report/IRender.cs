@@ -13,8 +13,8 @@
         /// 
         /// </summary>
         /// <param name="currentPosition"></param>
-        /// <param name="v"></param>
-        void WriteHeader(ReportCell currentPosition, object v);
+        /// <param name="title"></param>
+        void WriteHeader(ReportCell currentPosition, string title, string format);
         /// <summary>
         /// 
         /// </summary>
@@ -29,7 +29,7 @@
         /// <param name="currentPosition"></param>
         /// <param name="v"></param>
         /// <param name="format"></param>
-        void WriteBodyCell(ReportCell currentPosition, object v, string format);
+        void WriteBodyCell<T>(ReportCell currentPosition, T v, string format);
         /// <summary>
         /// 
         /// </summary>
@@ -44,7 +44,7 @@
         /// <param name="currentPosition"></param>
         /// <param name="v"></param>
         /// <param name="format"></param>
-        void WriteFooterCell(ReportCell currentPosition, object v, string format);
+        void WriteFooterCell<T>(ReportCell currentPosition, T v, string format);
         /// <summary>
         /// 
         /// </summary>
@@ -60,8 +60,8 @@
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="report"></param>
+        /// <param name="cell"></param>
         /// <param name="rowIndex"></param>
-        void OnRowWritting(Report report, int rowIndex);
+        void OnRowWritting(ReportCell cell, int rowIndex);
     }
 }

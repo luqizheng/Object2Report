@@ -1,22 +1,36 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Coder.Object2Report
 {
-    public class Report
+    public class Report<T>
     {
-        private readonly ReportCell _currentCell;
+        private ReportCell _currentCell;
 
         private IRender _render;
 
-        public Report(IRender render)
+        public Report(IRender render) : this()
         {
             if (render == null)
                 throw new ArgumentNullException(nameof(render));
-            Columns = new List<IColumn>();
-            _currentCell = new ReportCell(this);
-            Render = render;
+            _render = render;
+        }
+
+        public Report()
+        {
+            Columns = new List<IColumn<T>>();
+        }
+
+        internal ReportCell CurrentCell
+        {
+            get
+            {
+                if (_currentCell == null)
+                {
+                    _currentCell = new ReportCell(Columns.Count);
+                }
+                return _currentCell;
+            }
         }
 
         public IRender Render
@@ -25,14 +39,14 @@ namespace Coder.Object2Report
             set
             {
                 _render = value;
-                _currentCell.RowIndex = 0;
+                CurrentCell.RowIndex = 0;
             }
         }
 
-        public IList<IColumn> Columns { get; }
+        public IList<IColumn<T>> Columns { get; }
 
 
-        public void Write(IEnumerable data)
+        public void Write(IEnumerable<T> data)
         {
             Render.OnReportWritting();
             WriteHeader();
@@ -42,21 +56,19 @@ namespace Coder.Object2Report
         }
 
 
-        public void WriteBody(IEnumerable data)
+        public void WriteBody(IEnumerable<T> data)
         {
             Render.OnBodyBuilding();
             foreach (var item in data)
             {
-                Render.OnRowWritting(this, _currentCell.RowIndex);
+                Render.OnRowWritting(CurrentCell, CurrentCell.RowIndex);
                 foreach (var col in Columns)
                 {
-                    _currentCell.SetCell(col);
-                    var value = col.GetValue(item);
-                    Render.WriteBodyCell(_currentCell, value, col.Format);
-                    col.Footer?.Merge(value);
+                    CurrentCell.Index = col.Index;
+                    col.Write(item, Render.WriteBodyCell, CurrentCell);
                 }
                 Render.OnRowWorte();
-                _currentCell.NextRow();
+                CurrentCell.NextRow();
             }
             Render.OnBodyBuilt();
         }
@@ -64,49 +76,31 @@ namespace Coder.Object2Report
         public void WriteFooter()
         {
             Render.OnFooterWritting();
-            Render.OnRowWritting(this, _currentCell.RowIndex);
+            Render.OnRowWritting(CurrentCell, CurrentCell.RowIndex);
+
             foreach (var col in Columns)
             {
-
-                var value = col.Footer != null ? col.Footer.GetValue() ?? "" : null;
-                _currentCell.SetCell(col);
-                Render.WriteFooterCell(_currentCell, value, col.Format);
+                CurrentCell.Index = col.Index;
+                col.WriteFooter(Render.WriteFooterCell, CurrentCell);
             }
+
             Render.OnRowWorte();
             Render.OnFooterWrote();
-            _currentCell.NextRow();
+            CurrentCell.NextRow();
         }
 
         public void WriteHeader()
         {
             Render.OnHeaderWritting();
-            Render.OnRowWritting(this, _currentCell.RowIndex);
+            Render.OnRowWritting(CurrentCell, CurrentCell.RowIndex);
             foreach (var col in Columns)
             {
-                object title = col.Title;
-                _currentCell.SetCell(col);
-                Render.WriteHeader(_currentCell, title);
+                CurrentCell.Index = col.Index;
+                Render.WriteHeader(CurrentCell, col.Title, col.Format);
             }
             Render.OnRowWorte();
             Render.OnHeaderWrote();
-            _currentCell.NextRow();
-        }
-    }
-
-    public class Report<T> : Report
-    {
-        public Report(IRender render) : base(render)
-        {
-        }
-
-        public void Write(IEnumerable<T> data)
-        {
-            base.Write(data);
-        }
-
-        public void WriteBody(IEnumerable<T> data)
-        {
-            base.WriteBody(data);
+            CurrentCell.NextRow();
         }
     }
 }

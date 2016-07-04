@@ -1,34 +1,17 @@
 ﻿namespace Coder.Object2Report.Footers
 {
-    public abstract class CalculateFooterCell<T> : FooterCell
-
+    public abstract class CalculateFooterCell<TResult> : FooterCell<TResult>
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        protected T Result;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public override object GetValue()
+        public override void Calculate(TResult t)
         {
-            return Result;
+            CellValue = Calculate(CellValue, t);
         }
+
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="c"></param>
-        public override void Merge(object c)
-        {
-            Result = Calculate(Result, (T) c);
-        }
-        /// <summary>
-        /// 
         /// </summary>
         /// <param name="currentResult"></param>
-        /// <param name="mergeValue"></param>
+        /// <param name="newValue"></param>
         /// <returns></returns>
-        protected abstract T Calculate(T currentResult, T mergeValue);
+        protected abstract TResult Calculate(TResult currentResult, TResult newValue);
     }
 }

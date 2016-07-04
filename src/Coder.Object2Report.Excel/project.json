@@ -8,8 +8,8 @@
       "url": "https://github.com/luqizheng/Object2Report"
     },
     "projectUrl": "https://github.com/luqizheng/Object2Report",
-    "tags": [ "CSV", "Object buidl report" ],
-    "summary": "Build csv report from Model.and support avg sum function to calculate column value"
+    "tags": [ "CSV", "Object buidl cell" ],
+    "summary": "Build csv cell from Model.and support avg sum function to calculate column value"
   },
   "dependencies": {
     "Coder.Object2Report": "1.0.2-*",

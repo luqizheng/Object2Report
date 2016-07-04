@@ -13,23 +13,23 @@ namespace UnitTest.Helper
         public IList<List<object>> Table { get; set; }
 
 
-        public override void WriteHeader(ReportCell currentPosition, object v)
+        public override void WriteHeader(ReportCell currentPosition, string title,string format)
         {
            
-            Table[currentPosition.RowIndex].Add(v);
+            Table[currentPosition.RowIndex].Add(title);
         }
 
-        public override void OnRowWritting(Report report, int rowIndex)
+        public override void OnRowWritting(ReportCell report, int rowIndex)
         {
             Table.Add(new List<object>());
         }
 
-        public override void WriteFooterCell(ReportCell currentPosition, object v, string format)
+        public override void WriteFooterCell<T>(ReportCell currentPosition, T v, string format)
         {
             Table[currentPosition.RowIndex].Add(v);
         }
 
-        public override void WriteBodyCell(ReportCell currentPosition, object v, string format)
+        public override void WriteBodyCell<T>(ReportCell currentPosition, T v, string format)
         {
           
             Table[currentPosition.RowIndex].Add(v);

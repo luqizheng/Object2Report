@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using NPOI.SS.UserModel;
 
@@ -6,13 +7,18 @@ namespace Coder.Object2Report.Renders.Excel
 {
     public abstract class ExcelRender : RenderBase
     {
+        private readonly IDictionary<int, ICellStyle> _bodyCellStyle = new Dictionary<int, ICellStyle>();
+        private readonly IDictionary<int, ICellStyle> _footerCellStyle = new Dictionary<int, ICellStyle>();
         private readonly Stream _stream;
+        private readonly string _workSheetName;
 
         private IRow _currentRow;
+        private IDataFormat _dataFormat;
+        private ICellStyle _footerStyle;
+        private ICellStyle _headerStyle;
         private ExcelInfo _info;
         private IWorkbook _workbook;
         private ISheet _worksheet;
-        private readonly string _workSheetName;
 
         /// <summary>
         /// </summary>
@@ -28,6 +34,7 @@ namespace Coder.Object2Report.Renders.Excel
             if (worksheetName == null)
                 throw new ArgumentNullException(nameof(worksheetName));
             _stream = stream;
+            _workSheetName = worksheetName;
         }
 
         public ExcelInfo Info
@@ -36,20 +43,36 @@ namespace Coder.Object2Report.Renders.Excel
             set { _info = value; }
         }
 
-        public ICellStyle HeaderStyle { get; set; }
-        public ICellStyle FooterStyle { get; set; }
-
-        public override void OnReportWritting()
+        public ICellStyle HeaderStyle
         {
-            _workbook = CreateWorkBook();
-            _worksheet = _workbook.CreateSheet(_workSheetName);
-
-            HeaderStyle = _workbook.CreateCellStyle();
-            HeaderStyle.FillPattern = FillPattern.SolidForeground;
-
-            FooterStyle = _workbook.CreateCellStyle();
-            FooterStyle.FillPattern = FillPattern.SolidForeground;
+            get
+            {
+                if (_headerStyle == null)
+                {
+                    _headerStyle = WorkBook.CreateCellStyle();
+                    _headerStyle.FillPattern = FillPattern.SolidForeground;
+                }
+                return _headerStyle;
+            }
         }
+
+        public ICellStyle FooterStyle
+        {
+            get
+            {
+                if (_footerStyle == null)
+                {
+                    _footerStyle = WorkBook.CreateCellStyle();
+                    _footerStyle.FillPattern = FillPattern.SolidForeground;
+                }
+                return _footerStyle;
+            }
+        }
+
+        public ISheet WorkSheet => _worksheet ?? (_worksheet = WorkBook.CreateSheet(_workSheetName));
+        public IWorkbook WorkBook => _workbook ?? (_workbook = CreateWorkBook());
+
+        public IDataFormat DataFormat => _dataFormat ?? (_dataFormat = WorkBook.CreateDataFormat());
 
         protected abstract IWorkbook CreateWorkBook();
         protected abstract void InitWorkbookInfo(IWorkbook book, ExcelInfo info);
@@ -58,75 +81,94 @@ namespace Coder.Object2Report.Renders.Excel
         {
             if (_info != null)
             {
-                InitWorkbookInfo(_workbook, _info);
+                InitWorkbookInfo(WorkBook, _info);
             }
-            _workbook.Write(_stream);
+
+            WorkBook.Write(_stream);
+            _bodyCellStyle.Clear();
         }
 
-        public override void WriteBodyCell(ReportCell currentPosition, object v, string format)
+        public override void WriteBodyCell<T>(ReportCell currentPosition, T v, string format)
         {
-            Write(currentPosition, v, format);
+            var bodyCell = Write(currentPosition, v, format);
+            if (!String.IsNullOrEmpty(format))
+            {
+                bodyCell.CellStyle = GetCellStyleFrom(_bodyCellStyle, currentPosition.Index, format);
+            }
         }
 
-        public override void WriteFooterCell(ReportCell currentPosition, object v, string format)
+
+        private ICellStyle GetCellStyleFrom(IDictionary<int, ICellStyle> pools, int index, string format)
+        {
+            if (format == null)
+                return null;
+            if (pools.ContainsKey(index))
+                return pools[index];
+
+            var posOfFormat = DataFormat.GetFormat(format);
+            var result = WorkBook.CreateCellStyle();
+
+            result.DataFormat = posOfFormat;
+            pools.Add(index, result);
+            return result;
+        }
+
+
+        public override void WriteFooterCell<T>(ReportCell currentPosition, T v, string format)
         {
             var cell = Write(currentPosition, v, format);
-            if (FooterStyle != null)
-            {
-                cell.CellStyle = FooterStyle;
-            }
+            cell.CellStyle = String.IsNullOrEmpty(format)
+                ? FooterStyle
+                : GetCellStyleFrom(_bodyCellStyle, currentPosition.Index, format);
         }
 
-        public override void WriteHeader(ReportCell currentPosition, object v)
+        public override void WriteHeader(ReportCell currentPosition, string title, string format)
         {
-            var cell = Write(currentPosition, v, null);
+            var cell = Write(currentPosition, title, null);
+
             if (HeaderStyle != null)
             {
                 cell.CellStyle = HeaderStyle;
             }
         }
 
-        public override void OnRowWritting(Report report, int rowIndex)
+        public override void OnRowWritting(ReportCell cell, int rowIndex)
         {
-            _currentRow = _worksheet.CreateRow(rowIndex);
+            _currentRow = WorkSheet.CreateRow(rowIndex);
         }
 
 
-        private ICell Write(ReportCell currentPosition, object v, string format)
+        private ICell Write<T>(ReportCell currentPosition, T v, string format)
         {
             var cell = _currentRow.CreateCell(currentPosition.Index);
             SetCellValue(cell, v, format);
             return cell;
         }
 
-        private void SetCellValue(ICell cell, object v, string format)
+        private void SetCellValue<T>(ICell cell, T v, string format)
         {
             if (v == null)
             {
                 cell.SetCellValue("");
                 return;
             }
+
             var valType = v.GetType();
             if (valType == typeof(decimal) || valType == typeof(int) || valType == typeof(double) ||
                 valType == typeof(long) || valType == typeof(float) || valType == typeof(short))
             {
                 var num = Convert.ToDouble(v);
-                if (format == null)
-                {
-                    cell.SetCellValue(num);
-                }
-                else
-                {
-                    cell.SetCellValue(num.ToString(format));
-                }
+                cell.SetCellValue(num);
             }
             else if (valType == typeof(bool))
             {
-                cell.SetCellValue((bool) v);
+                var value = Convert.ToBoolean(v);
+                cell.SetCellValue(value);
             }
             else if (valType == typeof(char))
             {
-                cell.SetCellValue((char) v);
+                var value = Convert.ToChar(v);
+                cell.SetCellValue(value);
             }
             else
             {
