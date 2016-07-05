@@ -23,7 +23,7 @@ namespace Coder.Object2Report.Renders
             if (string.IsNullOrEmpty(TableClass))
                 _writer.Write("<table>");
             else
-                _writer.Write(string.Format("<table class=\"{0}\">", TableClass));
+                _writer.Write("<table class=\"{0}\">", TableClass);
         }
 
         public override void OnHeaderWritting()
@@ -72,7 +72,7 @@ namespace Coder.Object2Report.Renders
         {
             if (currentPosition.Index == 0)
                 _writer.Write("<tr>");
-            _writer.Write(string.Format("<{1}>{0}</{1}>", v, tag));
+            _writer.Write("<{1}>{0}</{1}>", v, tag);
             if (currentPosition.Index == currentPosition.MaxCell - 1)
             {
                 _writer.Write("</tr>");

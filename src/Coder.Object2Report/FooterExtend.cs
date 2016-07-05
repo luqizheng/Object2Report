@@ -35,8 +35,8 @@ namespace Coder.Object2Report
         }
 
         #region Sum
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="column"></param>
         /// <param name="format">if format is null, it will use from column's format</param>

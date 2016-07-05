@@ -9,7 +9,7 @@ namespace Coder.Object2Report.Footers.Avg
 
         protected override object GetAvgResult(int totalCount, int sumResult)
         {
-            return sumResult / totalCount;
+            return sumResult/totalCount;
         }
     }
 }

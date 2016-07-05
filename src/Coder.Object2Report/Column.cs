@@ -8,8 +8,6 @@ namespace Coder.Object2Report
         : IColumn<T>,
             IColumnSetting<TResult>
     {
-        private Expression<Func<T, TResult>> _expression;
-
         public Column(string title, Expression<Func<T, TResult>> itemExpression)
         {
             if (title == null)
@@ -17,7 +15,7 @@ namespace Coder.Object2Report
             if (title == null)
                 throw new ArgumentNullException(nameof(title));
             Title = title;
-            _expression = itemExpression;
+
             Func = itemExpression.Compile();
         }
 
@@ -41,15 +39,14 @@ namespace Coder.Object2Report
         {
             var value = Func(t);
             action(cell, value, Format);
-            this.Footer?.Calculate(value);
+            Footer?.Calculate(value);
         }
 
         public void WriteFooter(Action<ReportCell, object, string> action, ReportCell cell)
         {
-            this.Footer?.Write(action, cell);
+            Footer?.Write(action, cell);
         }
+
         public FooterCell<TResult> Footer { get; set; }
-
-
     }
 }

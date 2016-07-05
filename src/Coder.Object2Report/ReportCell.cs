@@ -6,7 +6,7 @@
         {
             MaxCell = maxCell;
         }
-     
+
         /// <summary>
         ///     Get or set RowIndex
         /// </summary>

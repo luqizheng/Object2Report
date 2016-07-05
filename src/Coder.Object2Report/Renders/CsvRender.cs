@@ -46,7 +46,7 @@ namespace Coder.Object2Report.Renders
 
         private string GetFormatPatten(string format)
         {
-            if (String.IsNullOrEmpty(format))
+            if (string.IsNullOrEmpty(format))
                 return "{0}";
             if (format.Contains("{"))
             {

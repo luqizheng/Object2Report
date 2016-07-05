@@ -17,7 +17,7 @@ namespace Coder.Object2Report.Footers.Avg
         public override void Write(Action<ReportCell, object, string> action, ReportCell cell)
         {
             var v = GetAvgResult(_total, CellValue);
-            action(cell, v, this.Format);
+            action(cell, v, Format);
         }
     }
 }

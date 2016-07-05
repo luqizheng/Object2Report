@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Coder.Object2Report.Footers.Sum
+﻿namespace Coder.Object2Report.Footers.Sum
 {
     public class SumDecimalCell : CalculateFooterCell<decimal>
     {

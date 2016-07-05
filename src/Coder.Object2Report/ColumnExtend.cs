@@ -1,9 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace Coder.Object2Report
 {
@@ -12,7 +10,7 @@ namespace Coder.Object2Report
         /// <summary>
         ///     Refer https://msdn.microsoft.com/en-us/library/dwhawy9k(v=vs.110).aspx
         ///     Refer https://msdn.microsoft.com/en-us/library/0c899ak8(v=vs.110).aspx
-        /// </summary> 
+        /// </summary>
         public static IColumnSetting<T> Format<T>(this IColumnSetting<T> column, string format)
             where T : new()
         {
@@ -53,16 +51,23 @@ namespace Coder.Object2Report
             switch (expression.Body.NodeType)
             {
                 case ExpressionType.MemberAccess:
-                    var memberExpresion = (MemberExpression) expression.Body;
-#if NET40
+                    var memberExpresion = (MemberExpression)expression.Body;
+                    DisplayAttribute attr = null;
+#if NET40 || NET461
                     var attrs = memberExpresion.Member.GetCustomAttributes(typeof(DisplayAttribute), true);
-                    var attr = attrs.Length ==0 ?null : (DisplayAttribute) attrs[0];
-
-#else
-                    var attr = memberExpresion.Member.GetCustomAttributes<DisplayAttribute>().FirstOrDefault();
-                    
-#endif
+                    attr = attrs.Length == 0 ? null : (DisplayAttribute) attrs[0];
                     return attr != null ? attr.Name : memberExpresion.Member.Name;
+#else
+                    var attrData = (from item in memberExpresion.Member.CustomAttributes
+                                    where item.AttributeType == typeof(DisplayAttribute)
+                                    select item).FirstOrDefault();
+                    if (attrData != null && attrData.NamedArguments.Count() > 0)
+                    {
+                        return attrData.NamedArguments[0].TypedValue.Value.ToString();
+                    }
+                    return memberExpresion.Member.Name;
+#endif
+
                 default:
                     return expression.Name ?? "";
             }

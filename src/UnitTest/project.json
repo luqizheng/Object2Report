@@ -5,20 +5,26 @@
     "emitEntryPoint": false
   },
   "dependencies": {
-    "System.Diagnostics.Process": "4.1.0-*",
-    "Coder.Object2Report": "1.0.*" ,
-    "xunit": "2.1.0",
-    "dotnet-test-xunit": "1.0.0-rc2-build10025",
-    "Microsoft.NETCore.App": {
-      "type": "platform",
-      "version": "1.0.0-rc2-3002702"
-    },
-    "Coder.Object2Report.Excel": "1.0.0-*"
+    "xunit": "2.2.0-beta2-build3300",
+    "dotnet-test-xunit": "2.2.0-preview2-build1029"
   },
   "testRunner": "xunit",
   "frameworks": {
     "net461": {
-      "imports": [ "dnxcore50","net461" ]
+      "imports": [ "dnxcore50", "net461" ],
+      "dependencies": {
+        "Coder.Object2Report.Renders.NPOI": "1.0.1-*"
+      }
+    },
+    "netcoreapp1.0": {
+      "dependencies": {
+        "Coder.Object2Report": "1.1.2-*",
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.0"
+        }
+      },
+      "imports": [ "dnxcore50", "net461" ]
     }
   }
 }

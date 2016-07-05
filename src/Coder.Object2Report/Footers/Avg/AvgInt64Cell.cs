@@ -9,7 +9,7 @@
 
         protected override object GetAvgResult(int totalCount, long sumResult)
         {
-            return sumResult / totalCount;
+            return sumResult/totalCount;
         }
     }
 }

@@ -2,7 +2,7 @@
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
-namespace Coder.Object2Report.Renders.Excel
+namespace Coder.Object2Report.Renders.NPOI
 {
     public class XssfExcelReader : ExcelRender
     {

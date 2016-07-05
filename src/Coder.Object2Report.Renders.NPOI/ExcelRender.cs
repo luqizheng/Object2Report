@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using NPOI.SS.UserModel;
 
-namespace Coder.Object2Report.Renders.Excel
+namespace Coder.Object2Report.Renders.NPOI
 {
     public abstract class ExcelRender : RenderBase
     {
@@ -72,7 +72,7 @@ namespace Coder.Object2Report.Renders.Excel
         public ISheet WorkSheet => _worksheet ?? (_worksheet = WorkBook.CreateSheet(_workSheetName));
         public IWorkbook WorkBook => _workbook ?? (_workbook = CreateWorkBook());
 
-        public IDataFormat DataFormat => _dataFormat ?? (_dataFormat = WorkBook.CreateDataFormat());
+        private IDataFormat DataFormat => _dataFormat ?? (_dataFormat = WorkBook.CreateDataFormat());
 
         protected abstract IWorkbook CreateWorkBook();
         protected abstract void InitWorkbookInfo(IWorkbook book, ExcelInfo info);
@@ -90,7 +90,7 @@ namespace Coder.Object2Report.Renders.Excel
 
         public override void WriteBodyCell<T>(ReportCell currentPosition, T v, string format)
         {
-            var bodyCell = Write(currentPosition, v, format);
+            var bodyCell = Write(currentPosition, v);
             if (!String.IsNullOrEmpty(format))
             {
                 bodyCell.CellStyle = GetCellStyleFrom(_bodyCellStyle, currentPosition.Index, format);
@@ -116,15 +116,15 @@ namespace Coder.Object2Report.Renders.Excel
 
         public override void WriteFooterCell<T>(ReportCell currentPosition, T v, string format)
         {
-            var cell = Write(currentPosition, v, format);
+            var cell = Write(currentPosition, v);
             cell.CellStyle = String.IsNullOrEmpty(format)
                 ? FooterStyle
-                : GetCellStyleFrom(_bodyCellStyle, currentPosition.Index, format);
+                : GetCellStyleFrom(_footerCellStyle, currentPosition.Index, format);
         }
 
         public override void WriteHeader(ReportCell currentPosition, string title, string format)
         {
-            var cell = Write(currentPosition, title, null);
+            var cell = Write(currentPosition, title);
 
             if (HeaderStyle != null)
             {
@@ -138,14 +138,14 @@ namespace Coder.Object2Report.Renders.Excel
         }
 
 
-        private ICell Write<T>(ReportCell currentPosition, T v, string format)
+        private ICell Write<T>(ReportCell currentPosition, T v)
         {
             var cell = _currentRow.CreateCell(currentPosition.Index);
-            SetCellValue(cell, v, format);
+            SetCellValue(cell, v);
             return cell;
         }
 
-        private void SetCellValue<T>(ICell cell, T v, string format)
+        private void SetCellValue<T>(ICell cell, T v)
         {
             if (v == null)
             {

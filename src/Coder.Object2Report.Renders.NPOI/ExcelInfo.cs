@@ -1,6 +1,6 @@
 using NPOI.HPSF;
 
-namespace Coder.Object2Report.Renders.Excel
+namespace Coder.Object2Report.Renders.NPOI
 {
     public class ExcelInfo
     {

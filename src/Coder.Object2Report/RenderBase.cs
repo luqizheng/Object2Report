@@ -10,7 +10,7 @@
         {
         }
 
-        public abstract void WriteHeader(ReportCell currentPosition, string title,string format);
+        public abstract void WriteHeader(ReportCell currentPosition, string title, string format);
 
 
         public virtual void OnHeaderWrote()
@@ -49,7 +49,6 @@
 
         public virtual void OnRowWritting(ReportCell cell, int rowIndex)
         {
-            
         }
     }
 }
