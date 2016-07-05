@@ -7,7 +7,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Coder.Object2Report", "Code
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UnitTest", "UnitTest\UnitTest.xproj", "{7BB2F290-842E-46F1-84E7-ED76232F7D3F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Coder.Object2Report.Excel", "Coder.Object2Report.Excel\Coder.Object2Report.Excel.xproj", "{0257CDBB-132C-4C2C-90D2-052BACD64735}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Coder.Object2Report.Renders.NPOI", "Coder.Object2Report.Renders.NPOI\Coder.Object2Report.Renders.NPOI.xproj", "{0257CDBB-132C-4C2C-90D2-052BACD64735}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
