@@ -3,17 +3,20 @@
     public interface IRender
     {
         /// <summary>
+        /// Begin to write
         /// </summary>
         void OnReportWritting();
         /// <summary>
-        /// 
+        /// Begin to write header
         /// </summary>
         void OnHeaderWritting();
+
         /// <summary>
-        /// 
+        /// Writer Header Cell.
         /// </summary>
         /// <param name="currentPosition"></param>
         /// <param name="title"></param>
+        /// <param name="format"></param>
         void WriteHeader(ReportCell currentPosition, string title, string format);
         /// <summary>
         /// 

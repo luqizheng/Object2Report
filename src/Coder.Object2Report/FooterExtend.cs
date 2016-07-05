@@ -7,7 +7,14 @@ namespace Coder.Object2Report
 {
     public static class FooterExtend
     {
-        public static FooterComment<T> Comment<T>(this IColumnSetting<T> column, string footerName)
+        /// <summary>
+        ///     Value of Footer
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="column"></param>
+        /// <param name="footerName"></param>
+        /// <returns></returns>
+        public static FooterComment<T> Content<T>(this IColumnSetting<T> column, string footerName)
         {
             if (footerName == null)
                 throw new ArgumentNullException(nameof(footerName));
@@ -15,6 +22,14 @@ namespace Coder.Object2Report
 
             column.Footer = result;
             return result;
+        }
+
+        public static FooterCell<T> Format<T>(this FooterCell<T> footer, string format)
+        {
+            if (format == null)
+                throw new ArgumentNullException(nameof(format));
+            footer.Format = format;
+            return footer;
         }
 
         #region Sum
@@ -84,13 +99,5 @@ namespace Coder.Object2Report
         }
 
         #endregion
-
-        public static FooterCell<T> Format<T>(this FooterCell<T> footer, string format)
-        {
-            if (format == null)
-                throw new ArgumentNullException(nameof(format));
-            footer.Format = format;
-            return footer;
-        }
     }
 }
