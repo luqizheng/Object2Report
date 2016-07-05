@@ -16,6 +16,7 @@ namespace Coder.Object2Report
         /// <returns></returns>
         public static FooterComment<T> Content<T>(this IColumnSetting<T> column, string footerName)
         {
+            if (column == null) throw new ArgumentNullException(nameof(column));
             if (footerName == null)
                 throw new ArgumentNullException(nameof(footerName));
             var result = new FooterComment<T>(footerName);
@@ -26,6 +27,7 @@ namespace Coder.Object2Report
 
         public static FooterCell<T> Format<T>(this FooterCell<T> footer, string format)
         {
+            if (footer == null) throw new ArgumentNullException(nameof(footer));
             if (format == null)
                 throw new ArgumentNullException(nameof(format));
             footer.Format = format;
@@ -33,34 +35,48 @@ namespace Coder.Object2Report
         }
 
         #region Sum
-
-        public static FooterCell<decimal> Sum(this IColumnSetting<decimal> column)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="column"></param>
+        /// <param name="format">if format is null, it will use from column's format</param>
+        /// <returns></returns>
+        public static FooterCell<decimal> Sum(this IColumnSetting<decimal> column, string format = null)
         {
-            column.Footer = new SumDecimalCell();
+            if (column == null) throw new ArgumentNullException(nameof(column));
+            column.Footer = new SumDecimalCell {Format = format ?? column.Format};
             return column.Footer;
         }
 
-        public static FooterCell<int> Sum(this IColumnSetting<int> column)
+        public static FooterCell<int> Sum(this IColumnSetting<int> column, string format = null)
         {
+            if (column == null) throw new ArgumentNullException(nameof(column));
             column.Footer = new Int32Cell();
+            column.Footer.Format = format ?? column.Format;
             return column.Footer;
         }
 
-        public static FooterCell<long> Sum(this IColumnSetting<long> column)
+        public static FooterCell<long> Sum(this IColumnSetting<long> column, string format = null)
         {
+            if (column == null) throw new ArgumentNullException(nameof(column));
             column.Footer = new SumInt64Cell();
+            column.Footer.Format = format ?? column.Format;
             return column.Footer;
         }
 
-        public static FooterCell<double> Sum(this IColumnSetting<double> column)
+        public static FooterCell<double> Sum(this IColumnSetting<double> column, string format = null)
         {
+            if (column == null) throw new ArgumentNullException(nameof(column));
             column.Footer = new SumDoubleCell();
+            column.Footer.Format = format ?? column.Format;
             return column.Footer;
         }
 
-        public static FooterCell<float> Sum(this IColumnSetting<float> column)
+        public static FooterCell<float> Sum(this IColumnSetting<float> column, string format = null)
         {
+            if (column == null) throw new ArgumentNullException(nameof(column));
             column.Footer = new SumSingleCell();
+            column.Footer.Format = format ?? column.Format;
             return column.Footer;
         }
 
@@ -68,33 +84,43 @@ namespace Coder.Object2Report
 
         #region AVG
 
-        public static FooterCell<decimal> Avg(this IColumnSetting<decimal> column)
+        public static FooterCell<decimal> Avg(this IColumnSetting<decimal> column, string format = null)
         {
+            if (column == null) throw new ArgumentNullException(nameof(column));
             column.Footer = new AvgDecimalCell();
+            column.Footer.Format = format ?? column.Format;
             return column.Footer;
         }
 
-        public static FooterCell<int> Avg(this IColumnSetting<int> column)
+        public static FooterCell<int> Avg(this IColumnSetting<int> column, string format = null)
         {
+            if (column == null) throw new ArgumentNullException(nameof(column));
             column.Footer = new AvgInt32Cell();
+            column.Footer.Format = format ?? column.Format;
             return column.Footer;
         }
 
-        public static FooterCell<long> Avg(this IColumnSetting<long> column)
+        public static FooterCell<long> Avg(this IColumnSetting<long> column, string format = null)
         {
+            if (column == null) throw new ArgumentNullException(nameof(column));
             column.Footer = new AvgInt64Cell();
+            column.Footer.Format = format ?? column.Format;
             return column.Footer;
         }
 
-        public static FooterCell<double> Avg(this IColumnSetting<double> column)
+        public static FooterCell<double> Avg(this IColumnSetting<double> column, string format = null)
         {
+            if (column == null) throw new ArgumentNullException(nameof(column));
             column.Footer = new AvgDoubleCell();
+            column.Footer.Format = format ?? column.Format;
             return column.Footer;
         }
 
-        public static FooterCell<float> Avg(this IColumnSetting<float> column)
+        public static FooterCell<float> Avg(this IColumnSetting<float> column, string format = null)
         {
+            if (column == null) throw new ArgumentNullException(nameof(column));
             column.Footer = new AvgSingleCell();
+            column.Footer.Format = format ?? column.Format;
             return column.Footer;
         }
 
