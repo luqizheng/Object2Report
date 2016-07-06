@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
 using Coder.Object2Report;
 using Coder.Object2Report.Renders;
+using UnitTest.Helper;
+using Xunit;
 #if NET461
 using Coder.Object2Report.Renders.NPOI;
 #endif
-using UnitTest.Helper;
-using Xunit;
 
 namespace UnitTest
 {
@@ -27,14 +26,14 @@ namespace UnitTest
             var report = new Report<Order>(render);
 
             report.Column(item => item.UnitPrice).Format("#,0.00");
-            report.Column(item => item.Quantity).Format("0").Sum().Format("0");
+            report.Column(item => item.Quantity).Format("0").Sum();
             report.Column("Member Discount", item => item.Discount).Format("0.0%").Content("SubTotal");
-            report.Column("SubTotal", item => item.UnitPrice * item.Quantity).Sum();
+            report.Column("SubTotal", item => item.UnitPrice*item.Quantity).Sum();
             report.Column("Amount Paid", item =>
             {
-                var result = item.UnitPrice * item.Quantity;
+                var result = item.UnitPrice*item.Quantity;
                 var accountOf = 1 - item.Discount;
-                result = result * Convert.ToDecimal(accountOf);
+                result = result*Convert.ToDecimal(accountOf);
                 return result;
             }).Sum();
             return report;
@@ -47,26 +46,6 @@ namespace UnitTest
             var report = BuildReport(render);
             report.Write(_orders);
         }
-
-#if NET461
-        [Fact]
-        public void HssfExcelWrite()
-        {
-            var render = new HssfExcelRender(File.Open("a.xls", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test");
-            var report = BuildReport(render);
-
-            report.Write(_orders);
-        }
-
-        [Fact]
-        public void XssfExcelWrite()
-        {
-            var render = new XssfExcelReader(File.Open("a.xlsx", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test");
-            var report = BuildReport(render);
-
-            report.Write(_orders);
-        }
-#endif
 
         [Fact]
         public void MarkDownWrite()
@@ -101,7 +80,7 @@ namespace UnitTest
             Assert.Equal(4.1m, _render.Table[2][0]);
             Assert.Equal(5, _render.Table[2][1]);
             Assert.Equal(0.7f, _render.Table[2][2]);
-            Assert.Equal(4.1m * 5, _render.Table[2][3]);
+            Assert.Equal(4.1m*5, _render.Table[2][3]);
             Assert.Equal(6.15m, _render.Table[2][4]);
 
             report.WriteFooter();
@@ -112,6 +91,24 @@ namespace UnitTest
             Assert.Equal(76.15m, _render.Table[3][3]);
         }
 
+#if NET461
+        [Fact]
+        public void HssfExcelWrite()
+        {
+            var render = new HssfExcelRender(File.Open("a.xls", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test");
+            var report = BuildReport(render);
 
+            report.Write(_orders);
+        }
+
+        [Fact]
+        public void XssfExcelWrite()
+        {
+            var render = new XssfExcelReader(File.Open("a.xlsx", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test");
+            var report = BuildReport(render);
+
+            report.Write(_orders);
+        }
+#endif
     }
 }

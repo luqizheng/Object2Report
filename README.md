@@ -7,38 +7,69 @@ I have a order class like:
 ```
 public class Order
 {
-    [Display(Name = "实际支付")]
-    public decimal Amount { get; set; }
+    [Display(Name = "Quantity")]
+    public int Quantity { get; set; }
 
-    [Display(Name = "建议价格")]
-    public decimal SuggestAmount { get; set; }
-
-    [Display(Name = "数量")]
-    public decimal Quantity { get; set; }
-    [Display(Name = "单价")]
+    [Display(Name = "Product-Price")]
     public decimal UnitPrice { get; set; }
+
+    [Display(Name = "Discount")]
+    public float Discount { get; set; }
+
+    [Display(Name="Product")]
+    public string ProductName { get; set; }
 }
 
 ```
-Defined format and output them by Coder.Object2Report.Renders.CSVRender
+## Defined render
 
 ```
-var report = new Report<Order>(new CsvRender(File.OpenWrite("a.csv")));
-report.Column(item => item.UnitPrice); 
-report.Column(item => item.Quantity);
-report.Column("合计", item => item.UnitPrice*item.Quantity).Sum();  //sum the Column and output it on the footer
-report.Column(item => item.Amount).Sum();
-report.Write(_orders);
+// CSV render
+  var render = new CsvRender(File.OpenWrite("a.csv"));
+// MarkDown
+ var render = new MarkDownRender(File.OpenWrite("a.md"));
+// NPIO 
+var render = new HssfExcelRender(File.Open("a.xls", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test");
+var render = new XssfExcelReader(File.Open("a.xlsx", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test");
+
+```
+Or inerit from IRender to imple new render.
+
+
+
+## Defined output data from model 
+
 
 ```
 
+var report = new Report<Order>(render);
+//cell format 
+report.Column(item => item.UnitPrice).Format("#,0.00"); 
+
+//sum and output in footer cell, Format is same as cell by default. 
+report.Column("Member Discount", item => item.Discount).Format("0.0%").Content("SubTotal")
+report.Column(item => item.Quantity).Format("0").Sum();;
+report.Column("SubTotal", item => item.UnitPrice*item.Quantity).Sum();
+
+report.Column("Amount Paid", item =>
+{
+    var result = item.UnitPrice*item.Quantity;
+    var accountOf = 1 - item.Discount;
+    result = result*Convert.ToDecimal(accountOf);
+    return result;
+}).Sum();
+return report;
+
+```
+##output file
 ```  CSV-File
-单价,数量,合计,实际支付
-10,10,100,100
-4.1,5,20.5,18
-,,120.5,118
+Product-Price,Quantity,Member Discount,SubTotal,Amount Paid
+10.00,10,30.0%,100,70.0
+4.10,5,70.0%,20.5,6.15
+,15,SubTotal,120.5,76.15
+
 
 ```
 
-Done.
+All code in the UnitTest project.
 
