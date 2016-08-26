@@ -12,7 +12,6 @@ namespace Coder.Object2Report
         ///     Refer https://msdn.microsoft.com/en-us/library/0c899ak8(v=vs.110).aspx
         /// </summary>
         public static IColumnSetting<T> Format<T>(this IColumnSetting<T> column, string format)
-            where T : new()
         {
             if (format == null)
                 throw new ArgumentNullException(nameof(format));
@@ -35,7 +34,6 @@ namespace Coder.Object2Report
 
         public static IColumnSetting<TResult> Column<T, TResult>(this Report<T> report,
             Expression<Func<T, TResult>> expression)
-            where T : new()
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
