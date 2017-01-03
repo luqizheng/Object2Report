@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Coder.Object2Report": "1.1.4-*",
+    "NETStandard.Library": "1.6.1",
+    "Pomelo.Data.Excel": "1.1.0-rtm-10026"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}

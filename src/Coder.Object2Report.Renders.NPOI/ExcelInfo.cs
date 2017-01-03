@@ -1,7 +1,16 @@
+#if NETSTANDARD1_6
+
+using Npoi.Core.HPSF;
+
+#else
 using NPOI.HPSF;
+#endif
 
 namespace Coder.Object2Report.Renders.NPOI
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ExcelInfo
     {
         /// <summary>
@@ -9,10 +18,30 @@ namespace Coder.Object2Report.Renders.NPOI
         /// </summary>
         public string Company { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string Subject { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string Title { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string Author { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string Comment { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
 
         internal DocumentSummaryInformation CreateDocumentInfo()
         {
@@ -20,6 +49,10 @@ namespace Coder.Object2Report.Renders.NPOI
             dsi.Company = Company ?? "";
             return dsi;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
 
         internal SummaryInformation CreateWorkBookInfo()
         {

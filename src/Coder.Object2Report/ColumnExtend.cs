@@ -50,16 +50,15 @@ namespace Coder.Object2Report
             {
                 case ExpressionType.MemberAccess:
                     var memberExpresion = (MemberExpression)expression.Body;
-                    DisplayAttribute attr = null;
 #if NET40 || NET461
                     var attrs = memberExpresion.Member.GetCustomAttributes(typeof(DisplayAttribute), true);
-                    attr = attrs.Length == 0 ? null : (DisplayAttribute) attrs[0];
+                    var attr = attrs.Length == 0 ? null : (DisplayAttribute) attrs[0];
                     return attr != null ? attr.Name : memberExpresion.Member.Name;
 #else
                     var attrData = (from item in memberExpresion.Member.CustomAttributes
                                     where item.AttributeType == typeof(DisplayAttribute)
                                     select item).FirstOrDefault();
-                    if (attrData != null && attrData.NamedArguments.Count() > 0)
+                    if (attrData != null && attrData.NamedArguments.Any())
                     {
                         return attrData.NamedArguments[0].TypedValue.Value.ToString();
                     }

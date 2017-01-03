@@ -1,6 +1,14 @@
 ﻿using System.IO;
-using NPOI.SS.UserModel;
+
+#if NETSTANDARD1_6
+using Npoi.Core.SS.UserModel;
+using Npoi.Core.XSSF.UserModel;
+#else
+using NPOI.XSSF;
 using NPOI.XSSF.UserModel;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.Util;
+#endif
 
 namespace Coder.Object2Report.Renders.NPOI
 {

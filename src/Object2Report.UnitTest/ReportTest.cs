@@ -5,9 +5,8 @@ using Coder.Object2Report;
 using Coder.Object2Report.Renders;
 using UnitTest.Helper;
 using Xunit;
-#if NET461
 using Coder.Object2Report.Renders.NPOI;
-#endif
+
 
 namespace UnitTest
 {
@@ -91,7 +90,7 @@ namespace UnitTest
             Assert.Equal(76.15m, _render.Table[3][3]);
         }
 
-#if NET461
+
         [Fact]
         public void HssfExcelWrite()
         {
@@ -109,6 +108,6 @@ namespace UnitTest
 
             report.Write(_orders);
         }
-#endif
+
     }
 }

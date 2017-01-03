@@ -1,7 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+#if NETSTANDARD1_6
+using Npoi.Core.SS.UserModel;
+
+#else
+using NPOI.HPSF;
 using NPOI.SS.UserModel;
+#endif
+
+
 
 namespace Coder.Object2Report.Renders.NPOI
 {
