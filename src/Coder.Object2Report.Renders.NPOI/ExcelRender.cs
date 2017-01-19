@@ -44,13 +44,17 @@ namespace Coder.Object2Report.Renders.NPOI
             _stream = stream;
             _workSheetName = worksheetName;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public ExcelInfo Info
         {
             get { return _info ?? (_info = new ExcelInfo()); }
             set { _info = value; }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public ICellStyle HeaderStyle
         {
             get
@@ -63,7 +67,9 @@ namespace Coder.Object2Report.Renders.NPOI
                 return _headerStyle;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public ICellStyle FooterStyle
         {
             get
@@ -76,15 +82,30 @@ namespace Coder.Object2Report.Renders.NPOI
                 return _footerStyle;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public ISheet WorkSheet => _worksheet ?? (_worksheet = WorkBook.CreateSheet(_workSheetName));
+        /// <summary>
+        /// 
+        /// </summary>
         public IWorkbook WorkBook => _workbook ?? (_workbook = CreateWorkBook());
 
         private IDataFormat DataFormat => _dataFormat ?? (_dataFormat = WorkBook.CreateDataFormat());
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         protected abstract IWorkbook CreateWorkBook();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="book"></param>
+        /// <param name="info"></param>
         protected abstract void InitWorkbookInfo(IWorkbook book, ExcelInfo info);
 
+        /// <summary>
+        /// </summary>
         public override void OnReportWrote()
         {
             if (_info != null)
@@ -96,8 +117,15 @@ namespace Coder.Object2Report.Renders.NPOI
             _bodyCellStyle.Clear();
         }
 
-        public override void WriteBodyCell<T>(ReportCell currentPosition, T v, string format)
+        /// <summary>
+        /// </summary>
+        /// <param name="currentPosition"></param>
+        /// <param name="v"></param>
+        /// <param name="format"></param>
+        /// <typeparam name="T"></typeparam>
+        public override void WriteBodyCell<T>(CellCursor currentPosition, T v, string format)
         {
+          
             var bodyCell = Write(currentPosition, v);
             if (!String.IsNullOrEmpty(format))
             {
@@ -106,6 +134,12 @@ namespace Coder.Object2Report.Renders.NPOI
         }
 
 
+        /// <summary>
+        /// </summary>
+        /// <param name="pools"></param>
+        /// <param name="index"></param>
+        /// <param name="format"></param>
+        /// <returns></returns>
         private ICellStyle GetCellStyleFrom(IDictionary<int, ICellStyle> pools, int index, string format)
         {
             if (format == null)
@@ -122,17 +156,30 @@ namespace Coder.Object2Report.Renders.NPOI
         }
 
 
-        public override void WriteFooterCell<T>(ReportCell currentPosition, T v, string format)
+        /// <summary>
+        /// </summary>
+        /// <param name="currentPosition"></param>
+        /// <param name="v"></param>
+        /// <param name="format"></param>
+        /// <typeparam name="T"></typeparam>
+        public override void WriteFooterCell<T>(CellCursor currentPosition, T v, string format)
         {
+           
             var cell = Write(currentPosition, v);
             cell.CellStyle = String.IsNullOrEmpty(format)
                 ? FooterStyle
                 : GetCellStyleFrom(_footerCellStyle, currentPosition.Index, format);
         }
 
-        public override void WriteHeader(ReportCell currentPosition, string title, string format)
+        /// <summary>
+        /// </summary>
+        /// <param name="cellCursor"></param>
+        /// <param name="title"></param>
+        /// <param name="format"></param>
+        public override void WriteHeader(CellCursor cellCursor, string title, string format)
         {
-            var cell = Write(currentPosition, title);
+          
+            var cell = Write(cellCursor, title);
 
             if (HeaderStyle != null)
             {
@@ -140,19 +187,34 @@ namespace Coder.Object2Report.Renders.NPOI
             }
         }
 
-        public override void OnRowWritting(ReportCell cell, int rowIndex)
+        /// <summary>
+        /// </summary>
+        /// <param name="cellCursor"></param>
+        /// <param name="rowIndex"></param>
+        public override void OnRowWriting(CellCursor cellCursor, int rowIndex)
         {
             _currentRow = WorkSheet.CreateRow(rowIndex);
         }
 
 
-        private ICell Write<T>(ReportCell currentPosition, T v)
+        /// <summary>
+        /// </summary>
+        /// <param name="currentPosition"></param>
+        /// <param name="v"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        private ICell Write<T>(CellCursor currentPosition, T v)
         {
             var cell = _currentRow.CreateCell(currentPosition.Index);
             SetCellValue(cell, v);
             return cell;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="v"></param>
+        /// <typeparam name="T"></typeparam>
         private void SetCellValue<T>(ICell cell, T v)
         {
             if (v == null)

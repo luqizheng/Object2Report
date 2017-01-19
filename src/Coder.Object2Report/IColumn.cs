@@ -13,7 +13,7 @@ namespace Coder.Object2Report
         /// </summary>
         string Format { get; set; }
 
-        void Write(T t, Action<ReportCell, object, string> action, ReportCell cell);
-        void WriteFooter(Action<ReportCell, object, string> action, ReportCell cell);
+        void Write(T t, Action<CellCursor, object, string> action, CellCursor cellCursor);
+        void WriteFooter(Action<CellCursor, object, string> action, CellCursor cellCursor);
     }
 }

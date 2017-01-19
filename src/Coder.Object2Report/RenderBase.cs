@@ -2,52 +2,89 @@
 {
     public abstract class RenderBase : IRender
     {
-        public virtual void OnReportWritting()
+        /// <summary>
+        /// </summary>
+        public virtual void OnReportWriting()
         {
         }
 
-        public virtual void OnHeaderWritting()
+        /// <summary>
+        /// </summary>
+        public virtual void OnHeaderWriting()
         {
         }
 
-        public abstract void WriteHeader(ReportCell currentPosition, string title, string format);
+        /// <summary>
+        /// </summary>
+        /// <param name="cellCursor"></param>
+        /// <param name="title"></param>
+        /// <param name="format"></param>
+        public abstract void WriteHeader(CellCursor cellCursor, string title, string format);
 
-
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual void OnHeaderWrote()
         {
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual void OnBodyBuilding()
         {
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="currentPosition"></param>
+        /// <param name="v"></param>
+        /// <param name="format"></param>
+        public abstract void WriteBodyCell<T>(CellCursor currentPosition, T v, string format);
 
-        public abstract void WriteBodyCell<T>(ReportCell currentPosition, T v, string format);
-
-
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual void OnBodyBuilt()
         {
         }
 
-        public virtual void OnFooterWritting()
+        public virtual void OnFooterWriting()
         {
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="currentPosition"></param>
+        /// <param name="v"></param>
+        /// <param name="format"></param>
+        public abstract void WriteFooterCell<T>(CellCursor currentPosition, T v, string format);
 
-        public abstract void WriteFooterCell<T>(ReportCell currentPosition, T v, string format);
-
-
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual void OnFooterWrote()
         {
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual void OnReportWrote()
         {
         }
-
-        public virtual void OnRowWorte()
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void OnRowWrote()
         {
         }
-
-        public virtual void OnRowWritting(ReportCell cell, int rowIndex)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cellCursor"></param>
+        /// <param name="rowIndex"></param>
+        public virtual void OnRowWriting(CellCursor cellCursor, int rowIndex)
         {
         }
     }

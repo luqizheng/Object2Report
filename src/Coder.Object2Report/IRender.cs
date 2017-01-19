@@ -1,24 +1,26 @@
 ﻿namespace Coder.Object2Report
 {
+    /// <summary>
+    /// </summary>
     public interface IRender
     {
         /// <summary>
         ///     Begin to write
         /// </summary>
-        void OnReportWritting();
+        void OnReportWriting();
 
         /// <summary>
         ///     Begin to write header
         /// </summary>
-        void OnHeaderWritting();
+        void OnHeaderWriting();
 
         /// <summary>
         ///     Writer Header Cell.
         /// </summary>
-        /// <param name="currentPosition"></param>
+        /// <param name="cellCursor"></param>
         /// <param name="title"></param>
         /// <param name="format"></param>
-        void WriteHeader(ReportCell currentPosition, string title, string format);
+        void WriteHeader(CellCursor cellCursor, string title, string format);
 
         /// <summary>
         /// </summary>
@@ -33,7 +35,7 @@
         /// <param name="currentPosition"></param>
         /// <param name="v"></param>
         /// <param name="format"></param>
-        void WriteBodyCell<T>(ReportCell currentPosition, T v, string format);
+        void WriteBodyCell<T>(CellCursor currentPosition, T v, string format);
 
         /// <summary>
         /// </summary>
@@ -41,14 +43,14 @@
 
         /// <summary>
         /// </summary>
-        void OnFooterWritting();
+        void OnFooterWriting();
 
         /// <summary>
         /// </summary>
         /// <param name="currentPosition"></param>
         /// <param name="v"></param>
         /// <param name="format"></param>
-        void WriteFooterCell<T>(ReportCell currentPosition, T v, string format);
+        void WriteFooterCell<T>(CellCursor currentPosition, T v, string format);
 
         /// <summary>
         /// </summary>
@@ -60,12 +62,12 @@
 
         /// <summary>
         /// </summary>
-        void OnRowWorte();
+        void OnRowWrote();
 
         /// <summary>
         /// </summary>
-        /// <param name="cell"></param>
+        /// <param name="cellCursor"></param>
         /// <param name="rowIndex"></param>
-        void OnRowWritting(ReportCell cell, int rowIndex);
+        void OnRowWriting(CellCursor cellCursor, int rowIndex);
     }
 }

@@ -35,16 +35,16 @@ namespace Coder.Object2Report
         public int Index { get; internal set; }
         public string Format { get; set; }
 
-        public void Write(T t, Action<ReportCell, object, string> action, ReportCell cell)
+        public void Write(T t, Action<CellCursor, object, string> action, CellCursor cellCursor)
         {
             var value = Func(t);
-            action(cell, value, Format);
+            action(cellCursor, value, Format);
             Footer?.Calculate(value);
         }
 
-        public void WriteFooter(Action<ReportCell, object, string> action, ReportCell cell)
+        public void WriteFooter(Action<CellCursor, object, string> action, CellCursor cellCursor)
         {
-            Footer?.Write(action, cell);
+            Footer?.Write(action, cellCursor);
         }
 
         public FooterCell<TResult> Footer { get; set; }

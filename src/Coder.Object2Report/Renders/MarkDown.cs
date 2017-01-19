@@ -27,9 +27,9 @@ namespace Coder.Object2Report.Renders
             _writer = new StreamWriter(writer, encoding);
         }
 
-        public override void OnRowWritting(ReportCell cell, int rowIndex)
+        public override void OnRowWriting(CellCursor cellCursor, int rowIndex)
         {
-            _curRows = new string[cell.MaxCell];
+            _curRows = new string[cellCursor.MaxCell];
         }
 
         private string GetFormatPatten(string format)
@@ -43,22 +43,22 @@ namespace Coder.Object2Report.Renders
             return "{0:" + format + "}";
         }
 
-        public override void WriteBodyCell<T>(ReportCell currentPosition, T v, string format)
+        public override void WriteBodyCell<T>(CellCursor currentPosition, T v, string format)
         {
             Write(currentPosition, v, format);
         }
 
-        public override void WriteFooterCell<T>(ReportCell currentPosition, T v, string format)
+        public override void WriteFooterCell<T>(CellCursor currentPosition, T v, string format)
         {
             Write(currentPosition, v, format);
         }
 
-        public override void WriteHeader(ReportCell currentPosition, string title, string format)
+        public override void WriteHeader(CellCursor cellCursor, string title, string format)
         {
-            Write(currentPosition, title, format);
+            Write(cellCursor, title, format);
         }
 
-        public void Write<T>(ReportCell cell, T v, string format)
+        public void Write<T>(CellCursor cellCursor, T v, string format)
         {
             if (v == null)
                 return;
@@ -69,10 +69,10 @@ namespace Coder.Object2Report.Renders
             {
                 value = $"{value.Replace("|", "\"|")}";
             }
-            _curRows[cell.Index] = value;
+            _curRows[cellCursor.Index] = value;
         }
 
-        public override void OnRowWorte()
+        public override void OnRowWrote()
         {
             _writer.WriteLine("|" + string.Join("|", _curRows) + "|");
         }

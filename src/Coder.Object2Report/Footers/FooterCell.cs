@@ -8,9 +8,9 @@ namespace Coder.Object2Report.Footers
 
         public TResult CellValue { get; set; }
 
-        public virtual void Write(Action<ReportCell, object, string> action, ReportCell cell)
+        public virtual void Write(Action<CellCursor, object, string> action, CellCursor cellCursor)
         {
-            action(cell, CellValue, Format);
+            action(cellCursor, CellValue, Format);
         }
 
         public abstract void Calculate(TResult t);

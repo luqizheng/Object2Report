@@ -19,11 +19,18 @@ namespace Coder.Object2Report.Renders.NPOI
             0xDC, 0xE0, 0xE2
         };
 
+        /// <summary>
+        /// </summary>
+        /// <param name="stream"></param>
         public XssfExcelReader(Stream stream) : base(stream)
         {
             InitDefaultColor();
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="worksheetName"></param>
         public XssfExcelReader(Stream stream, string worksheetName) : base(stream, worksheetName)
         {
             InitDefaultColor();
@@ -37,6 +44,9 @@ namespace Coder.Object2Report.Renders.NPOI
                 = new XSSFColor(DefColor);
         }
 
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
         protected override IWorkbook CreateWorkBook()
         {
             return new XSSFWorkbook();

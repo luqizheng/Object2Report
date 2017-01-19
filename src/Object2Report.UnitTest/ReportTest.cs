@@ -92,8 +92,10 @@ namespace UnitTest
 
 
         [Fact]
+
         public void HssfExcelWrite()
         {
+            
             var render = new HssfExcelRender(File.Open("a.xls", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test");
             var report = BuildReport(render);
 

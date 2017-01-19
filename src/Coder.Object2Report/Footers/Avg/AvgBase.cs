@@ -14,10 +14,10 @@ namespace Coder.Object2Report.Footers.Avg
 
         protected abstract object GetAvgResult(int totalCount, T sumResult);
 
-        public override void Write(Action<ReportCell, object, string> action, ReportCell cell)
+        public override void Write(Action<CellCursor, object, string> action, CellCursor cellCursor)
         {
             var v = GetAvgResult(_total, CellValue);
-            action(cell, v, Format);
+            action(cellCursor, v, Format);
         }
     }
 }

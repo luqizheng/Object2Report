@@ -18,7 +18,7 @@ namespace Coder.Object2Report.Renders
 
         public string TableClass { get; set; }
 
-        public override void OnReportWritting()
+        public override void OnReportWriting()
         {
             if (string.IsNullOrEmpty(TableClass))
                 _writer.Write("<table>");
@@ -26,7 +26,7 @@ namespace Coder.Object2Report.Renders
                 _writer.Write("<table class=\"{0}\">", TableClass);
         }
 
-        public override void OnHeaderWritting()
+        public override void OnHeaderWriting()
         {
             _writer.Write("<thead>");
         }
@@ -36,12 +36,12 @@ namespace Coder.Object2Report.Renders
             _writer.Write("</thead>");
         }
 
-        public override void WriteHeader(ReportCell currentPosition, string title, string format)
+        public override void WriteHeader(CellCursor cellCursor, string title, string format)
         {
-            Write("th", currentPosition, title);
+            Write("th", cellCursor, title);
         }
 
-        public override void WriteBodyCell<T>(ReportCell currentPosition, T v, string format)
+        public override void WriteBodyCell<T>(CellCursor currentPosition, T v, string format)
         {
             var value = string.Format(GetFormatPatten(format), v);
             Write("td", currentPosition, value);
@@ -57,7 +57,7 @@ namespace Coder.Object2Report.Renders
             _writer.Write("</tbody>");
         }
 
-        public override void WriteFooterCell<T>(ReportCell currentPosition, T v, string format)
+        public override void WriteFooterCell<T>(CellCursor currentPosition, T v, string format)
         {
             var value = string.Format(GetFormatPatten(format), v);
             Write("td", currentPosition, value);
@@ -68,7 +68,7 @@ namespace Coder.Object2Report.Renders
             _writer.Write("</table>");
         }
 
-        protected virtual void Write(string tag, ReportCell currentPosition, string v)
+        protected virtual void Write(string tag, CellCursor currentPosition, string v)
         {
             if (currentPosition.Index == 0)
                 _writer.Write("<tr>");

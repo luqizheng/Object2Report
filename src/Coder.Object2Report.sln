@@ -11,6 +11,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Coder.Object2Report.Renders
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Object2Report.UnitTest", "Object2Report.UnitTest\Object2Report.UnitTest.xproj", "{E7D26418-024A-4732-BF31-FE06E5F56F4F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "ConsoleApplication1\ConsoleApplication1.csproj", "{46010482-9C79-460B-BBF4-EEED2C4911FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E7D26418-024A-4732-BF31-FE06E5F56F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7D26418-024A-4732-BF31-FE06E5F56F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7D26418-024A-4732-BF31-FE06E5F56F4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46010482-9C79-460B-BBF4-EEED2C4911FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46010482-9C79-460B-BBF4-EEED2C4911FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46010482-9C79-460B-BBF4-EEED2C4911FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46010482-9C79-460B-BBF4-EEED2C4911FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,8 +8,8 @@
       "url": "https://github.com/luqizheng/Object2Report"
     },
     "projectUrl": "https://github.com/luqizheng/Object2Report",
-    "tags": [ "CSV", "Object buidl cell" ],
-    "summary": "Build csv cell from Model.and support avg sum function to calculate column value"
+    "tags": [ "CSV", "Object buidl cellCursor" ],
+    "summary": "Build csv cellCursor from Model.and support avg sum function to calculate column value"
   },
   "dependencies": {
     "Coder.Object2Report": "1.1.4-*"
@@ -22,7 +22,7 @@
         "NETStandard.Library": "1.6.1"
       }
     },
-    "net45": {
+    "net461": {
       "imports": [ "dnxcore50", "net451", "net461" ],
       "dependencies": {
 

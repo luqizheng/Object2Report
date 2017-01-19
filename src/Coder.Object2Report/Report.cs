@@ -3,12 +3,23 @@ using System.Collections.Generic;
 
 namespace Coder.Object2Report
 {
+    /// <summary>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class Report<T>
     {
-        private ReportCell _currentCell;
+        /// <summary>
+        /// </summary>
+        private CellCursor _currentCellCursor;
 
+        /// <summary>
+        /// </summary>
         private IRender _render;
 
+        /// <summary>
+        /// </summary>
+        /// <param name="render"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public Report(IRender render) : this()
         {
             if (render == null)
@@ -16,39 +27,38 @@ namespace Coder.Object2Report
             _render = render;
         }
 
+        /// <summary>
+        /// </summary>
         public Report()
         {
             Columns = new List<IColumn<T>>();
         }
 
-        internal ReportCell CurrentCell
-        {
-            get
-            {
-                if (_currentCell == null)
-                {
-                    _currentCell = new ReportCell(Columns.Count);
-                }
-                return _currentCell;
-            }
-        }
+        internal CellCursor CellCursor => _currentCellCursor ?? (_currentCellCursor = new CellCursor(Columns.Count));
 
+        /// <summary>
+        /// </summary>
         public IRender Render
         {
             get { return _render; }
             set
             {
                 _render = value;
-                CurrentCell.RowIndex = 0;
+                CellCursor.RowIndex = 0;
             }
         }
 
+        /// <summary>
+        /// </summary>
         public IList<IColumn<T>> Columns { get; }
 
 
+        /// <summary>
+        /// </summary>
+        /// <param name="data"></param>
         public void Write(IEnumerable<T> data)
         {
-            Render.OnReportWritting();
+            Render.OnReportWriting();
             WriteHeader();
             WriteBody(data);
             WriteFooter();
@@ -56,51 +66,58 @@ namespace Coder.Object2Report
         }
 
 
+        /// <summary>
+        /// </summary>
+        /// <param name="data"></param>
         public void WriteBody(IEnumerable<T> data)
         {
             Render.OnBodyBuilding();
             foreach (var item in data)
             {
-                Render.OnRowWritting(CurrentCell, CurrentCell.RowIndex);
+                Render.OnRowWriting(CellCursor, CellCursor.RowIndex);
                 foreach (var col in Columns)
                 {
-                    CurrentCell.Index = col.Index;
-                    col.Write(item, Render.WriteBodyCell, CurrentCell);
+                    CellCursor.Index = col.Index;
+                    col.Write(item, Render.WriteBodyCell, CellCursor);
                 }
-                Render.OnRowWorte();
-                CurrentCell.NextRow();
+                Render.OnRowWrote();
+                CellCursor.NextRow();
             }
             Render.OnBodyBuilt();
         }
 
+        /// <summary>
+        /// </summary>
         public void WriteFooter()
         {
-            Render.OnFooterWritting();
-            Render.OnRowWritting(CurrentCell, CurrentCell.RowIndex);
+            Render.OnFooterWriting();
+            Render.OnRowWriting(CellCursor, CellCursor.RowIndex);
 
             foreach (var col in Columns)
             {
-                CurrentCell.Index = col.Index;
-                col.WriteFooter(Render.WriteFooterCell, CurrentCell);
+                CellCursor.Index = col.Index;
+                col.WriteFooter(Render.WriteFooterCell, CellCursor);
             }
 
-            Render.OnRowWorte();
+            Render.OnRowWrote();
             Render.OnFooterWrote();
-            CurrentCell.NextRow();
+            CellCursor.NextRow();
         }
 
+        /// <summary>
+        /// </summary>
         public void WriteHeader()
         {
-            Render.OnHeaderWritting();
-            Render.OnRowWritting(CurrentCell, CurrentCell.RowIndex);
+            Render.OnHeaderWriting();
+            Render.OnRowWriting(CellCursor, CellCursor.RowIndex);
             foreach (var col in Columns)
             {
-                CurrentCell.Index = col.Index;
-                Render.WriteHeader(CurrentCell, col.Title, col.Format);
+                CellCursor.Index = col.Index;
+                Render.WriteHeader(CellCursor, col.Title, col.Format);
             }
-            Render.OnRowWorte();
+            Render.OnRowWrote();
             Render.OnHeaderWrote();
-            CurrentCell.NextRow();
+            CellCursor.NextRow();
         }
     }
 }

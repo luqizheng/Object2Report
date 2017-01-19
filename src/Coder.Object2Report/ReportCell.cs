@@ -1,8 +1,15 @@
 ﻿namespace Coder.Object2Report
 {
-    public class ReportCell
+    /// <summary>
+    /// 
+    /// </summary>
+    public class CellCursor
     {
-        public ReportCell(int maxCell)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="maxCell"></param>
+        public CellCursor(int maxCell)
         {
             MaxCell = maxCell;
         }
@@ -17,8 +24,13 @@
         /// </summary>
         public int MaxCell { get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public int Index { get; internal set; }
-
+        /// <summary>
+        /// 
+        /// </summary>
 
         internal void NextRow()
         {

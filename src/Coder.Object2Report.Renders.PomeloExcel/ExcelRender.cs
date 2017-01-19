@@ -9,13 +9,22 @@ namespace Coder.Object2Report.Renders.PomeloExcel
         private readonly string _excelpath;
         private readonly ExcelStream _excelStream;
 
+        /// <summary>
+        /// </summary>
+        /// <param name="excelpath"></param>
         public ExcelRender(string excelpath)
         {
+            if (excelpath == null) throw new ArgumentNullException(nameof(excelpath));
             _excelpath = excelpath;
             _excelStream = new ExcelStream();
         }
 
-        public override void WriteHeader(ReportCell currentPosition, string title, string format)
+        /// <summary>
+        /// </summary>
+        /// <param name="cellCursor"></param>
+        /// <param name="title"></param>
+        /// <param name="format"></param>
+        public override void WriteHeader(CellCursor cellCursor, string title, string format)
         {
             using (var x = _excelStream.Create(_excelpath))
             {
@@ -30,12 +39,12 @@ namespace Coder.Object2Report.Renders.PomeloExcel
             }
         }
 
-        public override void WriteBodyCell<T>(ReportCell currentPosition, T v, string format)
+        public override void WriteBodyCell<T>(CellCursor currentPosition, T v, string format)
         {
             throw new NotImplementedException();
         }
 
-        public override void WriteFooterCell<T>(ReportCell currentPosition, T v, string format)
+        public override void WriteFooterCell<T>(CellCursor currentPosition, T v, string format)
         {
             throw new NotImplementedException();
         }
