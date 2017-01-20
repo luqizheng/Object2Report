@@ -36,6 +36,7 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <returns></returns>
         protected override IWorkbook CreateWorkBook()
         {
+
             return new HSSFWorkbook();
         }
         /// <summary>

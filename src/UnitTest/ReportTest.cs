@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using Coder.Object2Report;
 using Coder.Object2Report.Renders;
+using Coder.Object2Report.Renders.NPOI;
+using Object2Report.UnitTest.Helper;
 using UnitTest.Helper;
 using Xunit;
-using Coder.Object2Report.Renders.NPOI;
 
-
-namespace UnitTest
+namespace Object2Report.UnitTest
 {
     public class ReportTest
     {

@@ -115,6 +115,7 @@ namespace Coder.Object2Report.Renders.NPOI
 
             WorkBook.Write(_stream);
             _bodyCellStyle.Clear();
+            _stream.Flush();
         }
 
         /// <summary>
