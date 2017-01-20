@@ -2,7 +2,7 @@
     "title": "Coder.Object2Report.Renders.NPOI",
     "copyright": "MIT",
     "description": "Output excel by NPOI",
-    "version": "1.1.0-*",
+    "version": "1.1.2-*",
     "packOptions": {
         "repository": {
             "url": "https://github.com/luqizheng/Object2Report"
