@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Output excel by NPOI</Description>
+    <Copyright>MIT</Copyright>
+    <AssemblyTitle>Coder.Object2Report.Renders.NPOI</AssemblyTitle>
+    <VersionPrefix>1.1.2</VersionPrefix>
+    <TargetFrameworks>netstandard1.6;net461</TargetFrameworks>
+    <AssemblyName>Coder.Object2Report.Renders.NPOI</AssemblyName>
+    <PackageId>Coder.Object2Report.Renders.NPOI</PackageId>
+    <PackageTags>CSV;Object buidl cellCursor</PackageTags>
+    <PackageProjectUrl>https://github.com/luqizheng/Object2Report</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/luqizheng/Object2Report</RepositoryUrl>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.1</NetStandardImplicitPackageVersion>
+    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'net461' ">$(PackageTargetFallback);dnxcore50;net451;net461</PackageTargetFallback>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Coder.Object2Report\Coder.Object2Report.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
+    <PackageReference Include="Savorboard.NPOI.Core.Ooxml" Version="1.1.3" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <PackageReference Include="NPOI" Version="2.2.1" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>

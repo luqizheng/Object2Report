@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Coder.Object2Report", "Coder.Object2Report\Coder.Object2Report.xproj", "{EF4E6508-9380-4B4F-891B-C3F8B3BF5322}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coder.Object2Report", "Coder.Object2Report\Coder.Object2Report.csproj", "{EF4E6508-9380-4B4F-891B-C3F8B3BF5322}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Coder.Object2Report.Renders.NPOI", "Coder.Object2Report.Renders.NPOI\Coder.Object2Report.Renders.NPOI.xproj", "{0257CDBB-132C-4C2C-90D2-052BACD64735}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coder.Object2Report.Renders.NPOI", "Coder.Object2Report.Renders.NPOI\Coder.Object2Report.Renders.NPOI.csproj", "{0257CDBB-132C-4C2C-90D2-052BACD64735}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Coder.Object2Report.Renders.PomeloExcel", "Coder.Object2Report.Renders.PomeloExcel\Coder.Object2Report.Renders.PomeloExcel.xproj", "{10B29FC9-9682-4C78-B57F-61E3CDC1F546}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coder.Object2Report.Renders.PomeloExcel", "Coder.Object2Report.Renders.PomeloExcel\Coder.Object2Report.Renders.PomeloExcel.csproj", "{10B29FC9-9682-4C78-B57F-61E3CDC1F546}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UnitTest", "UnitTest\UnitTest.xproj", "{2F786C2A-11EB-4BB2-8F6E-1E13C442C8AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTest.csproj", "{2F786C2A-11EB-4BB2-8F6E-1E13C442C8AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
