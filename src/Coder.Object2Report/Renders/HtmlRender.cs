@@ -9,11 +9,7 @@ namespace Coder.Object2Report.Renders
 
         public HtmlRender(StreamWriter writer)
         {
-            if (writer == null)
-            {
-                throw new ArgumentNullException(nameof(writer));
-            }
-            _writer = writer;
+            _writer = writer ?? throw new ArgumentNullException(nameof(writer));
         }
 
         public string TableClass { get; set; }
@@ -74,9 +70,7 @@ namespace Coder.Object2Report.Renders
                 _writer.Write("<tr>");
             _writer.Write("<{1}>{0}</{1}>", v, tag);
             if (currentPosition.Index == currentPosition.MaxCell - 1)
-            {
                 _writer.Write("</tr>");
-            }
         }
 
         private string GetFormatPatten(string format)
@@ -84,9 +78,7 @@ namespace Coder.Object2Report.Renders
             if (string.IsNullOrEmpty(format))
                 return "{0}";
             if (format.Contains("{"))
-            {
                 return format;
-            }
             return "{0:" + format + "}";
         }
     }

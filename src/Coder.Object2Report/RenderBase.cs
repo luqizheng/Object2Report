@@ -22,19 +22,18 @@
         public abstract void WriteHeader(CellCursor cellCursor, string title, string format);
 
         /// <summary>
-        /// 
         /// </summary>
         public virtual void OnHeaderWrote()
         {
         }
+
         /// <summary>
-        /// 
         /// </summary>
         public virtual void OnBodyBuilding()
         {
         }
+
         /// <summary>
-        /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="currentPosition"></param>
@@ -43,7 +42,6 @@
         public abstract void WriteBodyCell<T>(CellCursor currentPosition, T v, string format);
 
         /// <summary>
-        /// 
         /// </summary>
         public virtual void OnBodyBuilt()
         {
@@ -52,8 +50,8 @@
         public virtual void OnFooterWriting()
         {
         }
+
         /// <summary>
-        /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="currentPosition"></param>
@@ -62,25 +60,24 @@
         public abstract void WriteFooterCell<T>(CellCursor currentPosition, T v, string format);
 
         /// <summary>
-        /// 
         /// </summary>
         public virtual void OnFooterWrote()
         {
         }
+
         /// <summary>
-        /// 
         /// </summary>
         public virtual void OnReportWrote()
         {
         }
+
         /// <summary>
-        /// 
         /// </summary>
         public virtual void OnRowWrote()
         {
         }
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="cellCursor"></param>
         /// <param name="rowIndex"></param>

@@ -29,10 +29,11 @@ namespace Coder.Object2Report.Renders
                 throw new ArgumentNullException(nameof(encoding));
             _writer = new StreamWriter(writer, encoding);
         }
-
-        public CsvRender(Stream writer) : this(writer, new UTF8Encoding())
+#if NET45
+        public CsvRender(Stream writer) : this(writer, Encoding.Default)
         {
         }
+#endif
 
         public override void WriteHeader(CellCursor cellCursor, string title, string fromat)
         {
@@ -86,7 +87,7 @@ namespace Coder.Object2Report.Renders
         public override void OnReportWrote()
         {
             _writer.Flush();
-            _writer.Dispose();
+
         }
     }
 }

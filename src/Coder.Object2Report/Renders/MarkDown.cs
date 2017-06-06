@@ -13,10 +13,6 @@ namespace Coder.Object2Report.Renders
 
         private string[] _curRows;
 
-        public MarkDownRender(Stream stream)
-            : this(stream, Encoding.UTF8)
-        {
-        }
 
         public MarkDownRender(Stream writer, Encoding encoding)
         {
@@ -26,7 +22,15 @@ namespace Coder.Object2Report.Renders
                 throw new ArgumentNullException(nameof(encoding));
             _writer = new StreamWriter(writer, encoding);
         }
-
+#if NET45
+        public MarkDownRender(Stream writer) : this(writer, Encoding.Default)
+        {
+        }
+#else
+         public MarkDownRender(Stream writer) : this(writer, Encoding.UTF8)
+        {
+        }
+#endif
         public override void OnRowWriting(CellCursor cellCursor, int rowIndex)
         {
             _curRows = new string[cellCursor.MaxCell];
@@ -85,7 +89,7 @@ namespace Coder.Object2Report.Renders
         public override void OnReportWrote()
         {
             _writer.Flush();
-            _writer.Dispose();
+
         }
 
         private void WriteSpreadTag()

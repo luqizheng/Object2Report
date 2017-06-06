@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Coder.Object2Report;
 using Coder.Object2Report.Renders;
 using Coder.Object2Report.Renders.NPOI;
@@ -26,7 +27,7 @@ namespace Object2Report.UnitTest
 
             report.Column(item => item.UnitPrice).Format("#,0.00");
             report.Column(item => item.Quantity).Format("0").Sum();
-            report.Column("Member Discount", item => item.Discount).Format("0.0%").Content("SubTotal");
+            report.Column("Member Discount", item => item.Discount).Format("0.0%").FootText("SubTotal");
             report.Column("SubTotal", item => item.UnitPrice*item.Quantity).Sum();
             report.Column("Amount Paid", item =>
             {
@@ -41,7 +42,7 @@ namespace Object2Report.UnitTest
         [Fact]
         public void CsvWrite()
         {
-            var render = new CsvRender(File.OpenWrite("a.csv"));
+            var render = new CsvRender(File.OpenWrite("a.csv"),Encoding.GetEncoding("GB2312"));
             var report = BuildReport(render);
             report.Write(_orders);
         }

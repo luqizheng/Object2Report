@@ -14,19 +14,6 @@ namespace Coder.Object2Report
         /// <param name="column"></param>
         /// <param name="footerName"></param>
         /// <returns></returns>
-        [Obsolete("please use FootText")]
-        public static FooterComment<T> Content<T>(this IColumnSetting<T> column, string footerName)
-        {
-            return FootText(column, footerName);
-        }
-
-        /// <summary>
-        ///     Value of Footer
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="column"></param>
-        /// <param name="footerName"></param>
-        /// <returns></returns>
         public static FooterComment<T> FootText<T>(this IColumnSetting<T> column, string footerName)
         {
             if (column == null) throw new ArgumentNullException(nameof(column));
