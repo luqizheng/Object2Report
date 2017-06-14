@@ -4,7 +4,7 @@
     <Description>Build a cellCursor from model</Description>
     <Copyright>MIT</Copyright>
     <AssemblyTitle>Coder.Object2Report</AssemblyTitle>
-    <VersionPrefix>1.1.8</VersionPrefix>
+    <VersionPrefix>1.1.9</VersionPrefix>
     <TargetFrameworks>netstandard1.6;net45</TargetFrameworks>
     <AssemblyName>Coder.Object2Report</AssemblyName>
     <PackageId>Coder.Object2Report</PackageId>

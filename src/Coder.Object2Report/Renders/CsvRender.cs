@@ -71,9 +71,13 @@ namespace Coder.Object2Report.Renders
             if (v == null)
                 return;
             var value = v.ToString();
-            if (v.ToString().IndexOf("\"", StringComparison.Ordinal) != -1)
+            if (value.Contains("\""))
             {
                 value = $"\"{value.Replace("\"", "\"\"")}\"";
+            }
+            if (value.Contains(","))
+            {
+                value = "\"" + value + "\"";
             }
             _curRows[currentPosition.Index] = value;
         }
