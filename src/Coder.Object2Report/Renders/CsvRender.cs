@@ -74,12 +74,16 @@ namespace Coder.Object2Report.Renders
             if (value.Contains("\""))
             {
                 value = $"\"{value.Replace("\"", "\"\"")}\"";
+                _curRows[currentPosition.Index] = value;
+                return;
             }
             if (value.Contains(","))
             {
                 value = "\"" + value + "\"";
+                _curRows[currentPosition.Index] = value;
+                return;
             }
-            _curRows[currentPosition.Index] = value;
+
         }
 
         public override void OnRowWrote()
