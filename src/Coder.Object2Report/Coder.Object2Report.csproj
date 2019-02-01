@@ -5,7 +5,7 @@
     <Copyright>MIT</Copyright>
     <AssemblyTitle>Coder.Object2Report</AssemblyTitle>
     <VersionPrefix>1.1.9</VersionPrefix>
-    <TargetFrameworks>netstandard1.6;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <AssemblyName>Coder.Object2Report</AssemblyName>
     <PackageId>Coder.Object2Report</PackageId>
     <PackageTags>CSV;Object buidl cellCursor;MarkDown;Table</PackageTags>
@@ -32,6 +32,12 @@
     <Reference Include="System.ComponentModel" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.ComponentModel.DataAnnotations.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
