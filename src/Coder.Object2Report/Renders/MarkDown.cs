@@ -27,7 +27,7 @@ namespace Coder.Object2Report.Renders
         {
         }
 #else
-         public MarkDownRender(Stream writer) : this(writer, Encoding.UTF8)
+        public MarkDownRender(Stream writer) : this(writer, Encoding.UTF8)
         {
         }
 #endif
@@ -88,7 +88,8 @@ namespace Coder.Object2Report.Renders
 
         public override void OnReportWrote()
         {
-            _writer.Flush();
+            if (_writer.BaseStream.CanWrite)
+                _writer.Flush();
 
         }
 

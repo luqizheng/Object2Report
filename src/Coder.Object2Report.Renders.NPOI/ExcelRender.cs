@@ -35,14 +35,8 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <exception cref="ArgumentNullException">stream is null</exception>
         protected ExcelRender(Stream stream, string worksheetName = "sheet1")
         {
-            if (stream == null)
-            {
-                throw new ArgumentNullException(nameof(stream));
-            }
-            if (worksheetName == null)
-                throw new ArgumentNullException(nameof(worksheetName));
-            _stream = stream;
-            _workSheetName = worksheetName;
+            _stream = stream ?? throw new ArgumentNullException(nameof(stream));
+            _workSheetName = worksheetName ?? throw new ArgumentNullException(nameof(worksheetName));
         }
         /// <summary>
         /// 
@@ -115,7 +109,8 @@ namespace Coder.Object2Report.Renders.NPOI
 
             WorkBook.Write(_stream);
             _bodyCellStyle.Clear();
-            _stream.Flush();
+            if (_stream.CanWrite)
+                _stream.Flush();
         }
 
         /// <summary>
@@ -126,7 +121,7 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <typeparam name="T"></typeparam>
         public override void WriteBodyCell<T>(CellCursor currentPosition, T v, string format)
         {
-          
+
             var bodyCell = Write(currentPosition, v);
             if (!String.IsNullOrEmpty(format))
             {
@@ -165,7 +160,7 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <typeparam name="T"></typeparam>
         public override void WriteFooterCell<T>(CellCursor currentPosition, T v, string format)
         {
-           
+
             var cell = Write(currentPosition, v);
             cell.CellStyle = String.IsNullOrEmpty(format)
                 ? FooterStyle
@@ -179,7 +174,7 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <param name="format"></param>
         public override void WriteHeader(CellCursor cellCursor, string title, string format)
         {
-          
+
             var cell = Write(cellCursor, title);
 
             if (HeaderStyle != null)

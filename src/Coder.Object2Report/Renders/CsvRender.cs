@@ -94,7 +94,8 @@ namespace Coder.Object2Report.Renders
 
         public override void OnReportWrote()
         {
-            _writer.Flush();
+            if (_writer.BaseStream.CanWrite)
+                _writer.Flush();
 
         }
     }
