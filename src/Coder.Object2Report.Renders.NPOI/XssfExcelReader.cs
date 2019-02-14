@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System;
 
 #if NETSTANDARD1_6
 using Npoi.Core.SS.UserModel;
@@ -31,16 +32,16 @@ namespace Coder.Object2Report.Renders.NPOI
         /// </summary>
         /// <param name="stream"></param>
         /// <param name="worksheetName"></param>
-        public XssfExcelReader(Stream stream, string worksheetName) : base(stream, worksheetName)
+        public XssfExcelReader(Stream stream, string worksheetName, string templateFile) : base(stream, worksheetName, templateFile)
         {
             InitDefaultColor();
         }
 
         private void InitDefaultColor()
         {
-            ((XSSFCellStyle) HeaderStyle).FillForegroundXSSFColor
+            ((XSSFCellStyle)HeaderStyle).FillForegroundXSSFColor
                 = new XSSFColor(DefColor);
-            ((XSSFCellStyle) FooterStyle).FillForegroundXSSFColor
+            ((XSSFCellStyle)FooterStyle).FillForegroundXSSFColor
                 = new XSSFColor(DefColor);
         }
 
@@ -49,12 +50,17 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <returns></returns>
         protected override IWorkbook CreateWorkBook()
         {
+            if (!String.IsNullOrEmpty(this.TemplateExceFile))
+            {
+                return new XSSFWorkbook(TemplateExceFile);
+            }
+
             return new XSSFWorkbook();
         }
 
         protected override void InitWorkbookInfo(IWorkbook book, ExcelInfo info)
         {
-            var workbook = (XSSFWorkbook) book;
+            var workbook = (XSSFWorkbook)book;
             var xmlProps = workbook.GetProperties();
             xmlProps.CoreProperties.Creator = info.Author ?? "";
             xmlProps.CoreProperties.Subject = info.Subject ?? "";

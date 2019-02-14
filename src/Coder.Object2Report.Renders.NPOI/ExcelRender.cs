@@ -5,10 +5,9 @@ using System.IO;
 using Npoi.Core.SS.UserModel;
 
 #else
-using NPOI.HPSF;
 using NPOI.SS.UserModel;
-#endif
 
+#endif
 
 
 namespace Coder.Object2Report.Renders.NPOI
@@ -18,6 +17,7 @@ namespace Coder.Object2Report.Renders.NPOI
         private readonly IDictionary<int, ICellStyle> _bodyCellStyle = new Dictionary<int, ICellStyle>();
         private readonly IDictionary<int, ICellStyle> _footerCellStyle = new Dictionary<int, ICellStyle>();
         private readonly Stream _stream;
+
         private readonly string _workSheetName;
 
         private IRow _currentRow;
@@ -25,29 +25,36 @@ namespace Coder.Object2Report.Renders.NPOI
         private ICellStyle _footerStyle;
         private ICellStyle _headerStyle;
         private ExcelInfo _info;
+        private bool? _skipWriteTitle;
         private IWorkbook _workbook;
         private ISheet _worksheet;
 
         /// <summary>
         /// </summary>
         /// <param name="stream"></param>
+        /// <param name="templateFile"></param>
         /// <param name="worksheetName"></param>
         /// <exception cref="ArgumentNullException">stream is null</exception>
-        protected ExcelRender(Stream stream, string worksheetName = "sheet1")
+        protected ExcelRender(Stream stream, string worksheetName = "sheet1", string templateFile = null)
         {
             _stream = stream ?? throw new ArgumentNullException(nameof(stream));
+            TemplateExceFile = templateFile;
             _workSheetName = worksheetName ?? throw new ArgumentNullException(nameof(worksheetName));
         }
+
+        public string TemplateExceFile { get; }
+
         /// <summary>
-        /// 
         /// </summary>
         public ExcelInfo Info
         {
-            get { return _info ?? (_info = new ExcelInfo()); }
-            set { _info = value; }
+            get => _info ?? (_info = new ExcelInfo());
+            set => _info = value;
         }
+
+  
+
         /// <summary>
-        /// 
         /// </summary>
         public ICellStyle HeaderStyle
         {
@@ -58,11 +65,12 @@ namespace Coder.Object2Report.Renders.NPOI
                     _headerStyle = WorkBook.CreateCellStyle();
                     _headerStyle.FillPattern = FillPattern.SolidForeground;
                 }
+
                 return _headerStyle;
             }
         }
+
         /// <summary>
-        /// 
         /// </summary>
         public ICellStyle FooterStyle
         {
@@ -73,26 +81,38 @@ namespace Coder.Object2Report.Renders.NPOI
                     _footerStyle = WorkBook.CreateCellStyle();
                     _footerStyle.FillPattern = FillPattern.SolidForeground;
                 }
+
                 return _footerStyle;
             }
         }
+
         /// <summary>
-        /// 
         /// </summary>
-        public ISheet WorkSheet => _worksheet ?? (_worksheet = WorkBook.CreateSheet(_workSheetName));
+        public ISheet WorkSheet
+        {
+            get
+            {
+                if (_worksheet == null)
+                {
+                     _worksheet = WorkBook.GetSheet(_workSheetName) ?? WorkBook.CreateSheet(_workSheetName);
+                }
+
+                return _worksheet;
+            }
+        }
+
         /// <summary>
-        /// 
         /// </summary>
         public IWorkbook WorkBook => _workbook ?? (_workbook = CreateWorkBook());
 
         private IDataFormat DataFormat => _dataFormat ?? (_dataFormat = WorkBook.CreateDataFormat());
+
         /// <summary>
-        /// 
         /// </summary>
         /// <returns></returns>
         protected abstract IWorkbook CreateWorkBook();
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="book"></param>
         /// <param name="info"></param>
@@ -102,10 +122,7 @@ namespace Coder.Object2Report.Renders.NPOI
         /// </summary>
         public override void OnReportWrote()
         {
-            if (_info != null)
-            {
-                InitWorkbookInfo(WorkBook, _info);
-            }
+            if (_info != null) InitWorkbookInfo(WorkBook, _info);
 
             WorkBook.Write(_stream);
             _bodyCellStyle.Clear();
@@ -121,12 +138,9 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <typeparam name="T"></typeparam>
         public override void WriteBodyCell<T>(CellCursor currentPosition, T v, string format)
         {
-
             var bodyCell = Write(currentPosition, v);
-            if (!String.IsNullOrEmpty(format))
-            {
+            if (!string.IsNullOrEmpty(format))
                 bodyCell.CellStyle = GetCellStyleFrom(_bodyCellStyle, currentPosition.Index, format);
-            }
         }
 
 
@@ -160,9 +174,8 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <typeparam name="T"></typeparam>
         public override void WriteFooterCell<T>(CellCursor currentPosition, T v, string format)
         {
-
             var cell = Write(currentPosition, v);
-            cell.CellStyle = String.IsNullOrEmpty(format)
+            cell.CellStyle = string.IsNullOrEmpty(format)
                 ? FooterStyle
                 : GetCellStyleFrom(_footerCellStyle, currentPosition.Index, format);
         }
@@ -174,13 +187,10 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <param name="format"></param>
         public override void WriteHeader(CellCursor cellCursor, string title, string format)
         {
-
+      
             var cell = Write(cellCursor, title);
 
-            if (HeaderStyle != null)
-            {
-                cell.CellStyle = HeaderStyle;
-            }
+            if (HeaderStyle != null) cell.CellStyle = HeaderStyle;
         }
 
         /// <summary>
