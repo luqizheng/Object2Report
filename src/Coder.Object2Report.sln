@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coder.Object2Report", "Code
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coder.Object2Report.Renders.NPOI", "Coder.Object2Report.Renders.NPOI\Coder.Object2Report.Renders.NPOI.csproj", "{0257CDBB-132C-4C2C-90D2-052BACD64735}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTest.csproj", "{2F786C2A-11EB-4BB2-8F6E-1E13C442C8AD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{0257CDBB-132C-4C2C-90D2-052BACD64735}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0257CDBB-132C-4C2C-90D2-052BACD64735}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0257CDBB-132C-4C2C-90D2-052BACD64735}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2F786C2A-11EB-4BB2-8F6E-1E13C442C8AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F786C2A-11EB-4BB2-8F6E-1E13C442C8AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F786C2A-11EB-4BB2-8F6E-1E13C442C8AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2F786C2A-11EB-4BB2-8F6E-1E13C442C8AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
