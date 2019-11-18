@@ -17,10 +17,7 @@ namespace Coder.Object2Report
 
         public Column(string title, Func<T, TResult> func)
         {
-            if (title == null)
-                throw new ArgumentNullException(nameof(title));
-
-            Title = title;
+            Title = title ?? throw new ArgumentNullException(nameof(title));
             Func = func;
         }
 
