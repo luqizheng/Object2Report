@@ -14,8 +14,13 @@ namespace Coder.File2Object
         {
             _fileReader = fileReader ?? throw new ArgumentNullException(nameof(fileReader));
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public int TitleRowIndex { get; set; } = 0;
+        /// <summary>
+        /// 
+        /// </summary>
         public IEnumerable<string> Titles { get; set; }
         protected abstract TEntity Create();
 
@@ -41,6 +46,7 @@ namespace Coder.File2Object
 
             return path;
         }
+
         public IList<ImportResultItem<TEntity>> Read(string file, out bool hasError)
         {
             CheckTitles();
@@ -127,6 +133,7 @@ namespace Coder.File2Object
 
         public void Add(Column<TEntity, TCell> column)
         {
+            if (column == null) throw new ArgumentNullException(nameof(column));
             _columns.Add(column);
         }
     }

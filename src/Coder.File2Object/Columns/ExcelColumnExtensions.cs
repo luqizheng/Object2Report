@@ -54,7 +54,7 @@ namespace Coder.File2Object.Columns
             Column<TEntity, TValue>(this File2ObjectManager<TEntity, ICell> manager,
                 Expression<Func<TEntity, TValue>> action, Func<string, TValue> convert)
         {
-            manager.Add(new CustomColumn<TEntity, TValue>(action, convert);
+            manager.Add(new CustomColumn<TEntity, TValue>(action, convert));
             return manager;
         }
     }
