@@ -86,5 +86,27 @@ namespace XUnitFile2Object.Test1
             Assert.True(datas[0].HasError);
         }
 
+        [Fact]
+        public void ReadExcel_String_Require()
+        {
+
+            string fielName = "test1_require_string.xlsx";
+            StudentAchievementImportManager manager = new StudentAchievementImportManager();
+            manager.Titles = new List<string>()
+            {
+                "编码",   "名称",   "成绩",   "注册时间"
+
+            };
+            manager.Column(f => f.Code);
+            manager.Column(f => f.Name, true);
+            manager.Column(f => f.Achievement);
+            manager.Column(f => f.AchievementCreateTime);
+            manager.TryRead(fielName, out var datas, out var resultFile);
+
+
+            Assert.Equal(1, datas[0].CellErrors.Count);
+            Assert.True(datas[0].HasError);
+        }
     }
 }
+

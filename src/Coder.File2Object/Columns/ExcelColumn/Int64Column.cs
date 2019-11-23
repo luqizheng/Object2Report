@@ -27,5 +27,10 @@ namespace Coder.File2Object.Columns.ExcelColumn
                     return result;
             }
         }
+
+        public override string GetErrorMessageIfEmpty()
+        {
+            return $"{ColumnTemplateDefined.ColumnName}必须输入正确的int64类型";
+        }
     }
 }

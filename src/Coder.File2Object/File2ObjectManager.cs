@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Coder.File2Object.Columns;
 
 namespace Coder.File2Object
@@ -22,7 +23,7 @@ namespace Coder.File2Object
 
         /// <summary>
         /// </summary>
-        public IEnumerable<string> Titles { get; set; }
+        public IList<string> Titles { get; set; }
 
         protected abstract TEntity Create();
 
@@ -65,6 +66,16 @@ namespace Coder.File2Object
             }
         }
 
+        private string GetColumnName(int index)
+        {
+            if (Titles.Any())
+            {
+                return Titles[index];
+            }
+
+            return "列" + (index + 1);
+        }
+        private static Regex tempalteRegex = new Regex("\\[[\\w\\d]*?\\]");
         private IList<ImportResultItem<TEntity>> ImportResultItems(out bool hasError)
         {
             var result = new List<ImportResultItem<TEntity>>();
@@ -75,22 +86,46 @@ namespace Coder.File2Object
             var entity = resultItem.Data = Create();
 
             var emptyCount = 0; //单emptyCount 大于 column.length值的时候，表明这一样为空。
-            while (_fileReader.TryRead(rowIndex, cellIndex, out var cell))
+
+   
+
+
+            while (_fileReader.TryRead(rowIndex, cellIndex, out var cell) || emptyCount <= _columns.Count)
             {
+                Column<TEntity, TCell> column = _columns[cellIndex];
                 if (cell == null)
                 {
                     emptyCount++;
                     cellIndex++;
+
+                    if (column.IsRequire)
+                    {
+                        result.Add(resultItem);
+                        resultItem.AddError(cellIndex, GetColumnName(cellIndex));
+                    }
                     if (emptyCount != _columns.Count)
                         continue;
                     break;
                 }
 
                 emptyCount = 0;
-                var column = _columns[cellIndex];
+
 
                 if (!column.TrySetValue(entity, cell, out var errormessage))
+                {
+                    var index = cellIndex;
+                    tempalteRegex.Replace(errormessage, f =>
+                    {
+                        switch (f.Value)
+                        {
+                            case ColumnTemplateDefined.ColumnName:
+                                return GetColumnName(index);
+                        }
+
+                        return f.Value;
+                    });
                     resultItem.AddError(cellIndex, errormessage);
+                }
 
 
                 cellIndex++;

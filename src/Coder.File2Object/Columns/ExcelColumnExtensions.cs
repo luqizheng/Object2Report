@@ -8,9 +8,9 @@ namespace Coder.File2Object.Columns
     public static class ExcelColumnExtensions
     {
         public static File2ObjectManager<TEntity, ICell>
-            Column<TEntity>(this File2ObjectManager<TEntity, ICell> manager, Expression<Func<TEntity, string>> action)
+            Column<TEntity>(this File2ObjectManager<TEntity, ICell> manager, Expression<Func<TEntity, string>> action, bool isRequire = false)
         {
-            manager.Add(new StringColumn<TEntity>(action));
+            manager.Add(new StringColumn<TEntity>(action, isRequire));
             return manager;
         }
 

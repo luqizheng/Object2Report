@@ -6,7 +6,7 @@ namespace Coder.File2Object.Columns.ExcelColumn
 {
     public class StringColumn<TEntity> : Column<TEntity, ICell, string>
     {
-        public StringColumn(Expression<Func<TEntity, string>> action) : base(action)
+        public StringColumn(Expression<Func<TEntity, string>> action, bool isRequire) : base(action, isRequire)
         {
         }
 
@@ -14,9 +14,13 @@ namespace Coder.File2Object.Columns.ExcelColumn
         {
             errorMessage = null;
             cell.SetCellType(CellType.String);
-            val = cell.StringCellValue;
+            val = cell.StringCellValue.Trim();
             return true;
         }
 
+        public override string GetErrorMessageIfEmpty()
+        {
+            return $"{ColumnTemplateDefined.ColumnName}必须输入值";
+        }
     }
 }
