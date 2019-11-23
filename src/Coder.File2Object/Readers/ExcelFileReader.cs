@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.IO;
 using System.Linq.Expressions;
 using NPOI.HSSF.UserModel;
@@ -53,12 +53,10 @@ namespace Coder.File2Object.Readers
         {
             if (file is null) throw new ArgumentNullException(nameof(file));
 
-            using (var writeStream = File.Open(file, FileMode.Create, FileAccess.ReadWrite))
-            {
-                _workbook.Write(writeStream);
-                writeStream.Flush();
-                writeStream.Close();
-            }
+            using var writeStream = File.Open(file, FileMode.Create, FileAccess.ReadWrite);
+            _workbook.Write(writeStream);
+            writeStream.Flush();
+            writeStream.Close();
         }
 
         public void WriteTo(int rowIndex, int cellIndex, string value)

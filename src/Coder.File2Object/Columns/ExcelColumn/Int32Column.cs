@@ -10,16 +10,25 @@ namespace Coder.File2Object.Columns.ExcelColumn
         {
         }
 
-        protected override int Convert(ICell cell)
+        protected override bool TryConvert(ICell cell, out int val, out string errorMessage)
         {
+
+            errorMessage = null;
+            val = 0;
             switch (cell.CellType)
             {
                 case CellType.Numeric:
-                    return (int) cell.NumericCellValue;
-
+                    val = (int)cell.NumericCellValue;
+                    return true;
                 default:
                     cell.SetCellType(CellType.String);
-                    return System.Convert.ToInt32(cell.StringCellValue);
+                    var result = int.TryParse(cell.StringCellValue, out val);
+                    if (result == false)
+                    {
+                        errorMessage = $"无法把{cell.StringCellValue}转化为有效的Int32类型";
+                    }
+
+                    return result;
             }
         }
     }

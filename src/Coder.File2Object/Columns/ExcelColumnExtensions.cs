@@ -52,7 +52,7 @@ namespace Coder.File2Object.Columns
 
         public static File2ObjectManager<TEntity, ICell>
             Column<TEntity, TValue>(this File2ObjectManager<TEntity, ICell> manager,
-                Expression<Func<TEntity, TValue>> action, Func<string, TValue> convert)
+                Expression<Func<TEntity, TValue>> action, Func<string, Tuple<TValue, string, bool>> convert)
         {
             manager.Add(new CustomColumn<TEntity, TValue>(action, convert));
             return manager;

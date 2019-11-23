@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Coder.File2Object.Columns;
 
 namespace Coder.File2Object
@@ -14,14 +15,15 @@ namespace Coder.File2Object
         {
             _fileReader = fileReader ?? throw new ArgumentNullException(nameof(fileReader));
         }
+
         /// <summary>
-        /// 
         /// </summary>
         public int TitleRowIndex { get; set; } = 0;
+
         /// <summary>
-        /// 
         /// </summary>
         public IEnumerable<string> Titles { get; set; }
+
         protected abstract TEntity Create();
 
         public bool TryRead(string file, out IList<ImportResultItem<TEntity>> data, out string resultFile)
@@ -49,9 +51,18 @@ namespace Coder.File2Object
 
         public IList<ImportResultItem<TEntity>> Read(string file, out bool hasError)
         {
+            _fileReader.Open(file);
             CheckTitles();
-            var result = ImportResultItems(out hasError);
-            return result;
+
+            try
+            {
+                var result = ImportResultItems(out hasError);
+                return result;
+            }
+            finally
+            {
+                _fileReader.Close();
+            }
         }
 
         private IList<ImportResultItem<TEntity>> ImportResultItems(out bool hasError)
@@ -62,7 +73,7 @@ namespace Coder.File2Object
             var cellIndex = 0;
             var resultItem = new ImportResultItem<TEntity>();
             var entity = resultItem.Data = Create();
-            result.Add(resultItem);
+
             var emptyCount = 0; //单emptyCount 大于 column.length值的时候，表明这一样为空。
             while (_fileReader.TryRead(rowIndex, cellIndex, out var cell))
             {
@@ -77,25 +88,19 @@ namespace Coder.File2Object
 
                 emptyCount = 0;
                 var column = _columns[cellIndex];
-                try
-                {
-                    column.SetValue(entity, cell);
-                }
-                catch (ConvertException ex)
-                {
-                    resultItem.AddError(cellIndex, ex.Message);
-                    hasError = true;
-                }
+
+                if (!column.TrySetValue(entity, cell, out var errormessage))
+                    resultItem.AddError(cellIndex, errormessage);
+
 
                 cellIndex++;
-
-
                 if (cellIndex >= _columns.Count)
                 {
+                    result.Add(resultItem);
                     if (resultItem.HasError) _fileReader.WriteTo(rowIndex, _columns.Count, resultItem.GetErrors());
                     resultItem = new ImportResultItem<TEntity>();
                     entity = resultItem.Data = Create();
-                    result.Add(resultItem);
+
                     rowIndex++;
                     cellIndex = 0;
                 }
@@ -107,6 +112,7 @@ namespace Coder.File2Object
 
         private void CheckTitles()
         {
+            if (!Titles.Any()) return;
             var titles = ReadTitles();
             var index = 0;
             foreach (var settingTitle in Titles)

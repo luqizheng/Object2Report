@@ -10,18 +10,32 @@ namespace Coder.File2Object.Columns.ExcelColumn
         {
         }
 
-        protected override DateTimeOffset Convert(ICell cell)
+        protected override bool TryConvert(ICell cell, out DateTimeOffset val, out string errorMessage)
         {
+            errorMessage = null;
+            val = default(DateTimeOffset);
             switch (cell.CellType)
             {
                 case CellType.Numeric:
-                    if (DateUtil.IsCellDateFormatted(cell)) return cell.DateCellValue;
+                    if (DateUtil.IsCellDateFormatted(cell))
+                    {
+                        val = cell.DateCellValue;
+                        return true;
+                    }
 
                     break;
             }
 
             cell.SetCellType(CellType.String);
-            throw new ConvertException(cell.StringCellValue, typeof(DateTime));
+            var valStr = cell.StringCellValue;
+            var result = DateTimeOffset.TryParse(valStr, out val);
+
+            if (result == false)
+            {
+                errorMessage = $"无法把{valStr}转化为有效的日期类型";
+            }
+
+            return result;
         }
     }
 }

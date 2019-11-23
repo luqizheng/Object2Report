@@ -10,27 +10,13 @@ namespace Coder.File2Object.Columns.ExcelColumn
         {
         }
 
-        protected override string Convert(ICell cell)
+        protected override bool TryConvert(ICell cell, out string val, out string errorMessage)
         {
+            errorMessage = null;
             cell.SetCellType(CellType.String);
-            return cell.StringCellValue;
-        }
-    }
-
-    public class CustomColumn<TEntity, TValue> : Column<TEntity, ICell, TValue>
-    {
-        private readonly Func<string, TValue> _converTo;
-
-        public CustomColumn(Expression<Func<TEntity, TValue>> action, Func<string, TValue> converTo) : base(action)
-        {
-            _converTo = converTo;
+            val = cell.StringCellValue;
+            return true;
         }
 
-        protected override TValue Convert(ICell cell)
-        {
-            cell.SetCellType(CellType.String);
-            var str = cell.StringCellValue;
-            return _converTo(str);
-        }
     }
 }

@@ -13,17 +13,20 @@ namespace Coder.File2Object.Columns
         private Expression<Func<TEntity, TValue>> Action { get; }
 
 
-        public override void SetValue(TEntity entity, TCell cell)
+        public override bool TrySetValue(TEntity entity, TCell cell, out string errorMessage1)
         {
-            var val = Convert(cell);
-            entity.SetPropertyValue(Action, val);
+            var result = TryConvert(cell, out var val, out errorMessage1);
+            if (result)
+                entity.SetPropertyValue(Action, val);
+
+            return result;
         }
 
-        protected abstract TValue Convert(TCell cell);
+        protected abstract bool TryConvert(TCell cell, out TValue val, out string errorMessage);
     }
 
     public abstract class Column<TEntity, TCell>
     {
-        public abstract void SetValue(TEntity entity, TCell cell);
+        public abstract bool TrySetValue(TEntity entity, TCell cell, out string errorMessage);
     }
 }

@@ -10,16 +10,25 @@ namespace Coder.File2Object.Columns.ExcelColumn
         {
         }
 
-        protected override decimal Convert(ICell cell)
+        protected override bool TryConvert(ICell cell, out decimal val, out string errorMessage)
         {
+
+            errorMessage = null;
+            val = 0;
             switch (cell.CellType)
             {
                 case CellType.Numeric:
-                    return (decimal) cell.NumericCellValue;
-
+                    val = (decimal)cell.NumericCellValue;
+                    return true;
                 default:
                     cell.SetCellType(CellType.String);
-                    return System.Convert.ToDecimal(cell.StringCellValue);
+                    var result = Decimal.TryParse(cell.StringCellValue, out val);
+                    if (result == false)
+                    {
+                        errorMessage = $"无法把{cell.StringCellValue}转化为有效的数值类型";
+                    }
+
+                    return result;
             }
         }
     }
