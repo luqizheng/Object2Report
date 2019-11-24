@@ -9,6 +9,7 @@ namespace Coder.File2Object
 {
     public abstract class File2ObjectManager<TEntity, TCell>
     {
+        private static readonly Regex TempalteRegex = new Regex("\\[[\\w\\d]*?\\]");
         private readonly IList<Column<TEntity, TCell>> _columns = new List<Column<TEntity, TCell>>();
         private readonly IFileReader<TCell> _fileReader;
 
@@ -68,81 +69,88 @@ namespace Coder.File2Object
 
         private string GetColumnName(int index)
         {
-            if (Titles.Any())
-            {
-                return Titles[index];
-            }
+            if (Titles.Any()) return Titles[index];
 
             return "列" + (index + 1);
         }
-        private static Regex tempalteRegex = new Regex("\\[[\\w\\d]*?\\]");
+
         private IList<ImportResultItem<TEntity>> ImportResultItems(out bool hasError)
         {
             var result = new List<ImportResultItem<TEntity>>();
             var rowIndex = TitleRowIndex + 1;
             hasError = false;
-            var cellIndex = 0;
-            var resultItem = new ImportResultItem<TEntity>();
-            var entity = resultItem.Data = Create();
 
-            var emptyCount = 0; //单emptyCount 大于 column.length值的时候，表明这一样为空。
-
-   
-
-
-            while (_fileReader.TryRead(rowIndex, cellIndex, out var cell) || emptyCount <= _columns.Count)
+            while (TryGetRows(rowIndex, out var cells))
             {
-                Column<TEntity, TCell> column = _columns[cellIndex];
-                if (cell == null)
+                var resultItem = new ImportResultItem<TEntity> {Row = rowIndex};
+                var entity = resultItem.Data = Create();
+                result.Add(resultItem);
+
+                for (var index = 0; index < cells.Count; index++)
                 {
-                    emptyCount++;
-                    cellIndex++;
-
-                    if (column.IsRequire)
+                    var cell = cells[index];
+                    var column = _columns[index];
+                    if (cell == null)
                     {
-                        result.Add(resultItem);
-                        resultItem.AddError(cellIndex, GetColumnName(cellIndex));
-                    }
-                    if (emptyCount != _columns.Count)
-                        continue;
-                    break;
-                }
+                        //为空的时候。
 
-                emptyCount = 0;
-
-
-                if (!column.TrySetValue(entity, cell, out var errormessage))
-                {
-                    var index = cellIndex;
-                    tempalteRegex.Replace(errormessage, f =>
-                    {
-                        switch (f.Value)
+                        if (column.IsRequire)
                         {
-                            case ColumnTemplateDefined.ColumnName:
-                                return GetColumnName(index);
+                            var errorMessage = BuildErrorMessageByTemplate(column.GetErrorMessageIfEmpty(), index);
+                            resultItem.AddError(index, errorMessage);
                         }
-
-                        return f.Value;
-                    });
-                    resultItem.AddError(cellIndex, errormessage);
+                        else
+                        {
+                            column.SetEmptyOrNull(entity);
+                        }
+                    }
+                    else
+                    {
+                        if (!column.TrySetValue(entity, cell, out var errorMessage))
+                        {
+                            errorMessage = BuildErrorMessageByTemplate(errorMessage, index);
+                            resultItem.AddError(index, errorMessage);
+                        }
+                    }
                 }
 
-
-                cellIndex++;
-                if (cellIndex >= _columns.Count)
-                {
-                    result.Add(resultItem);
-                    if (resultItem.HasError) _fileReader.WriteTo(rowIndex, _columns.Count, resultItem.GetErrors());
-                    resultItem = new ImportResultItem<TEntity>();
-                    entity = resultItem.Data = Create();
-
-                    rowIndex++;
-                    cellIndex = 0;
-                }
+                rowIndex++;
             }
 
-
             return result;
+        }
+
+        private string BuildErrorMessageByTemplate(string errorMessage, int cellIndex)
+        {
+            return TempalteRegex.Replace(errorMessage, f =>
+            {
+                switch (f.Value)
+                {
+                    case ColumnTemplateDefined.ColumnName:
+                        return GetColumnName(cellIndex);
+                }
+
+                return f.Value;
+            });
+            ;
+        }
+
+        private bool TryGetRows(int rowIndex, out IList<TCell> result)
+        {
+            result = new List<TCell>(_columns.Count);
+            var emptyRow = true;
+            for (var cellIndex = 0; cellIndex < _columns.Count; cellIndex++)
+                if (_fileReader.TryRead(rowIndex, cellIndex, out var cell))
+                {
+                    result.Add(cell);
+                    emptyRow = false;
+                }
+                else
+                {
+                    result.Add(default);
+                }
+
+            return !emptyRow;
         }
 
         private void CheckTitles()

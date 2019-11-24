@@ -21,17 +21,17 @@ namespace Coder.File2Object.Columns
 
         public override bool TrySetValue(TEntity entity, TCell cell, out string errorMessage1)
         {
-            if (IsRequire)
-            {
-                errorMessage1 = GetErrorMessageIfEmpty();
-                return false;
-            }
-
             var result = TryConvert(cell, out var val, out errorMessage1);
             if (result)
                 entity.SetPropertyValue(Action, val);
 
             return result;
+        }
+
+        public override void SetEmptyOrNull(TEntity entity)
+        {
+            var obj = default(TValue);
+            entity.SetPropertyValue(Action, obj);
         }
 
         protected abstract bool TryConvert(TCell cell, out TValue val, out string errorMessage);
@@ -41,6 +41,7 @@ namespace Coder.File2Object.Columns
     {
         public bool IsRequire { get; set; }
         public abstract bool TrySetValue(TEntity entity, TCell cell, out string errorMessage);
+        public abstract void SetEmptyOrNull(TEntity entity);
         public abstract string GetErrorMessageIfEmpty();
     }
 }

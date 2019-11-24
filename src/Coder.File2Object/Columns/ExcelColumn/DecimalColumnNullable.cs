@@ -4,26 +4,28 @@ using NPOI.SS.UserModel;
 
 namespace Coder.File2Object.Columns.ExcelColumn
 {
-    public class DecimalColumn<TEntity> : Column<TEntity, ICell, decimal>
+    public class DecimalColumnNullable<TEntity> : Column<TEntity, ICell, decimal?>
     {
-        public DecimalColumn(Expression<Func<TEntity, decimal>> action, bool isRequire = true) : base(action, isRequire)
+        public DecimalColumnNullable(Expression<Func<TEntity, decimal?>> action, bool isRequire = false) : base(action, isRequire)
         {
         }
 
-        protected override bool TryConvert(ICell cell, out decimal val, out string errorMessage)
+        protected override bool TryConvert(ICell cell, out decimal? valReturn, out string errorMessage)
         {
             errorMessage = null;
-            val = 0;
+
             switch (cell.CellType)
             {
                 case CellType.Numeric:
-                    val = (decimal)cell.NumericCellValue;
+                    valReturn = (decimal)cell.NumericCellValue;
                     return true;
                 default:
+                    decimal val = 0;
                     cell.SetCellType(CellType.String);
                     var result = decimal.TryParse(cell.StringCellValue, out val);
                     if (result == false) errorMessage = $"无法把{cell.StringCellValue}转化为有效的数值类型";
 
+                    valReturn = val;
                     return result;
             }
         }

@@ -4,17 +4,17 @@ using NPOI.SS.UserModel;
 
 namespace Coder.File2Object.Columns.ExcelColumn
 {
-    public class Int32Column<TEntity> : Column<TEntity, ICell, int>
+    public class Int32ColumnNullable<TEntity> : Column<TEntity, ICell, int?>
     {
-        public Int32Column(Expression<Func<TEntity, int>> action,bool isRequire=true) : base(action,isRequire)
+        public Int32ColumnNullable(Expression<Func<TEntity, int?>> action, bool isRequire = false) : base(action, isRequire)
         {
         }
 
-        protected override bool TryConvert(ICell cell, out int val, out string errorMessage)
+        protected override bool TryConvert(ICell cell, out int? val, out string errorMessage)
         {
 
             errorMessage = null;
-            val = 0;
+
             switch (cell.CellType)
             {
                 case CellType.Numeric:
@@ -22,7 +22,8 @@ namespace Coder.File2Object.Columns.ExcelColumn
                     return true;
                 default:
                     cell.SetCellType(CellType.String);
-                    var result = int.TryParse(cell.StringCellValue, out val);
+                    var result = int.TryParse(cell.StringCellValue, out var intValu);
+                    val = intValu;
                     if (result == false)
                     {
                         errorMessage = $"无法把{cell.StringCellValue}转化为有效的Int32类型";
