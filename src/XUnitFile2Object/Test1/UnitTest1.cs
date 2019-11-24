@@ -11,7 +11,7 @@ namespace XUnitFile2Object.Test1
     {
         public int Code { get; set; }
         public string Name { get; set; }
-        public int Achievement { get; set; }
+        public decimal Achievement { get; set; }
 
         public DateTime AchievementCreateTime { get; set; }
     }

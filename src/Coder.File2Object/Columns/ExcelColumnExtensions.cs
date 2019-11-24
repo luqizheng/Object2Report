@@ -106,7 +106,7 @@ namespace Coder.File2Object.Columns
 
 
         public static File2ObjectManager<TEntity, ICell>
-            Column<TEntity, TEnum>(this File2ObjectManager<TEntity, ICell> manager,
+            ColumnEnum<TEntity, TEnum>(this File2ObjectManager<TEntity, ICell> manager,
                 Expression<Func<TEntity, TEnum>> action, bool isRequire = true, bool fromDisplayAttribute = false)
             where TEnum : struct
         {
@@ -115,7 +115,7 @@ namespace Coder.File2Object.Columns
         }
 
         public static File2ObjectManager<TEntity, ICell>
-            Column<TEntity, TEnum>(this File2ObjectManager<TEntity, ICell> manager,
+            ColumnEnum<TEntity, TEnum>(this File2ObjectManager<TEntity, ICell> manager,
                 Expression<Func<TEntity, TEnum?>> action, bool isRequire = false, bool fromDisplayAttribute = false)
             where TEnum : struct
         {
