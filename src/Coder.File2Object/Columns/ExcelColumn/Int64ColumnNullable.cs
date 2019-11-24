@@ -6,14 +6,14 @@ namespace Coder.File2Object.Columns.ExcelColumn
 {
     public class Int64ColumnNullable<TEntity> : Column<TEntity, ICell, long?>
     {
-        public Int64ColumnNullable(Expression<Func<TEntity, long?>> action, bool isRequire = false) : base(action, isRequire)
+        public Int64ColumnNullable(string name, Expression<Func<TEntity, long?>> action, bool isRequire = false) : base(name, action, isRequire)
         {
         }
 
         protected override bool TryConvert(ICell cell, out long? val, out string errorMessage)
         {
             errorMessage = null;
-            val = 0;
+            val = null;
             switch (cell.CellType)
             {
                 case CellType.Numeric:
@@ -33,5 +33,7 @@ namespace Coder.File2Object.Columns.ExcelColumn
         {
             return $"{ColumnTemplateDefined.ColumnName}必须输入正确的int64类型";
         }
+
+      
     }
 }

@@ -6,7 +6,7 @@ namespace Coder.File2Object.Columns.ExcelColumn
 {
     public class Int32ColumnNullable<TEntity> : Column<TEntity, ICell, int?>
     {
-        public Int32ColumnNullable(Expression<Func<TEntity, int?>> action, bool isRequire = false) : base(action, isRequire)
+        public Int32ColumnNullable(string name,Expression<Func<TEntity, int?>> action, bool isRequire = false) : base(name, action, isRequire)
         {
         }
 

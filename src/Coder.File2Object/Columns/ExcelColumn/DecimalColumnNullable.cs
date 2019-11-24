@@ -6,7 +6,7 @@ namespace Coder.File2Object.Columns.ExcelColumn
 {
     public class DecimalColumnNullable<TEntity> : Column<TEntity, ICell, decimal?>
     {
-        public DecimalColumnNullable(Expression<Func<TEntity, decimal?>> action, bool isRequire = false) : base(action, isRequire)
+        public DecimalColumnNullable(string name,Expression<Func<TEntity, decimal?>> action, bool isRequire = false) : base(name, action, isRequire)
         {
         }
 

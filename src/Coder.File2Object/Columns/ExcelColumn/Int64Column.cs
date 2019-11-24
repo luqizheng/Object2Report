@@ -6,7 +6,7 @@ namespace Coder.File2Object.Columns.ExcelColumn
 {
     public class Int64Column<TEntity> : Column<TEntity, ICell, long>
     {
-        public Int64Column(Expression<Func<TEntity, long>> action, bool isRequire = true) : base(action, isRequire)
+        public Int64Column(string name,Expression<Func<TEntity, long>> action, bool isRequire = true) : base(name, action, isRequire)
         {
         }
 

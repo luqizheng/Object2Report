@@ -31,14 +31,11 @@ namespace XUnitFile2Object.Test1
         {
             var fielName = "test1.xlsx";
             var manager = new StudentAchievementImportManager();
-            manager.Titles = new List<string>
-            {
-                "编码", "名称", "成绩", "注册时间"
-            };
-            manager.Column(f => f.Code);
-            manager.Column(f => f.Name);
-            manager.Column(f => f.Achievement);
-            manager.Column(f => f.AchievementCreateTime);
+
+            manager.Column("编码", f => f.Code);
+            manager.Column("名称", f => f.Name);
+            manager.Column("成绩", f => f.Achievement);
+            manager.Column("注册时间", f => f.AchievementCreateTime);
             manager.TryRead(fielName, out var datas, out var resultFile);
 
 
@@ -56,14 +53,11 @@ namespace XUnitFile2Object.Test1
         {
             var fielName = "test_dataType_not_match.xlsx";
             var manager = new StudentAchievementImportManager();
-            manager.Titles = new List<string>
-            {
-                "编码", "名称", "成绩", "注册时间"
-            };
-            manager.Column(f => f.Code);
-            manager.Column(f => f.Name);
-            manager.Column(f => f.Achievement);
-            manager.Column(f => f.AchievementCreateTime);
+
+            manager.Column("编码", f => f.Code);
+            manager.Column("名称", f => f.Name);
+            manager.Column("成绩", f => f.Achievement);
+            manager.Column("注册时间", f => f.AchievementCreateTime);
             manager.TryRead(fielName, out var datas, out var resultFile);
 
 
@@ -78,14 +72,11 @@ namespace XUnitFile2Object.Test1
         {
             var fielName = "test1_require_string.xlsx";
             var manager = new StudentAchievementImportManager();
-            manager.Titles = new List<string>
-            {
-                "编码", "名称", "成绩", "注册时间"
-            };
-            manager.Column(f => f.Code);
-            manager.Column(f => f.Name, true);
-            manager.Column(f => f.Achievement);
-            manager.Column(f => f.AchievementCreateTime);
+
+            manager.Column("编码", f => f.Code);
+            manager.Column("名称", f => f.Name, isRequire: true);
+            manager.Column("成绩", f => f.Achievement);
+            manager.Column("注册时间", f => f.AchievementCreateTime);
             manager.TryRead(fielName, out var datas, out var resultFile);
 
 
@@ -98,14 +89,10 @@ namespace XUnitFile2Object.Test1
         {
             var fielName = "test_empty.xlsx";
             var manager = new StudentAchievementImportManager();
-            manager.Titles = new List<string>
-            {
-                "编码", "名称", "成绩", "注册时间"
-            };
-            manager.Column(f => f.Code);
-            manager.Column(f => f.Name);
-            manager.Column(f => f.Achievement);
-            manager.Column(f => f.AchievementCreateTime);
+            manager.Column("编码", f => f.Code);
+            manager.Column("名称", f => f.Name);
+            manager.Column("成绩", f => f.Achievement);
+            manager.Column("注册时间", f => f.AchievementCreateTime);
             manager.TryRead(fielName, out var datas, out var resultFile);
 
             Assert.Equal(0, datas.Count);

@@ -10,10 +10,12 @@ namespace Coder.File2Object.Columns
 
     public abstract class Column<TEntity, TCell, TValue> : Column<TEntity, TCell>
     {
-        protected Column(Expression<Func<TEntity, TValue>> action, bool isRequire = false)
+        public override string Name { get; protected set; }
+        protected Column(string name, Expression<Func<TEntity, TValue>> action, bool isRequire = false)
         {
             Action = action;
             IsRequire = isRequire;
+            Name = name;
         }
 
         private Expression<Func<TEntity, TValue>> Action { get; }
@@ -40,6 +42,8 @@ namespace Coder.File2Object.Columns
     public abstract class Column<TEntity, TCell>
     {
         public bool IsRequire { get; set; }
+        public abstract string Name { get; protected set; }
+
         public abstract bool TrySetValue(TEntity entity, TCell cell, out string errorMessage);
         public abstract void SetEmptyOrNull(TEntity entity);
         public abstract string GetErrorMessageIfEmpty();

@@ -9,8 +9,8 @@ namespace Coder.File2Object.Columns.ExcelColumn
     {
         private readonly bool _fromDisplayAttribute;
 
-        public EnumColumnNullable(Expression<Func<TEntity, TEnum?>>
-            action, bool isRequire = false, bool fromDisplayAttribute = false) : base(action, isRequire)
+        public EnumColumnNullable(string name,Expression<Func<TEntity, TEnum?>>
+            action, bool isRequire = false, bool fromDisplayAttribute = false) : base(name, action, isRequire)
         {
             _fromDisplayAttribute = fromDisplayAttribute;
         }

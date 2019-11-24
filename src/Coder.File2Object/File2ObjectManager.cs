@@ -24,7 +24,10 @@ namespace Coder.File2Object
 
         /// <summary>
         /// </summary>
-        public IList<string> Titles { get; set; }
+        public IEnumerable<string> Titles
+        {
+            get { return _columns.Select(f => f.Name); }
+        }
 
         protected abstract TEntity Create();
 
@@ -67,12 +70,6 @@ namespace Coder.File2Object
             }
         }
 
-        private string GetColumnName(int index)
-        {
-            if (Titles.Any()) return Titles[index];
-
-            return "列" + (index + 1);
-        }
 
         private IList<ImportResultItem<TEntity>> ImportResultItems(out bool hasError)
         {
@@ -96,7 +93,7 @@ namespace Coder.File2Object
 
                         if (column.IsRequire)
                         {
-                            var errorMessage = BuildErrorMessageByTemplate(column.GetErrorMessageIfEmpty(), index);
+                            var errorMessage = BuildErrorMessageByTemplate(column.GetErrorMessageIfEmpty(), column);
                             resultItem.AddError(index, errorMessage);
                         }
                         else
@@ -108,7 +105,7 @@ namespace Coder.File2Object
                     {
                         if (!column.TrySetValue(entity, cell, out var errorMessage))
                         {
-                            errorMessage = BuildErrorMessageByTemplate(errorMessage, index);
+                            errorMessage = BuildErrorMessageByTemplate(errorMessage, column);
                             resultItem.AddError(index, errorMessage);
                         }
                     }
@@ -120,14 +117,14 @@ namespace Coder.File2Object
             return result;
         }
 
-        private string BuildErrorMessageByTemplate(string errorMessage, int cellIndex)
+        private string BuildErrorMessageByTemplate(string errorMessage, Column<TEntity, TCell> column)
         {
             return TempalteRegex.Replace(errorMessage, f =>
             {
                 switch (f.Value)
                 {
                     case ColumnTemplateDefined.ColumnName:
-                        return GetColumnName(cellIndex);
+                        return column.Name;
                 }
 
                 return f.Value;
@@ -155,7 +152,7 @@ namespace Coder.File2Object
 
         private void CheckTitles()
         {
-            if (!Titles.Any()) return;
+           
             var titles = ReadTitles();
             var index = 0;
             foreach (var settingTitle in Titles)

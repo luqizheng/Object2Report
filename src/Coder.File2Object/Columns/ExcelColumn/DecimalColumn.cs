@@ -6,7 +6,7 @@ namespace Coder.File2Object.Columns.ExcelColumn
 {
     public class DecimalColumn<TEntity> : Column<TEntity, ICell, decimal>
     {
-        public DecimalColumn(Expression<Func<TEntity, decimal>> action, bool isRequire = true) : base(action, isRequire)
+        public DecimalColumn(string name,Expression<Func<TEntity, decimal>> action, bool isRequire = true) : base(name, action, isRequire)
         {
         }
 

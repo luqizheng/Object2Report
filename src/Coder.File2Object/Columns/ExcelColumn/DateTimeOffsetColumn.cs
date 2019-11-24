@@ -6,7 +6,7 @@ namespace Coder.File2Object.Columns.ExcelColumn
 {
     public class DateTimeOffsetColumn<TEntity> : Column<TEntity, ICell, DateTimeOffset>
     {
-        public DateTimeOffsetColumn(Expression<Func<TEntity, DateTimeOffset>> action,bool isRequire=true) : base(action,isRequire)
+        public DateTimeOffsetColumn(string name,Expression<Func<TEntity, DateTimeOffset>> action,bool isRequire=true) : base(name, action,isRequire)
         {
         }
 

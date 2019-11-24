@@ -6,7 +6,7 @@ namespace Coder.File2Object.Columns.ExcelColumn
 {
     public class Int32Column<TEntity> : Column<TEntity, ICell, int>
     {
-        public Int32Column(Expression<Func<TEntity, int>> action,bool isRequire=true) : base(action,isRequire)
+        public Int32Column(string name,Expression<Func<TEntity, int>> action,bool isRequire=true) : base(name, action,isRequire)
         {
         }
 

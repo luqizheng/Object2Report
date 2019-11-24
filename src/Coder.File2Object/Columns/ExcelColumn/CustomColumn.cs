@@ -12,8 +12,8 @@ namespace Coder.File2Object.Columns.ExcelColumn
         /// </summary>
         /// <param name="action"></param>
         /// <param name="convertFunc">返回值item1为数值，item2为错误信息说明，item3 是否转换成功或者失败</param>
-        public CustomColumn(Expression<Func<TEntity, TValue>> action,
-            Func<string, Tuple<TValue, string, bool>> convertFunc, bool isRequire = false) : base(action, isRequire)
+        public CustomColumn(string name,Expression<Func<TEntity, TValue>> action,
+            Func<string, Tuple<TValue, string, bool>> convertFunc, bool isRequire = false) : base(name, action, isRequire)
         {
             _convertFunc = convertFunc;
         }
