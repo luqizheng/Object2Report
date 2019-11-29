@@ -1,16 +1,14 @@
-﻿using System.IO;
-using NPOI.POIFS.FileSystem;
-#if NETSTANDARD1_6
+﻿#if NETSTANDARD1_6
 using Npoi.Core.SS.UserModel;
 using Npoi.Core.HSSF.UserModel;
 using Npoi.Core.HSSF.Util;
-
 #else
 using NPOI.SS.UserModel;
 using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
-
 #endif
+using System.IO;
+using NPOI.POIFS.FileSystem;
 
 namespace Coder.Object2Report.Renders.NPOI
 {

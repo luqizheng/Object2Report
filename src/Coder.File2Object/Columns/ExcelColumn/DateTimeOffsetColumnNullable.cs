@@ -6,7 +6,8 @@ namespace Coder.File2Object.Columns.ExcelColumn
 {
     public class DateTimeOffsetColumnNullable<TEntity> : Column<TEntity, ICell, DateTimeOffset?>
     {
-        public DateTimeOffsetColumnNullable(string name,Expression<Func<TEntity, DateTimeOffset?>> action, bool isRequire = false) : base(name, action, isRequire)
+        public DateTimeOffsetColumnNullable(string name, Expression<Func<TEntity, DateTimeOffset?>> action,
+            bool isRequire = false) : base(name, action, isRequire)
         {
         }
 

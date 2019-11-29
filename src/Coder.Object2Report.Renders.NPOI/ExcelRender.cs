@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
 using NPOI.SS.UserModel;
-
 
 namespace Coder.Object2Report.Renders.NPOI
 {
@@ -47,7 +45,6 @@ namespace Coder.Object2Report.Renders.NPOI
             set => _info = value;
         }
 
-  
 
         /// <summary>
         /// </summary>
@@ -88,9 +85,7 @@ namespace Coder.Object2Report.Renders.NPOI
             get
             {
                 if (_worksheet == null)
-                {
-                     _worksheet = WorkBook.GetSheet(_workSheetName) ?? WorkBook.CreateSheet(_workSheetName);
-                }
+                    _worksheet = WorkBook.GetSheet(_workSheetName) ?? WorkBook.CreateSheet(_workSheetName);
 
                 return _worksheet;
             }
@@ -182,7 +177,6 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <param name="format"></param>
         public override void WriteHeader(CellCursor cellCursor, string title, string format)
         {
-      
             var cell = Write(cellCursor, title);
 
             if (HeaderStyle != null) cell.CellStyle = HeaderStyle;

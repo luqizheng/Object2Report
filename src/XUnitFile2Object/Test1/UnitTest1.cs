@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using Coder.File2Object;
 using Coder.File2Object.Columns;
-using NPOI.OpenXmlFormats.Wordprocessing;
 using Xunit;
 
 namespace XUnitFile2Object.Test1
@@ -41,10 +39,10 @@ namespace XUnitFile2Object.Test1
 
             Assert.Equal(7, datas.Count);
             Assert.All(datas, f =>
-             {
-                 Assert.False(f.HasError);
-                 Assert.NotNull(f.Data);
-             });
+            {
+                Assert.False(f.HasError);
+                Assert.NotNull(f.Data);
+            });
         }
 
 
@@ -74,7 +72,7 @@ namespace XUnitFile2Object.Test1
             var manager = new StudentAchievementImportManager();
 
             manager.Column("编码", f => f.Code);
-            manager.Column("名称", f => f.Name, isRequire: true);
+            manager.Column("名称", f => f.Name, true);
             manager.Column("成绩", f => f.Achievement);
             manager.Column("注册时间", f => f.AchievementCreateTime);
             manager.TryRead(fielName, out var datas, out var resultFile);

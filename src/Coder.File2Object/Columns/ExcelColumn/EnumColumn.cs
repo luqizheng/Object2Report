@@ -9,7 +9,7 @@ namespace Coder.File2Object.Columns.ExcelColumn
     {
         private readonly bool _fromDisplayAttribute;
 
-        public EnumColumn(string name,Expression<Func<TEntity, TEnum>> action, bool isRequire = false,
+        public EnumColumn(string name, Expression<Func<TEntity, TEnum>> action, bool isRequire = false,
             bool fromDisplayAttribute = false) : base(name, action, isRequire)
         {
             _fromDisplayAttribute = fromDisplayAttribute;

@@ -1,6 +1,5 @@
-﻿ using System;
+﻿using System;
 using System.IO;
-using System.Linq.Expressions;
 using NPOI.HSSF.UserModel;
 using NPOI.POIFS.FileSystem;
 using NPOI.SS.UserModel;
@@ -11,13 +10,14 @@ namespace Coder.File2Object.Readers
     public class ExcelFileReader : IFileReader<ICell>
     {
         /// <summary>
-        /// 
         /// </summary>
         private readonly int _sheetIndex;
+
         private ISheet _sheet;
         private IWorkbook _workbook;
+        private bool isXSSFile;
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="sheetIndex"></param>
         public ExcelFileReader(int sheetIndex = 0)
@@ -63,8 +63,9 @@ namespace Coder.File2Object.Readers
         {
             var row = _sheet.GetRow(rowIndex);
             var cell = row.GetCell(cellIndex, MissingCellPolicy.CREATE_NULL_AS_BLANK);
-            cell.SetCellValue(isXSSFile ? (IRichTextString)new XSSFRichTextString(value) : new HSSFRichTextString(value));
-
+            cell.SetCellValue(isXSSFile
+                ? (IRichTextString) new XSSFRichTextString(value)
+                : new HSSFRichTextString(value));
         }
 
         public string Convert(ICell cell)
@@ -72,14 +73,13 @@ namespace Coder.File2Object.Readers
             cell.SetCellType(CellType.String);
             return cell.StringCellValue;
         }
-        private bool isXSSFile;
 
         private IWorkbook GetWorkbook(string file)
         {
             var fileStream = File.OpenRead(file);
             isXSSFile = file.EndsWith("xlsx");
             var workbook = isXSSFile
-                ? (IWorkbook)new XSSFWorkbook(fileStream)
+                ? (IWorkbook) new XSSFWorkbook(fileStream)
                 : new HSSFWorkbook(new POIFSFileSystem(fileStream));
             fileStream.Close();
             return workbook;

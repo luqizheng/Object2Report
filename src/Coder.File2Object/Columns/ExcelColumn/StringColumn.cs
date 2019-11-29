@@ -6,7 +6,8 @@ namespace Coder.File2Object.Columns.ExcelColumn
 {
     public class StringColumn<TEntity> : Column<TEntity, ICell, string>
     {
-        public StringColumn(string name,Expression<Func<TEntity, string>> action, bool isRequire) : base(name, action, isRequire)
+        public StringColumn(string name, Expression<Func<TEntity, string>> action, bool isRequire) : base(name, action,
+            isRequire)
         {
         }
 

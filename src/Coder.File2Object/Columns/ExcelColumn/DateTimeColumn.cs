@@ -7,7 +7,8 @@ namespace Coder.File2Object.Columns.ExcelColumn
 {
     public class DateTimeColumn<TEntity> : Column<TEntity, ICell, DateTime>
     {
-        public DateTimeColumn(string name,Expression<Func<TEntity, DateTime>> action, bool isRequire = true) : base(name, action,
+        public DateTimeColumn(string name, Expression<Func<TEntity, DateTime>> action, bool isRequire = true) : base(
+            name, action,
             isRequire)
         {
         }

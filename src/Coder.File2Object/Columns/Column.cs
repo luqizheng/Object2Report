@@ -10,13 +10,14 @@ namespace Coder.File2Object.Columns
 
     public abstract class Column<TEntity, TCell, TValue> : Column<TEntity, TCell>
     {
-        public override string Name { get; protected set; }
         protected Column(string name, Expression<Func<TEntity, TValue>> action, bool isRequire = false)
         {
             Action = action;
             IsRequire = isRequire;
             Name = name;
         }
+
+        public override string Name { get; protected set; }
 
         private Expression<Func<TEntity, TValue>> Action { get; }
 

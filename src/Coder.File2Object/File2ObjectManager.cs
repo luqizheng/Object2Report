@@ -152,7 +152,6 @@ namespace Coder.File2Object
 
         private void CheckTitles()
         {
-           
             var titles = ReadTitles();
             var index = 0;
             foreach (var settingTitle in Titles)

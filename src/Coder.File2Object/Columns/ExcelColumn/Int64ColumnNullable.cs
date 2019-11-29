@@ -1,39 +1,27 @@
 ﻿using System;
 using System.Linq.Expressions;
-using NPOI.SS.UserModel;
 
 namespace Coder.File2Object.Columns.ExcelColumn
 {
-    public class Int64ColumnNullable<TEntity> : Column<TEntity, ICell, long?>
+    public class Int64ColumnNullable<TEntity> : ExcelNumberNullableColumn<TEntity, long>
     {
-        public Int64ColumnNullable(string name, Expression<Func<TEntity, long?>> action, bool isRequire = false) : base(name, action, isRequire)
+        public Int64ColumnNullable(string name, Expression<Func<TEntity, long?>> action, bool isRequire = true) : base(
+            name, action, isRequire)
         {
         }
 
-        protected override bool TryConvert(ICell cell, out long? val, out string errorMessage)
-        {
-            errorMessage = null;
-            val = null;
-            switch (cell.CellType)
-            {
-                case CellType.Numeric:
-                    val = (long?)cell.NumericCellValue;
-                    return true;
-                default:
-                    cell.SetCellType(CellType.String);
-                    var result = long.TryParse(cell.StringCellValue, out var valLong);
+        protected override string TypeName => "Int64";
 
-                    if (result == false) errorMessage = $"无法把{cell.StringCellValue}转化为有效的Int64类型";
-                    else val = valLong;
-                    return result;
-            }
+        protected override bool TryConvertFromString(string strValue, out long? value)
+        {
+            var result = long.TryParse(strValue, out var re);
+            value = re;
+            return result;
         }
 
-        public override string GetErrorMessageIfEmpty()
+        protected override long? ConvertFromDouble(double d)
         {
-            return $"{ColumnTemplateDefined.ColumnName}必须输入正确的int64类型";
+            return Convert.ToInt64(d);
         }
-
-      
     }
 }

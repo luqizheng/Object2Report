@@ -1,36 +1,25 @@
 ﻿using System;
 using System.Linq.Expressions;
-using NPOI.SS.UserModel;
 
 namespace Coder.File2Object.Columns.ExcelColumn
 {
-    public class DecimalColumn<TEntity> : Column<TEntity, ICell, decimal>
+    public class DecimalColumn<TEntity> : ExcelNumberColumn<TEntity, decimal>
     {
-        public DecimalColumn(string name,Expression<Func<TEntity, decimal>> action, bool isRequire = true) : base(name, action, isRequire)
+        public DecimalColumn(string name, Expression<Func<TEntity, decimal>> action, bool isRequire = true) : base(name,
+            action, isRequire)
         {
         }
 
-        protected override bool TryConvert(ICell cell, out decimal val, out string errorMessage)
-        {
-            errorMessage = null;
-            val = 0;
-            switch (cell.CellType)
-            {
-                case CellType.Numeric:
-                    val = (decimal)cell.NumericCellValue;
-                    return true;
-                default:
-                    cell.SetCellType(CellType.String);
-                    var result = decimal.TryParse(cell.StringCellValue, out val);
-                    if (result == false) errorMessage = $"无法把{cell.StringCellValue}转化为有效的数值类型";
+        protected override string TypeName => "decimal";
 
-                    return result;
-            }
+        protected override bool TryConvertFromString(string strValue, out decimal value)
+        {
+            return decimal.TryParse(strValue, out value);
         }
 
-        public override string GetErrorMessageIfEmpty()
+        protected override decimal ConvertFromDouble(double d)
         {
-            return $"{ColumnTemplateDefined.ColumnName}必须输入正确的decimal类型";
+            return Convert.ToDecimal(d);
         }
     }
 }

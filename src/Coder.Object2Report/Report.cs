@@ -56,10 +56,7 @@ namespace Coder.Object2Report
         /// <param name="data"></param>
         public void Write(IEnumerable<T> data)
         {
-            if (Render == null)
-            {
-                throw new Object2ReportException("Render is not set.");
-            }
+            if (Render == null) throw new Object2ReportException("Render is not set.");
             Render.OnReportWriting();
             WriteHeader();
             WriteBody(data);
@@ -73,10 +70,7 @@ namespace Coder.Object2Report
         /// <param name="data"></param>
         public void WriteBody(IEnumerable<T> data)
         {
-            if (Render == null)
-            {
-                throw new Object2ReportException("Render is not set.");
-            }
+            if (Render == null) throw new Object2ReportException("Render is not set.");
             Render.OnBodyBuilding();
             foreach (var item in data)
             {
@@ -86,9 +80,11 @@ namespace Coder.Object2Report
                     CellCursor.Index = col.Index;
                     col.Write(item, Render.WriteBodyCell, CellCursor);
                 }
+
                 Render.OnRowWrote();
                 CellCursor.NextRow();
             }
+
             Render.OnBodyBuilt();
         }
 
@@ -96,10 +92,7 @@ namespace Coder.Object2Report
         /// </summary>
         public void WriteFooter()
         {
-            if (Render == null)
-            {
-                throw new Object2ReportException("Render is not set.");
-            }
+            if (Render == null) throw new Object2ReportException("Render is not set.");
             Render.OnFooterWriting();
             Render.OnRowWriting(CellCursor, CellCursor.RowIndex);
 
@@ -118,10 +111,7 @@ namespace Coder.Object2Report
         /// </summary>
         public void WriteHeader()
         {
-            if (Render == null)
-            {
-                throw new Object2ReportException("Render is not set.");
-            }
+            if (Render == null) throw new Object2ReportException("Render is not set.");
             Render.OnHeaderWriting();
             Render.OnRowWriting(CellCursor, CellCursor.RowIndex);
             foreach (var col in Columns)
@@ -129,6 +119,7 @@ namespace Coder.Object2Report
                 CellCursor.Index = col.Index;
                 Render.WriteHeader(CellCursor, col.Title, col.Format);
             }
+
             Render.OnRowWrote();
             Render.OnHeaderWrote();
             CellCursor.NextRow();

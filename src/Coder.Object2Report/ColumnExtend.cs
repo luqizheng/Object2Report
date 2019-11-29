@@ -50,16 +50,14 @@ namespace Coder.Object2Report
             switch (expression.Body.NodeType)
             {
                 case ExpressionType.MemberAccess:
-                    var memberExpresion = (MemberExpression)expression.Body;
+                    var memberExpresion = (MemberExpression) expression.Body;
 
 
                     var attrData = (from item in memberExpresion.Member.CustomAttributes
-                                    where item.AttributeType == typeof(DisplayNameAttribute)
-                                    select item).FirstOrDefault();
+                        where item.AttributeType == typeof(DisplayNameAttribute)
+                        select item).FirstOrDefault();
                     if (attrData != null && attrData.NamedArguments.Any())
-                    {
                         return attrData.NamedArguments[0].TypedValue.Value.ToString();
-                    }
                     return memberExpresion.Member.Name;
 
 

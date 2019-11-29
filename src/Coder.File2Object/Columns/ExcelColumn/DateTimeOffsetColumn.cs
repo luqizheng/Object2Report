@@ -6,14 +6,15 @@ namespace Coder.File2Object.Columns.ExcelColumn
 {
     public class DateTimeOffsetColumn<TEntity> : Column<TEntity, ICell, DateTimeOffset>
     {
-        public DateTimeOffsetColumn(string name,Expression<Func<TEntity, DateTimeOffset>> action,bool isRequire=true) : base(name, action,isRequire)
+        public DateTimeOffsetColumn(string name, Expression<Func<TEntity, DateTimeOffset>> action,
+            bool isRequire = true) : base(name, action, isRequire)
         {
         }
 
         protected override bool TryConvert(ICell cell, out DateTimeOffset val, out string errorMessage)
         {
             errorMessage = null;
-            val = default(DateTimeOffset);
+            val = default;
             switch (cell.CellType)
             {
                 case CellType.Numeric:
@@ -30,17 +31,14 @@ namespace Coder.File2Object.Columns.ExcelColumn
             var valStr = cell.StringCellValue;
             var result = DateTimeOffset.TryParse(valStr, out val);
 
-            if (result == false)
-            {
-                errorMessage = $"无法把{valStr}转化为有效的日期类型";
-            }
+            if (result == false) errorMessage = $"无法把{valStr}转化为有效的日期类型";
 
             return result;
         }
 
         public override string GetErrorMessageIfEmpty()
         {
-            return $"{ColumnTemplateDefined.ColumnName}必须输入正确的日期类型";
+            return $"{ColumnTemplateDefined.ColumnName}必须输入日期类型";
         }
     }
 }
