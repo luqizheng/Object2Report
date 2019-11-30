@@ -104,7 +104,7 @@ namespace Coder.File2Object.Columns
         }
 
         public static File2ObjectManager<TEntity, ICell>
-            Column<TEntity, TValue>(this File2ObjectManager<TEntity, ICell> manager, string name,
+            CustomColumn<TEntity, TValue>(this File2ObjectManager<TEntity, ICell> manager, string name,
                 Expression<Func<TEntity, TValue>> action, Func<string, Tuple<TValue, string, bool>> convert,
                 bool isRequire = true)
         {

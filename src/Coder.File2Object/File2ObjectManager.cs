@@ -35,9 +35,22 @@ namespace Coder.File2Object
         {
             var fileInfo = new FileInfo(file);
             resultFile = GetResultFile(fileInfo);
-            data = Read(file, out var hasError);
+            data = Read(file);
+
+            bool hasError = false;
+            foreach (var item in data)
+            {
+                if (item.HasError)
+                {
+                    if (hasError == false)
+                        hasError = true;
+                    var errorMessage = item.GetErrors();
+                    _fileReader.WriteTo(item.Row, _columns.Count, errorMessage);
+                }
+            }
+
             _fileReader.Write(resultFile);
-            return hasError;
+            return !hasError;
         }
 
         private string GetResultFile(FileInfo file)
@@ -54,14 +67,14 @@ namespace Coder.File2Object
             return path;
         }
 
-        public IList<ImportResultItem<TEntity>> Read(string file, out bool hasError)
+        public IList<ImportResultItem<TEntity>> Read(string file)
         {
             _fileReader.Open(file);
             CheckTitles();
 
             try
             {
-                var result = ImportResultItems(out hasError);
+                var result = ImportResultItems();
                 return result;
             }
             finally
@@ -71,15 +84,15 @@ namespace Coder.File2Object
         }
 
 
-        private IList<ImportResultItem<TEntity>> ImportResultItems(out bool hasError)
+        private IList<ImportResultItem<TEntity>> ImportResultItems()
         {
             var result = new List<ImportResultItem<TEntity>>();
             var rowIndex = TitleRowIndex + 1;
-            hasError = false;
+
 
             while (TryGetRows(rowIndex, out var cells))
             {
-                var resultItem = new ImportResultItem<TEntity> {Row = rowIndex};
+                var resultItem = new ImportResultItem<TEntity> { Row = rowIndex };
                 var entity = resultItem.Data = Create();
                 result.Add(resultItem);
 
@@ -100,6 +113,8 @@ namespace Coder.File2Object
                         {
                             column.SetEmptyOrNull(entity);
                         }
+
+
                     }
                     else
                     {
@@ -107,7 +122,11 @@ namespace Coder.File2Object
                         {
                             errorMessage = BuildErrorMessageByTemplate(errorMessage, column);
                             resultItem.AddError(index, errorMessage);
+
+
+
                         }
+
                     }
                 }
 
