@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.2.6</Version>
+    <Version>1.2.7</Version>
     <AssemblyVersion>1.2.6.1</AssemblyVersion>
     <Company>珠海酷迪技术有限公司</Company>
     <FileVersion>1.2.6.1</FileVersion>
