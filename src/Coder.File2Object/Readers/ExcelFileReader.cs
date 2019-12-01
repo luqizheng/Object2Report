@@ -35,8 +35,7 @@ namespace Coder.File2Object.Readers
 
         public void Close()
         {
-            _sheet = null;
-            _workbook.Dispose();
+        
         }
 
         public bool TryRead(int rowIndex, int cellIndex, out ICell cell)

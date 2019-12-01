@@ -48,7 +48,7 @@ namespace Coder.File2Object
                 }
 
             _fileReader.Write(resultFile);
-            _fileReader.Close();
+           
             return !hasError;
         }
 
