@@ -37,9 +37,8 @@ namespace Coder.File2Object
             resultFile = GetResultFile(fileInfo);
             data = Read(file);
 
-            bool hasError = false;
+            var hasError = false;
             foreach (var item in data)
-            {
                 if (item.HasError)
                 {
                     if (hasError == false)
@@ -47,7 +46,6 @@ namespace Coder.File2Object
                     var errorMessage = item.GetErrors();
                     _fileReader.WriteTo(item.Row, _columns.Count, errorMessage);
                 }
-            }
 
             _fileReader.Write(resultFile);
             return !hasError;
@@ -92,7 +90,7 @@ namespace Coder.File2Object
 
             while (TryGetRows(rowIndex, out var cells))
             {
-                var resultItem = new ImportResultItem<TEntity> { Row = rowIndex };
+                var resultItem = new ImportResultItem<TEntity> {Row = rowIndex};
                 var entity = resultItem.Data = Create();
                 result.Add(resultItem);
 
@@ -113,8 +111,6 @@ namespace Coder.File2Object
                         {
                             column.SetEmptyOrNull(entity);
                         }
-
-
                     }
                     else
                     {
@@ -122,11 +118,7 @@ namespace Coder.File2Object
                         {
                             errorMessage = BuildErrorMessageByTemplate(errorMessage, column);
                             resultItem.AddError(index, errorMessage);
-
-
-
                         }
-
                     }
                 }
 
@@ -177,7 +169,7 @@ namespace Coder.File2Object
             {
                 var fileTitle = titles[index];
 
-                if (settingTitle != fileTitle) throw new Exception("文件标题不正确。");
+                if (settingTitle != fileTitle) throw new TitleNotMatchSettingException();
 
                 index++;
             }
