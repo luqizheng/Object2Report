@@ -15,14 +15,14 @@ namespace Coder.File2Object.Readers
 
         private ISheet _sheet;
         private IWorkbook _workbook;
-        private bool isXSSFile;
+        private bool _isXssFile;
 
         /// <summary>
         /// </summary>
         /// <param name="sheetIndex"></param>
         public ExcelFileReader(int sheetIndex = 0)
         {
-            sheetIndex = 0;
+            _sheetIndex = 0;
         }
 
         public void Open(string file)
@@ -35,6 +35,8 @@ namespace Coder.File2Object.Readers
 
         public void Close()
         {
+            _sheet = null;
+            _workbook.Dispose();
         }
 
         public bool TryRead(int rowIndex, int cellIndex, out ICell cell)
@@ -63,8 +65,8 @@ namespace Coder.File2Object.Readers
         {
             var row = _sheet.GetRow(rowIndex);
             var cell = row.GetCell(cellIndex, MissingCellPolicy.CREATE_NULL_AS_BLANK);
-            cell.SetCellValue(isXSSFile
-                ? (IRichTextString) new XSSFRichTextString(value)
+            cell.SetCellValue(_isXssFile
+                ? (IRichTextString)new XSSFRichTextString(value)
                 : new HSSFRichTextString(value));
         }
 
@@ -77,9 +79,9 @@ namespace Coder.File2Object.Readers
         private IWorkbook GetWorkbook(string file)
         {
             var fileStream = File.OpenRead(file);
-            isXSSFile = file.EndsWith("xlsx");
-            var workbook = isXSSFile
-                ? (IWorkbook) new XSSFWorkbook(fileStream)
+            _isXssFile = file.EndsWith("xlsx");
+            var workbook = _isXssFile
+                ? (IWorkbook)new XSSFWorkbook(fileStream)
                 : new HSSFWorkbook(new POIFSFileSystem(fileStream));
             fileStream.Close();
             return workbook;

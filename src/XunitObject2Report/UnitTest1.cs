@@ -1,3 +1,4 @@
+using System.IO;
 using Xunit;
 
 namespace XunitObject2Report
@@ -7,6 +8,9 @@ namespace XunitObject2Report
         [Fact]
         public void Test1()
         {
+            var file = new FileInfo("abcd.xlst");
+            var adf = file.Name.Substring(0, file.Name.Length - file.Extension.Length);
+            Assert.Equal("abcd", adf);
         }
     }
 }

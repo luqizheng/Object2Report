@@ -48,12 +48,25 @@ namespace Coder.File2Object
                 }
 
             _fileReader.Write(resultFile);
+            _fileReader.Close();
             return !hasError;
+        }
+
+        public void RewriteResultFile(string resultFile, IList<ImportResultItem<TEntity>> data)
+        {
+            _fileReader.Open(resultFile);
+            var rowIndex = this.TitleRowIndex + 1;
+            var cellIndex = this._columns.Count();
+            foreach (var importResult in data)
+            {
+                _fileReader.WriteTo(importResult.Row, cellIndex, importResult.GetErrors());
+            }
+            _fileReader.Write(resultFile);
         }
 
         private string GetResultFile(FileInfo file)
         {
-            var path = Path.Combine(file.Directory.FullName, file.Name + "-结果" + file.Extension);
+            var path = Path.Combine(file.Directory.FullName, file.Name.Substring(0, file.Name.Length - file.Extension.Length) + "-结果" + file.Extension);
             var index = 1;
             while (File.Exists(path))
             {
@@ -90,7 +103,7 @@ namespace Coder.File2Object
 
             while (TryGetRows(rowIndex, out var cells))
             {
-                var resultItem = new ImportResultItem<TEntity> {Row = rowIndex};
+                var resultItem = new ImportResultItem<TEntity> { Row = rowIndex };
                 var entity = resultItem.Data = Create();
                 result.Add(resultItem);
 
