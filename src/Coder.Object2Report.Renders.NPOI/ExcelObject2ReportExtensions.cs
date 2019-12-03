@@ -6,7 +6,7 @@ namespace Coder.Object2Report
 {
     public static class ExcelObject2ReportExtensions
     {
-        public static Report<T> WriteXssf<T>(this Report<T> report, IEnumerable<T> data, string file,
+        public static Report<T> WriteToXlsx<T>(this Report<T> report, IEnumerable<T> data, string file,
             string sheetName = "sheet1", string templateFilePath = null)
         {
             using (var stream = File.OpenWrite(file))
@@ -20,7 +20,7 @@ namespace Coder.Object2Report
             return report;
         }
 
-        public static Report<T> WriteHssf<T>(this Report<T> report, IEnumerable<T> data, string file,
+        public static Report<T> WriteToXls<T>(this Report<T> report, IEnumerable<T> data, string file,
             string sheetName = "sheet1", string templateFilePath = null)
         {
             using (var stream = File.OpenWrite(file))
