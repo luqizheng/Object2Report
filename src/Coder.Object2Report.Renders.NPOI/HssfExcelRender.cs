@@ -1,12 +1,8 @@
-﻿#if NETSTANDARD1_6
-using Npoi.Core.SS.UserModel;
-using Npoi.Core.HSSF.UserModel;
-using Npoi.Core.HSSF.Util;
-#else
+﻿
 using NPOI.SS.UserModel;
 using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
-#endif
+
 using System.IO;
 using NPOI.POIFS.FileSystem;
 
@@ -17,17 +13,8 @@ namespace Coder.Object2Report.Renders.NPOI
     /// </summary>
     public class HssfExcelRender : ExcelRender
     {
-        /// <summary>
-        /// </summary>
-        /// <param name="stream"></param>
-        /// <param name="sheetName"></param>
-        public HssfExcelRender(Stream stream, string sheetName = "sheet1") : base(stream, sheetName)
-        {
-            HeaderStyle.FillForegroundColor = HSSFColor.Grey25Percent.Index;
-            FooterStyle.FillForegroundColor = HSSFColor.Grey25Percent.Index;
-        }
-
-        public HssfExcelRender(Stream stream, string sheetName, string templateName) : base(stream, sheetName,
+        public HssfExcelRender(Stream stream, string sheetName = "sheet1", string templateName = null) : base(stream,
+            sheetName,
             templateName)
         {
             HeaderStyle.FillForegroundColor = HSSFColor.Grey25Percent.Index;

@@ -1,10 +1,7 @@
-﻿#if NETSTANDARD1_6
-using Npoi.Core.SS.UserModel;
-using Npoi.Core.XSSF.UserModel;
-#else
+﻿
 using NPOI.XSSF.UserModel;
 using NPOI.SS.UserModel;
-#endif
+
 using System.IO;
 
 namespace Coder.Object2Report.Renders.NPOI
@@ -16,19 +13,12 @@ namespace Coder.Object2Report.Renders.NPOI
             0xDC, 0xE0, 0xE2
         };
 
-        /// <summary>
-        /// </summary>
-        /// <param name="stream"></param>
-        public XssfExcelReader(Stream stream) : base(stream)
-        {
-            InitDefaultColor();
-        }
-
+      
         /// <summary>
         /// </summary>
         /// <param name="stream"></param>
         /// <param name="worksheetName"></param>
-        public XssfExcelReader(Stream stream, string worksheetName, string templateFile) : base(stream, worksheetName,
+        public XssfExcelReader(Stream stream, string worksheetName = "sheet1", string templateFile = null) : base(stream, worksheetName,
             templateFile)
         {
             InitDefaultColor();
@@ -36,9 +26,9 @@ namespace Coder.Object2Report.Renders.NPOI
 
         private void InitDefaultColor()
         {
-            ((XSSFCellStyle) HeaderStyle).FillForegroundXSSFColor
+            ((XSSFCellStyle)HeaderStyle).FillForegroundXSSFColor
                 = new XSSFColor(DefColor);
-            ((XSSFCellStyle) FooterStyle).FillForegroundXSSFColor
+            ((XSSFCellStyle)FooterStyle).FillForegroundXSSFColor
                 = new XSSFColor(DefColor);
         }
 
@@ -54,7 +44,7 @@ namespace Coder.Object2Report.Renders.NPOI
 
         protected override void InitWorkbookInfo(IWorkbook book, ExcelInfo info)
         {
-            var workbook = (XSSFWorkbook) book;
+            var workbook = (XSSFWorkbook)book;
             var xmlProps = workbook.GetProperties();
             xmlProps.CoreProperties.Creator = info.Author ?? "";
             xmlProps.CoreProperties.Subject = info.Subject ?? "";

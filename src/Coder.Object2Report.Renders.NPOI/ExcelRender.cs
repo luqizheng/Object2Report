@@ -18,7 +18,7 @@ namespace Coder.Object2Report.Renders.NPOI
         private ICellStyle _footerStyle;
         private ICellStyle _headerStyle;
         private ExcelInfo _info;
-        private bool? _skipWriteTitle;
+
         private IWorkbook _workbook;
         private ISheet _worksheet;
 
