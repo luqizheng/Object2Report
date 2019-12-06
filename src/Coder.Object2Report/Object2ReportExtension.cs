@@ -15,7 +15,8 @@ namespace Coder.Object2Report
                 var reader = new CsvRender(stream, encoding);
 
                 report.Write(data, reader);
-                stream.Flush();
+                if (stream.CanWrite)
+                    stream.Flush();
             }
 
             return report;
@@ -27,6 +28,7 @@ namespace Coder.Object2Report
                 var reader = new HtmlRender(stream);
 
                 report.Write(data, reader);
+
                 stream.Flush();
             }
 

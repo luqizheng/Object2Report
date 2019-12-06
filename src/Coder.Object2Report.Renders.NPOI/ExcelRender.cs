@@ -9,6 +9,7 @@ namespace Coder.Object2Report.Renders.NPOI
     {
         private readonly IDictionary<int, ICellStyle> _bodyCellStyle = new Dictionary<int, ICellStyle>();
         private readonly IDictionary<int, ICellStyle> _footerCellStyle = new Dictionary<int, ICellStyle>();
+
         private readonly Stream _stream;
 
         private readonly string _workSheetName;
@@ -93,9 +94,9 @@ namespace Coder.Object2Report.Renders.NPOI
 
         /// <summary>
         /// </summary>
-        public IWorkbook WorkBook => _workbook ?? (_workbook = CreateWorkBook());
+        public IWorkbook WorkBook => _workbook ??= CreateWorkBook();
 
-        private IDataFormat DataFormat => _dataFormat ?? (_dataFormat = WorkBook.CreateDataFormat());
+        private IDataFormat DataFormat => _dataFormat ??= WorkBook.CreateDataFormat();
 
         /// <summary>
         /// </summary>

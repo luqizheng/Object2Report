@@ -13,4 +13,9 @@
     <PackageReference Include="coverlet.collector" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Coder.Object2Report.Renders.NPOI\Coder.Object2Report.Renders.NPOI.csproj" />
+    <ProjectReference Include="..\Coder.Object2Report\Coder.Object2Report.csproj" />
+  </ItemGroup>
+
 </Project>
