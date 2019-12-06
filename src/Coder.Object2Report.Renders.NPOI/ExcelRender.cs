@@ -42,7 +42,7 @@ namespace Coder.Object2Report.Renders.NPOI
         /// </summary>
         public ExcelInfo Info
         {
-            get => _info ?? (_info = new ExcelInfo());
+            get => _info ??= new ExcelInfo();
             set => _info = value;
         }
 
@@ -220,11 +220,16 @@ namespace Coder.Object2Report.Renders.NPOI
             }
 
             var valType = v.GetType();
+
             if (valType == typeof(decimal) || valType == typeof(int) || valType == typeof(double) ||
                 valType == typeof(long) || valType == typeof(float) || valType == typeof(short))
             {
                 var num = Convert.ToDouble(v);
                 cell.SetCellValue(num);
+            }
+            else if (valType == typeof(DateTime))
+            {
+                cell.SetCellValue(Convert.ToDateTime((object)v));
             }
             else if (valType == typeof(bool))
             {
