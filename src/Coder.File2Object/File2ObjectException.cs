@@ -23,7 +23,7 @@ namespace Coder.File2Object
 
     public class TitleNotMatchSettingException : File2ObjectException
     {
-        public TitleNotMatchSettingException() : base("文件标题不一致，请检查是不是上传错文件")
+        public TitleNotMatchSettingException(string settingName,string actualName) : base($"文件标题不一致(设定:{settingName},实际:{actualName})，请检查是不是上传错文件")
         {
         }
     }

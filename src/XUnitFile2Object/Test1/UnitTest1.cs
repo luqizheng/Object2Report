@@ -8,6 +8,7 @@ namespace XUnitFile2Object.Test1
     public class StudentAchievement
     {
         public int Code { get; set; }
+       
         public string Name { get; set; }
         public decimal Achievement { get; set; }
 

@@ -48,7 +48,7 @@ namespace Coder.File2Object
                 }
 
             _fileReader.Write(resultFile);
-           
+
             return !hasError;
         }
 
@@ -182,7 +182,7 @@ namespace Coder.File2Object
             {
                 var fileTitle = titles[index];
 
-                if (settingTitle != fileTitle) throw new TitleNotMatchSettingException();
+                if (settingTitle != fileTitle) throw new TitleNotMatchSettingException(settingTitle, fileTitle);
 
                 index++;
             }
