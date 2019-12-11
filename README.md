@@ -33,6 +33,38 @@ var render = new HssfExcelRender(File.Open("a.xls", FileMode.OpenOrCreate, FileA
 var render = new XssfExcelReader(File.Open("a.xlsx", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test");
 
 ```
+or
+
+```
+using using Coder.Object2Report;
+
+ var list = new List<NameTest>
+            {
+                new NameTest
+                {
+                    Decimal = 11.22m,
+                    Name = "test",
+                    Int32 = 30,
+                    Int32Nullable = null,
+                    Int64 = long.MaxValue,
+                    Datetime = DateTime.Now
+                }
+            };
+            var report = new Report<NameTest>();
+            report.Column("name", f => f.Name);
+            report.Column(f => f.Decimal);
+            report.Column(f => f.Name);
+            report.Column("Int32", f => f.Int32);
+            report.Column("Int32NullAble", f => f.Int32Nullable);
+            report.Column("Int64", f => f.Int64);
+            report.Column("Datetime", f => f.Datetime);
+            report.Column("name", f => f.Name);
+            report.Column("name", f => f.Name);
+
+            report.WriteToXlsx(list, "a.xlsx");
+            report.WriteToCSV(list,"a.csv");
+```
+
 Or inerit from IRender to imple new render.
 
 
