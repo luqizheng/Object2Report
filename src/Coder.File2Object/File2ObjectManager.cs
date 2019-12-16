@@ -43,7 +43,7 @@ namespace Coder.File2Object
                 {
                     if (hasError == false)
                         hasError = true;
-                    var errorMessage = item.GetErrors();
+                    var errorMessage = item.GetErrors(this.Titles.ToArray());
                     _fileReader.WriteTo(item.Row, _columns.Count, errorMessage);
                 }
 
@@ -59,7 +59,7 @@ namespace Coder.File2Object
             var cellIndex = this._columns.Count();
             foreach (var importResult in data)
             {
-                _fileReader.WriteTo(importResult.Row, cellIndex, importResult.GetErrors());
+                _fileReader.WriteTo(importResult.Row, cellIndex, importResult.GetErrors(this.Titles.ToArray()));
             }
             _fileReader.Write(resultFile);
         }
