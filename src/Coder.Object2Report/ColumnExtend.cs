@@ -34,6 +34,18 @@ namespace Coder.Object2Report
             return column;
         }
 
+        public static IColumnSetting<int> ColumnRowIndex<T>(this Report<T> report, string headerTitle)
+        {
+            if (headerTitle == null)
+                throw new ArgumentNullException(nameof(headerTitle));
+
+            var column = new ColumnIndex<T>(headerTitle);
+            report.Columns.Add(column);
+           
+            return column;
+        }
+
+
         public static IColumnSetting<TResult> Column<T, TResult>(this Report<T> report,
             Expression<Func<T, TResult>> expression)
         {
