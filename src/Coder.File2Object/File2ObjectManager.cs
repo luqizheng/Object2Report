@@ -37,19 +37,18 @@ namespace Coder.File2Object
             resultFile = GetResultFile(fileInfo);
             data = Read(file);
 
-            var hasError = false;
+            var correct = true;
             foreach (var item in data)
                 if (item.HasError)
                 {
-                    if (hasError == false)
-                        hasError = true;
+                    correct = false;
                     var errorMessage = item.GetErrors(this.Titles.ToArray());
                     _fileReader.WriteTo(item.Row, _columns.Count, errorMessage);
                 }
 
             _fileReader.Write(resultFile);
 
-            return !hasError;
+            return correct;
         }
 
         public void RewriteResultFile(string resultFile, IList<ImportResultItem<TEntity>> data)
