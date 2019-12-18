@@ -34,7 +34,7 @@ namespace Coder.File2Object.Columns.ExcelColumn
 
             DateTimeOffset val;
             cell.SetCellType(CellType.String);
-            var valStr = cell.StringCellValue;
+            var valStr = cell.StringCellValue?.Trim();
             var result = DateTimeOffset.TryParse(valStr, out val);
 
             if (result == false) errorMessage = $"无法把{valStr}转化为有效的日期类型";

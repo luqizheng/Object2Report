@@ -26,19 +26,20 @@ namespace Coder.File2Object.Columns.ExcelColumn
             bool convertResult;
             val = default(TEnum);
             TEnum valEnum = default;
+            var strValue = cell.StringCellValue?.Trim();
             if (_fromDisplayAttribute)
             {
-                convertResult = EnumHelper.TryFromDisplayName(cell.StringCellValue, out valEnum);
+                convertResult = EnumHelper.TryFromDisplayName(strValue, out valEnum);
             }
             else
             {
-                convertResult = Enum.TryParse(typeof(TEnum), cell.StringCellValue, out var valConvert);
+                convertResult = Enum.TryParse(typeof(TEnum), strValue, out var valConvert);
                 if (convertResult)
                     valEnum = (TEnum) valConvert;
             }
 
             if (!convertResult)
-                errorMessage = ColumnTemplateDefined.ColumnName + "列中的值" + cell.StringCellValue + "无法是被为有效的" +
+                errorMessage = ColumnTemplateDefined.ColumnName + "列中的值" + strValue + "无法是被为有效的" +
                                typeof(TEnum).Name + "值";
             else
                 val = valEnum;

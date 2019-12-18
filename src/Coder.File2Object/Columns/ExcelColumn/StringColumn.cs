@@ -15,7 +15,7 @@ namespace Coder.File2Object.Columns.ExcelColumn
         {
             errorMessage = null;
             cell.SetCellType(CellType.String);
-            val = cell.StringCellValue.Trim();
+            val = cell.StringCellValue?.Trim();
             return true;
         }
 

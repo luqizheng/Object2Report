@@ -24,8 +24,9 @@ namespace Coder.File2Object.Columns
                     val = ConvertFromDouble(cell.NumericCellValue);
                     return true;
                 default:
+
                     cell.SetCellType(CellType.String);
-                    var result = TryConvertFromString(cell.StringCellValue, out val);
+                    var result = TryConvertFromString(cell.StringCellValue?.Trim(), out val);
                     if (result == false) errorMessage = $"无法把{cell.StringCellValue}转化为有效的{TypeName}类型";
 
                     return result;

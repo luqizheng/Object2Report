@@ -22,7 +22,7 @@ namespace Coder.File2Object.Columns.ExcelColumn
         protected override bool TryConvert(ICell cell, out TValue val, out string errorMessage)
         {
             cell.SetCellType(CellType.String);
-            var str = cell.StringCellValue;
+            var str = cell.StringCellValue?.Trim();
             var result = _convertFunc(str);
 
             val = result.Item1;
