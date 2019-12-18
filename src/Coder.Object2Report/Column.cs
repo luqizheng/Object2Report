@@ -6,14 +6,11 @@ namespace Coder.Object2Report
 {
     public class ColumnIndex<T> : Column<T, int>
     {
-        int rowIndex = 1;
+        private int rowIndex = 1;
+
         public ColumnIndex(string title) : base(title, new Func<T, int>(t => 1))
         {
-
-            Func = t =>
-            {
-                return this.rowIndex;
-            };
+            Func = t => rowIndex;
         }
 
         public override void Write(T t, Action<CellCursor, object, string> action, CellCursor cellCursor)
@@ -22,6 +19,7 @@ namespace Coder.Object2Report
             rowIndex++;
         }
     }
+
     public class Column<T, TResult>
         : IColumn<T>,
             IColumnSetting<TResult>

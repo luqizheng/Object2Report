@@ -37,19 +37,18 @@ namespace Coder.File2Object
             resultFile = GetResultFile(fileInfo);
             data = Read(file);
 
-            var hasError = false;
+            var correct = true;
             foreach (var item in data)
                 if (item.HasError)
                 {
-                    if (hasError == false)
-                        hasError = true;
-                    var errorMessage = item.GetErrors();
+                    correct = false;
+                    var errorMessage = item.GetErrors(this.Titles.ToArray());
                     _fileReader.WriteTo(item.Row, _columns.Count, errorMessage);
                 }
 
             _fileReader.Write(resultFile);
 
-            return !hasError;
+            return correct;
         }
 
         public void RewriteResultFile(string resultFile, IList<ImportResultItem<TEntity>> data)
@@ -59,7 +58,7 @@ namespace Coder.File2Object
             var cellIndex = this._columns.Count();
             foreach (var importResult in data)
             {
-                _fileReader.WriteTo(importResult.Row, cellIndex, importResult.GetErrors());
+                _fileReader.WriteTo(importResult.Row, cellIndex, importResult.GetErrors(this.Titles.ToArray()));
             }
             _fileReader.Write(resultFile);
         }

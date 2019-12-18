@@ -19,11 +19,11 @@ namespace Coder.File2Object
         //    return (T)Data;
         //}
 
-        public string GetErrors()
+        public string GetErrors(string[] titles)
         {
             var sb = new StringBuilder();
-            foreach (var error in CellWarnings) sb.Append(error.Message + " ");
-            foreach (var error in CellErrors) sb.Append(error.Message + " ");
+            foreach (var error in CellWarnings) sb.Append("[" + titles[error.CellIndex] + "]" + error.Message + " ");
+            foreach (var error in CellErrors) sb.Append(titles[error.CellIndex] + error.Message + " ");
 
             var r = sb.ToString();
             return r;
