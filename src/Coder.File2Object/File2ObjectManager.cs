@@ -110,7 +110,7 @@ namespace Coder.File2Object
                 {
                     var cell = cells[index];
                     var column = _columns[index];
-                    if (cell == null)
+                    if (string.IsNullOrWhiteSpace(cell.ToString()))
                     {
                         //为空的时候。
 
