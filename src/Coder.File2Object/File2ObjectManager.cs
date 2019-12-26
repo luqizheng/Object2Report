@@ -106,11 +106,11 @@ namespace Coder.File2Object
                 var entity = resultItem.Data = Create();
                 result.Add(resultItem);
 
-                for (var index = 0; index < cells.Count; index++)
+                for (var index = 0; index < this._columns.Count; index++)
                 {
                     var cell = cells[index];
                     var column = _columns[index];
-                    if (string.IsNullOrWhiteSpace(cell.ToString()))
+                    if (string.IsNullOrWhiteSpace(cell?.ToString()))
                     {
                         //为空的时候。
 
