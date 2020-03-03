@@ -45,7 +45,7 @@ namespace Coder.File2Object.Readers
             if (row == null) return false;
 
 
-            cell = row.GetCell(cellIndex, MissingCellPolicy.RETURN_NULL_AND_BLANK);
+            cell = row.GetCell(cellIndex, MissingCellPolicy.RETURN_BLANK_AS_NULL);
 
             return cell != null;
         }
