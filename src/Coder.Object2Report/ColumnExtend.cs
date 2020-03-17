@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -41,7 +42,7 @@ namespace Coder.Object2Report
 
             var column = new ColumnIndex<T>(headerTitle);
             report.Columns.Add(column);
-           
+
             return column;
         }
 
@@ -52,14 +53,14 @@ namespace Coder.Object2Report
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
 
-            var column = new Column<T, TResult>(GetTilte(expression), expression);
+            var column = new Column<T, TResult>(GetTitle(expression), expression);
             report.Columns.Add(column);
             column.Index = report.Columns.Count - 1;
             return column;
         }
 
 
-        private static string GetTilte<T, TResult>(Expression<Func<T, TResult>> expression)
+        private static string GetTitle<T, TResult>(Expression<Func<T, TResult>> expression)
         {
             switch (expression.Body.NodeType)
             {
@@ -67,11 +68,19 @@ namespace Coder.Object2Report
                     var memberExpresion = (MemberExpression)expression.Body;
 
 
-                    var attrData = (from item in memberExpresion.Member.CustomAttributes
-                                    where item.AttributeType == typeof(DisplayNameAttribute)
-                                    select item).FirstOrDefault();
-                    if (attrData != null && attrData.NamedArguments.Any())
-                        return attrData.NamedArguments[0].TypedValue.Value.ToString();
+                    foreach (var customer in memberExpresion.Member.GetCustomAttributes())
+                    {
+                        if (customer is DisplayAttribute displayAttribute)
+                        {
+                            return displayAttribute.Name;
+                        }
+
+                        if (customer is DisplayNameAttribute displayName)
+                        {
+                            return displayName.DisplayName;
+                        }
+                    }
+
                     return memberExpresion.Member.Name;
 
 
