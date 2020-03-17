@@ -12,7 +12,7 @@ namespace Coder.Object2Report
         /// </summary>
         private CellCursor _currentCellCursor;
 
-    
+
         /// <summary>
         /// 
         /// </summary>
@@ -43,7 +43,7 @@ namespace Coder.Object2Report
             render.OnReportWriting();
             if (RenderTitle)
                 WriteHeader(render);
-            WriteBody(data,render);
+            WriteBody(data, render);
             WriteFooter(render);
             render.OnReportWrote();
         }
@@ -52,7 +52,8 @@ namespace Coder.Object2Report
         /// <summary>
         /// </summary>
         /// <param name="data"></param>
-        public void WriteBody(IEnumerable<T> data, IRender render)
+        /// <returns>返回当前行</returns>
+        public int WriteBody(IEnumerable<T> data, IRender render)
         {
             if (render == null) throw new ArgumentNullException(nameof(render));
 
@@ -71,6 +72,7 @@ namespace Coder.Object2Report
             }
 
             render.OnBodyBuilt();
+            return CellCursor.RowIndex;
         }
 
         /// <summary>
