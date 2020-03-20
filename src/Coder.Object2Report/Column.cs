@@ -4,22 +4,6 @@ using Coder.Object2Report.Footers;
 
 namespace Coder.Object2Report
 {
-    public class ColumnIndex<T> : Column<T, int>
-    {
-        private int rowIndex = 1;
-
-        public ColumnIndex(string title) : base(title, new Func<T, int>(t => 1))
-        {
-            Func = t => rowIndex;
-        }
-
-        public override void Write(T t, Action<CellCursor, object, string> action, CellCursor cellCursor)
-        {
-            base.Write(t, action, cellCursor);
-            rowIndex++;
-        }
-    }
-
     public class Column<T, TResult>
         : IColumn<T>,
             IColumnSetting<TResult>
@@ -38,9 +22,18 @@ namespace Coder.Object2Report
         }
 
         public Func<T, TResult> Func { get; set; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public string Title { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public int Index { get; internal set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string Format { get; set; }
 
         public virtual void Write(T t, Action<CellCursor, object, string> action, CellCursor cellCursor)

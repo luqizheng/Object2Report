@@ -35,7 +35,7 @@ namespace Coder.Object2Report
         /// <summary>
         /// </summary>
         /// <param name="data"></param>
-        public void Write(IEnumerable<T> data, IRender render)
+        public virtual void Write(IEnumerable<T> data, IRender render)
         {
             if (render == null) throw new ArgumentNullException(nameof(render));
 
@@ -53,7 +53,7 @@ namespace Coder.Object2Report
         /// </summary>
         /// <param name="data"></param>
         /// <returns>返回当前行</returns>
-        public int WriteBody(IEnumerable<T> data, IRender render)
+        public virtual int WriteBody(IEnumerable<T> data, IRender render)
         {
             if (render == null) throw new ArgumentNullException(nameof(render));
 
@@ -77,7 +77,7 @@ namespace Coder.Object2Report
 
         /// <summary>
         /// </summary>
-        public void WriteFooter(IRender render)
+        public virtual  void WriteFooter(IRender render)
         {
             if (render == null) throw new Object2ReportException("Render is not set.");
             render.OnFooterWriting();
@@ -96,7 +96,7 @@ namespace Coder.Object2Report
 
         /// <summary>
         /// </summary>
-        public void WriteHeader(IRender render)
+        public virtual void WriteHeader(IRender render)
         {
             if (render == null) throw new Object2ReportException("Render is not set.");
             render.OnHeaderWriting();
