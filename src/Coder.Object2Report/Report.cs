@@ -27,7 +27,7 @@ namespace Coder.Object2Report
 
         /// <summary>
         /// </summary>
-        public Report()
+        protected Report()
         {
             Columns = new List<IColumn<T>>();
         }
@@ -46,6 +46,10 @@ namespace Coder.Object2Report
             }
         }
 
+        public void SetStartRowIndex(int rowIndex)
+        {
+            CellCursor.RowIndex = 0;
+        }
         /// <summary>
         /// </summary>
         public IList<IColumn<T>> Columns { get; }
