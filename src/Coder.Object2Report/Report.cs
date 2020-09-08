@@ -12,39 +12,20 @@ namespace Coder.Object2Report
         /// </summary>
         private CellCursor _currentCellCursor;
 
-        /// <summary>
-        /// </summary>
-        private IRender _render;
 
         /// <summary>
-        /// </summary>
-        /// <param name="render"></param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public Report(IRender render) : this()
-        {
-            _render = render ?? throw new ArgumentNullException(nameof(render));
-        }
-
-        /// <summary>
+        /// 
         /// </summary>
         protected Report()
         {
             Columns = new List<IColumn<T>>();
         }
 
+        public int StartRowIndex { get; set; } = 0;
+        public bool RenderTitle { get; set; } = true;
         internal CellCursor CellCursor => _currentCellCursor ?? (_currentCellCursor = new CellCursor(Columns.Count));
 
-        /// <summary>
-        /// </summary>
-        public IRender Render
-        {
-            get => _render;
-            set
-            {
-                _render = value;
-                CellCursor.RowIndex = 0;
-            }
-        }
+
 
         public void SetStartRowIndex(int rowIndex)
         {
@@ -58,83 +39,80 @@ namespace Coder.Object2Report
         /// <summary>
         /// </summary>
         /// <param name="data"></param>
-        public void Write(IEnumerable<T> data)
+        public virtual void Write(IEnumerable<T> data, IRender render)
         {
-            if (Render == null)
-            {
-                throw new Object2ReportException("Render is not set.");
-            }
-            Render.OnReportWriting();
-            WriteHeader();
-            WriteBody(data);
-            WriteFooter();
-            Render.OnReportWrote();
+            if (render == null) throw new ArgumentNullException(nameof(render));
+
+            CellCursor.RowIndex = StartRowIndex;
+            render.OnReportWriting();
+            if (RenderTitle)
+                WriteHeader(render);
+            WriteBody(data, render);
+            WriteFooter(render);
+            render.OnReportWrote();
         }
 
 
         /// <summary>
         /// </summary>
         /// <param name="data"></param>
-        public void WriteBody(IEnumerable<T> data)
+        /// <returns>返回当前行</returns>
+        public virtual int WriteBody(IEnumerable<T> data, IRender render)
         {
-            if (Render == null)
-            {
-                throw new Object2ReportException("Render is not set.");
-            }
-            Render.OnBodyBuilding();
+            if (render == null) throw new ArgumentNullException(nameof(render));
+
+            render.OnBodyBuilding();
             foreach (var item in data)
             {
-                Render.OnRowWriting(CellCursor, CellCursor.RowIndex);
+                render.OnRowWriting(CellCursor, CellCursor.RowIndex);
                 foreach (var col in Columns)
                 {
                     CellCursor.Index = col.Index;
-                    col.Write(item, Render.WriteBodyCell, CellCursor);
+                    col.Write(item, render.WriteBodyCell, CellCursor);
                 }
-                Render.OnRowWrote();
+
+                render.OnRowWrote();
                 CellCursor.NextRow();
             }
-            Render.OnBodyBuilt();
+
+            render.OnBodyBuilt();
+            return CellCursor.RowIndex;
         }
 
         /// <summary>
         /// </summary>
-        public void WriteFooter()
+        public virtual  void WriteFooter(IRender render)
         {
-            if (Render == null)
-            {
-                throw new Object2ReportException("Render is not set.");
-            }
-            Render.OnFooterWriting();
-            Render.OnRowWriting(CellCursor, CellCursor.RowIndex);
+            if (render == null) throw new Object2ReportException("Render is not set.");
+            render.OnFooterWriting();
+            render.OnRowWriting(CellCursor, CellCursor.RowIndex);
 
             foreach (var col in Columns)
             {
                 CellCursor.Index = col.Index;
-                col.WriteFooter(Render.WriteFooterCell, CellCursor);
+                col.WriteFooter(render.WriteFooterCell, CellCursor);
             }
 
-            Render.OnRowWrote();
-            Render.OnFooterWrote();
+            render.OnRowWrote();
+            render.OnFooterWrote();
             CellCursor.NextRow();
         }
 
         /// <summary>
         /// </summary>
-        public void WriteHeader()
+        public virtual void WriteHeader(IRender render)
         {
-            if (Render == null)
-            {
-                throw new Object2ReportException("Render is not set.");
-            }
-            Render.OnHeaderWriting();
-            Render.OnRowWriting(CellCursor, CellCursor.RowIndex);
+            if (render == null) throw new Object2ReportException("Render is not set.");
+            render.OnHeaderWriting();
+            render.OnRowWriting(CellCursor, CellCursor.RowIndex);
             foreach (var col in Columns)
             {
                 CellCursor.Index = col.Index;
-                Render.WriteHeader(CellCursor, col.Title, col.Format);
+                render.WriteHeader(CellCursor, col.Title, col.Format);
             }
-            Render.OnRowWrote();
-            Render.OnHeaderWrote();
+
+            render.OnRowWrote();
+            render.OnHeaderWrote();
             CellCursor.NextRow();
         }
     }

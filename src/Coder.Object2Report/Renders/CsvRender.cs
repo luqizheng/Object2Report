@@ -49,10 +49,7 @@ namespace Coder.Object2Report.Renders
         {
             if (string.IsNullOrEmpty(format))
                 return "{0}";
-            if (format.Contains("{"))
-            {
-                return format;
-            }
+            if (format.Contains("{")) return format;
             return "{0:" + format + "}";
         }
 
@@ -77,13 +74,12 @@ namespace Coder.Object2Report.Renders
                 _curRows[currentPosition.Index] = value;
                 return;
             }
+
             if (value.Contains(","))
             {
                 value = "\"" + value + "\"";
                 _curRows[currentPosition.Index] = value;
-                return;
             }
-
         }
 
         public override void OnRowWrote()
@@ -96,7 +92,6 @@ namespace Coder.Object2Report.Renders
         {
             if (_writer.BaseStream.CanWrite)
                 _writer.Flush();
-
         }
     }
 }

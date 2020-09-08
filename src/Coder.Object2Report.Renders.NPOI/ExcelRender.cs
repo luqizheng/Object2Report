@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
 using NPOI.SS.UserModel;
-
 
 namespace Coder.Object2Report.Renders.NPOI
 {
@@ -11,6 +9,7 @@ namespace Coder.Object2Report.Renders.NPOI
     {
         private readonly IDictionary<int, ICellStyle> _bodyCellStyle = new Dictionary<int, ICellStyle>();
         private readonly IDictionary<int, ICellStyle> _footerCellStyle = new Dictionary<int, ICellStyle>();
+
         private readonly Stream _stream;
 
         private readonly string _workSheetName;
@@ -20,7 +19,7 @@ namespace Coder.Object2Report.Renders.NPOI
         private ICellStyle _footerStyle;
         private ICellStyle _headerStyle;
         private ExcelInfo _info;
-        private bool? _skipWriteTitle;
+
         private IWorkbook _workbook;
         private ISheet _worksheet;
 
@@ -43,11 +42,10 @@ namespace Coder.Object2Report.Renders.NPOI
         /// </summary>
         public ExcelInfo Info
         {
-            get => _info ?? (_info = new ExcelInfo());
+            get => _info ??= new ExcelInfo();
             set => _info = value;
         }
 
-  
 
         /// <summary>
         /// </summary>
@@ -88,9 +86,7 @@ namespace Coder.Object2Report.Renders.NPOI
             get
             {
                 if (_worksheet == null)
-                {
-                     _worksheet = WorkBook.GetSheet(_workSheetName) ?? WorkBook.CreateSheet(_workSheetName);
-                }
+                    _worksheet = WorkBook.GetSheet(_workSheetName) ?? WorkBook.CreateSheet(_workSheetName);
 
                 return _worksheet;
             }
@@ -98,9 +94,9 @@ namespace Coder.Object2Report.Renders.NPOI
 
         /// <summary>
         /// </summary>
-        public IWorkbook WorkBook => _workbook ?? (_workbook = CreateWorkBook());
+        public IWorkbook WorkBook => _workbook ??= CreateWorkBook();
 
-        private IDataFormat DataFormat => _dataFormat ?? (_dataFormat = WorkBook.CreateDataFormat());
+        private IDataFormat DataFormat => _dataFormat ??= WorkBook.CreateDataFormat();
 
         /// <summary>
         /// </summary>
@@ -182,7 +178,6 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <param name="format"></param>
         public override void WriteHeader(CellCursor cellCursor, string title, string format)
         {
-      
             var cell = Write(cellCursor, title);
 
             if (HeaderStyle != null) cell.CellStyle = HeaderStyle;
@@ -225,11 +220,16 @@ namespace Coder.Object2Report.Renders.NPOI
             }
 
             var valType = v.GetType();
+
             if (valType == typeof(decimal) || valType == typeof(int) || valType == typeof(double) ||
                 valType == typeof(long) || valType == typeof(float) || valType == typeof(short))
             {
                 var num = Convert.ToDouble(v);
                 cell.SetCellValue(num);
+            }
+            else if (valType == typeof(DateTime))
+            {
+                cell.SetCellValue(Convert.ToDateTime((object)v));
             }
             else if (valType == typeof(bool))
             {

@@ -1,7 +1,8 @@
+# Object2Report
 
 Ouput CSV and MarkDown table.
 
-## Defined output format.
+## Define output format.
 
 I have a order class like:
 ```
@@ -21,7 +22,7 @@ public class Order
 }
 
 ```
-## Defined render
+## Define render
 
 ```
 // CSV render
@@ -33,11 +34,24 @@ var render = new HssfExcelRender(File.Open("a.xls", FileMode.OpenOrCreate, FileA
 var render = new XssfExcelReader(File.Open("a.xlsx", FileMode.OpenOrCreate, FileAccess.ReadWrite), "Test");
 
 ```
+or
+
+```
+using using Coder.Object2Report;
+
+
+            var report = new Report<NameTest>();
+            report.Column("name", f => f.Name);
+        
+            report.WriteToXlsx(list, "a.xlsx");
+            report.WriteToCSV(list,"a.csv");
+```
+
 Or inerit from IRender to imple new render.
 
 
 
-## Defined output data from model 
+## Define output data from model 
 
 
 ```

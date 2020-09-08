@@ -1,12 +1,10 @@
 ﻿namespace Coder.Object2Report
 {
     /// <summary>
-    /// 
     /// </summary>
     public class CellCursor
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="maxCell"></param>
         public CellCursor(int maxCell)
@@ -25,13 +23,11 @@
         public int MaxCell { get; }
 
         /// <summary>
-        /// 
         /// </summary>
         public int Index { get; internal set; }
-        /// <summary>
-        /// 
-        /// </summary>
 
+        /// <summary>
+        /// </summary>
         internal void NextRow()
         {
             RowIndex++;

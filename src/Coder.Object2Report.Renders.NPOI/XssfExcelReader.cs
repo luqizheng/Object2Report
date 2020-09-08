@@ -1,15 +1,8 @@
-﻿using System.IO;
-using System;
-
-#if NETSTANDARD1_6
-using Npoi.Core.SS.UserModel;
-using Npoi.Core.XSSF.UserModel;
-#else
-using NPOI.XSSF;
+﻿
 using NPOI.XSSF.UserModel;
 using NPOI.SS.UserModel;
-using NPOI.XSSF.Util;
-#endif
+
+using System.IO;
 
 namespace Coder.Object2Report.Renders.NPOI
 {
@@ -20,19 +13,13 @@ namespace Coder.Object2Report.Renders.NPOI
             0xDC, 0xE0, 0xE2
         };
 
-        /// <summary>
-        /// </summary>
-        /// <param name="stream"></param>
-        public XssfExcelReader(Stream stream) : base(stream)
-        {
-            InitDefaultColor();
-        }
-
+      
         /// <summary>
         /// </summary>
         /// <param name="stream"></param>
         /// <param name="worksheetName"></param>
-        public XssfExcelReader(Stream stream, string worksheetName, string templateFile) : base(stream, worksheetName, templateFile)
+        public XssfExcelReader(Stream stream, string worksheetName = "sheet1", string templateFile = null) : base(stream, worksheetName,
+            templateFile)
         {
             InitDefaultColor();
         }
@@ -50,10 +37,7 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <returns></returns>
         protected override IWorkbook CreateWorkBook()
         {
-            if (!String.IsNullOrEmpty(this.TemplateExceFile))
-            {
-                return new XSSFWorkbook(TemplateExceFile);
-            }
+            if (!string.IsNullOrEmpty(TemplateExceFile)) return new XSSFWorkbook(TemplateExceFile);
 
             return new XSSFWorkbook();
         }

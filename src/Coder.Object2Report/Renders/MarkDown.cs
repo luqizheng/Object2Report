@@ -40,10 +40,7 @@ namespace Coder.Object2Report.Renders
         {
             if (format == null)
                 return null;
-            if (format.Contains("{"))
-            {
-                return format;
-            }
+            if (format.Contains("{")) return format;
             return "{0:" + format + "}";
         }
 
@@ -69,10 +66,7 @@ namespace Coder.Object2Report.Renders
 
             var value = string.IsNullOrEmpty(format) ? v.ToString() : string.Format(GetFormatPatten(format), v);
 
-            if (v.ToString().IndexOf("|", StringComparison.Ordinal) != -1)
-            {
-                value = $"{value.Replace("|", "\"|")}";
-            }
+            if (v.ToString().IndexOf("|", StringComparison.Ordinal) != -1) value = $"{value.Replace("|", "\"|")}";
             _curRows[cellCursor.Index] = value;
         }
 
@@ -90,16 +84,12 @@ namespace Coder.Object2Report.Renders
         {
             if (_writer.BaseStream.CanWrite)
                 _writer.Flush();
-
         }
 
         private void WriteSpreadTag()
         {
             var spliter = new string[_curRows.Length];
-            for (var i = 0; i < spliter.Length; i++)
-            {
-                spliter[i] = "-";
-            }
+            for (var i = 0; i < spliter.Length; i++) spliter[i] = "-";
             _writer.WriteLine("|" + string.Join("|", spliter) + "|");
         }
     }
