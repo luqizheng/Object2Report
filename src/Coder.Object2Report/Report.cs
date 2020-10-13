@@ -16,7 +16,7 @@ namespace Coder.Object2Report
         /// <summary>
         /// 
         /// </summary>
-        protected Report()
+        public Report()
         {
             Columns = new List<IColumn<T>>();
         }
@@ -81,7 +81,7 @@ namespace Coder.Object2Report
 
         /// <summary>
         /// </summary>
-        public virtual  void WriteFooter(IRender render)
+        public virtual void WriteFooter(IRender render)
         {
             if (render == null) throw new Object2ReportException("Render is not set.");
             render.OnFooterWriting();

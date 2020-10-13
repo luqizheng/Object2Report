@@ -9,9 +9,8 @@
     <RepositoryUrl>https://github.com/luqizheng/Object2Report</RepositoryUrl>
     <Description>Object to CSV Markdown</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.3.4</Version>
-    <AssemblyVersion>1.3.3.0</AssemblyVersion>
-    <FileVersion>1.3.3.0</FileVersion>
+    <Version>1.3.5</Version>
+ 
   </PropertyGroup>
 
   <ItemGroup>

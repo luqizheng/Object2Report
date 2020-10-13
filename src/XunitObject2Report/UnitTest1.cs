@@ -1,6 +1,6 @@
+﻿using Coder.Object2Report;
 using System;
 using System.Collections.Generic;
-using Coder.Object2Report;
 using Xunit;
 
 namespace XunitObject2Report
@@ -30,11 +30,11 @@ namespace XunitObject2Report
                     Decimal = 11.22m,
                     Name = "test",
                     Int32 = 30,
-                    Int32Nullable=null,
+                    Int32Nullable = null,
                     Int64 = long.MaxValue,
-                    Datetime=DateTime.Now,
-        }
-    };
+                    Datetime = DateTime.Now
+                }
+            };
             var report = new Report<NameTest>();
             report.Column("name", f => f.Name);
             report.Column(f => f.Decimal);

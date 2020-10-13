@@ -4,10 +4,10 @@ namespace Coder.Object2Report
 {
     public class ReportWriter<T>
     {
-        private readonly Report<T> _report;
         private readonly IRender _render;
-        private bool _wroteFooter = false;
-        private bool _wroteHeader = false;
+        private readonly Report<T> _report;
+        private bool _wroteFooter;
+        private bool _wroteHeader;
 
         public ReportWriter(Report<T> report, IRender render)
         {
@@ -17,13 +17,11 @@ namespace Coder.Object2Report
 
         public virtual void Write(IEnumerable<T> data)
         {
-            if (_wroteHeader && _wroteFooter)
-            {
-                throw new RenderException("Writer had been wrote.");
-            }
+            if (_wroteHeader && _wroteFooter) throw new RenderException("Writer had been wrote.");
             if (!_wroteHeader)
             {
                 _report.WriteHeader(_render);
+
                 _wroteHeader = true;
             }
 
@@ -37,7 +35,8 @@ namespace Coder.Object2Report
                 _report.WriteFooter(_render);
                 _wroteFooter = true;
             }
-        }
 
+            _render.OnReportWrote();
+        }
     }
 }
