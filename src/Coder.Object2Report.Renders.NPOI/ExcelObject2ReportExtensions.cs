@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using Coder.Object2Report.Renders.NPOI;
+﻿using Coder.Object2Report.Renders.NPOI;
 using NPOI.SS.Formula.Functions;
+using System.Collections.Generic;
+using System.IO;
 
 // ReSharper disable once CheckNamespace
 namespace Coder.Object2Report
