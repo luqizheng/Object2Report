@@ -1,11 +1,13 @@
 ﻿
-using NPOI.XSSF.UserModel;
 using NPOI.SS.UserModel;
-
+using NPOI.XSSF.UserModel;
 using System.IO;
 
 namespace Coder.Object2Report.Renders.NPOI
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class XssfExcelReader : ExcelRender
     {
         private static readonly byte[] DefColor =
@@ -13,7 +15,7 @@ namespace Coder.Object2Report.Renders.NPOI
             0xDC, 0xE0, 0xE2
         };
 
-      
+
         /// <summary>
         /// </summary>
         /// <param name="stream"></param>
@@ -37,7 +39,8 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <returns></returns>
         protected override IWorkbook CreateWorkBook()
         {
-            if (!string.IsNullOrEmpty(TemplateExceFile)) return new XSSFWorkbook(TemplateExceFile);
+
+            if (!string.IsNullOrEmpty(TemplateExcelFile)) return new XSSFWorkbook(TemplateExcelFile);
 
             return new XSSFWorkbook();
         }

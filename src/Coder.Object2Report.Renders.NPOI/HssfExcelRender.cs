@@ -1,10 +1,9 @@
 ﻿
-using NPOI.SS.UserModel;
 using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
-
-using System.IO;
 using NPOI.POIFS.FileSystem;
+using NPOI.SS.UserModel;
+using System.IO;
 
 namespace Coder.Object2Report.Renders.NPOI
 {
@@ -13,6 +12,12 @@ namespace Coder.Object2Report.Renders.NPOI
     /// </summary>
     public class HssfExcelRender : ExcelRender
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <param name="sheetName"></param>
+        /// <param name="templateName"></param>
         public HssfExcelRender(Stream stream, string sheetName = "sheet1", string templateName = null) : base(stream,
             sheetName,
             templateName)
@@ -26,8 +31,8 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <returns></returns>
         protected override IWorkbook CreateWorkBook()
         {
-            if (TemplateExceFile != null)
-                using (var fileStream = File.OpenRead(TemplateExceFile))
+            if (TemplateExcelFile != null)
+                using (var fileStream = File.OpenRead(TemplateExcelFile))
                 {
                     return new HSSFWorkbook(new POIFSFileSystem(fileStream));
                 }
@@ -41,7 +46,7 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <param name="info"></param>
         protected override void InitWorkbookInfo(IWorkbook book, ExcelInfo info)
         {
-            var workbook = (HSSFWorkbook) book;
+            var workbook = (HSSFWorkbook)book;
             workbook.DocumentSummaryInformation = info.CreateDocumentInfo();
             workbook.SummaryInformation = info.CreateWorkBookInfo();
         }

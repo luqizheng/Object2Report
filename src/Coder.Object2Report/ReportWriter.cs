@@ -37,10 +37,6 @@ namespace Coder.Object2Report
             }
 
             _render.OnReportWrote();
-
-        }
-
-            _render.OnReportWrote();
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using NPOI.SS.UserModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using NPOI.SS.UserModel;
 
 namespace Coder.Object2Report.Renders.NPOI
 {
@@ -32,11 +32,11 @@ namespace Coder.Object2Report.Renders.NPOI
         protected ExcelRender(Stream stream, string worksheetName = "sheet1", string templateFile = null)
         {
             _stream = stream ?? throw new ArgumentNullException(nameof(stream));
-            TemplateExceFile = templateFile;
+            TemplateExcelFile = templateFile;
             _workSheetName = worksheetName ?? throw new ArgumentNullException(nameof(worksheetName));
         }
 
-        public string TemplateExceFile { get; }
+        public string TemplateExcelFile { get; }
 
         /// <summary>
         /// </summary>
@@ -49,7 +49,7 @@ namespace Coder.Object2Report.Renders.NPOI
 
         /// <summary>
         /// </summary>
-        public ICellStyle HeaderStyle
+        public virtual ICellStyle HeaderStyle
         {
             get
             {
@@ -65,7 +65,7 @@ namespace Coder.Object2Report.Renders.NPOI
 
         /// <summary>
         /// </summary>
-        public ICellStyle FooterStyle
+        public virtual ICellStyle FooterStyle
         {
             get
             {
