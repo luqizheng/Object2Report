@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <PackageLicenseUrl></PackageLicenseUrl>
     <Copyright>MIT</Copyright>
     <PackageProjectUrl>https://github.com/luqizheng/Object2Report</PackageProjectUrl>
@@ -9,7 +9,7 @@
     <RepositoryUrl>https://github.com/luqizheng/Object2Report</RepositoryUrl>
     <Description>Object to CSV Markdown</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.4.4</Version>
+    <Version>1.4.5</Version>
 
   </PropertyGroup>
 

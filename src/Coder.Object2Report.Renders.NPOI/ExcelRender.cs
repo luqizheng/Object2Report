@@ -42,7 +42,15 @@ namespace Coder.Object2Report.Renders.NPOI
         /// </summary>
         public ExcelInfo Info
         {
-            get => _info ??= new ExcelInfo();
+            get
+            {
+                if (_info == null)
+                {
+                    _info = new ExcelInfo();
+                }
+
+                return _info;
+            }
             set => _info = value;
         }
 
@@ -94,9 +102,28 @@ namespace Coder.Object2Report.Renders.NPOI
 
         /// <summary>
         /// </summary>
-        public IWorkbook WorkBook => _workbook ??= CreateWorkBook();
+        public IWorkbook WorkBook
+        {
+            get
+            {
+                if (_workbook == null)
+                {
+                    _workbook = CreateWorkBook();
+                }
 
-        private IDataFormat DataFormat => _dataFormat ??= WorkBook.CreateDataFormat();
+                return _workbook;
+            }
+        }
+
+        private IDataFormat DataFormat
+        {
+            get
+            {
+                if (_dataFormat == null)
+                    _dataFormat = WorkBook.CreateDataFormat();
+                return _dataFormat;
+            }
+        }
 
         /// <summary>
         /// </summary>
@@ -211,7 +238,7 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <param name="cell"></param>
         /// <param name="v"></param>
         /// <typeparam name="T"></typeparam>
-        private void SetCellValue<T>(ICell cell, T v)
+        private static void SetCellValue<T>(ICell cell, T v)
         {
             if (v == null)
             {

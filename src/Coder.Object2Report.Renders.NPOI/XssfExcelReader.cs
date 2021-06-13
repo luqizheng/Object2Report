@@ -1,4 +1,5 @@
 ﻿
+using System;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.IO;
@@ -47,6 +48,7 @@ namespace Coder.Object2Report.Renders.NPOI
 
         protected override void InitWorkbookInfo(IWorkbook book, ExcelInfo info)
         {
+            if (info == null) throw new ArgumentNullException(nameof(info));
             var workbook = (XSSFWorkbook)book;
             var xmlProps = workbook.GetProperties();
             xmlProps.CoreProperties.Creator = info.Author ?? "";
