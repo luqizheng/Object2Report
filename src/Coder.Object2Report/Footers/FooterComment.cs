@@ -11,7 +11,12 @@ namespace Coder.Object2Report.Footers
             _cellValue = value;
         }
 
-        public override void Write(Action<CellCursor, object, string> action, CellCursor cellCursor)
+        //public override void Write(Action<CellCursor, object, string> action, CellCursor cellCursor)
+        //{
+        //    action(cellCursor, _cellValue, Format);
+        //}
+
+        public override void Write<TObject>(Action<CellCursor<TObject>, object, string> action, CellCursor<TObject> cellCursor)
         {
             action(cellCursor, _cellValue, Format);
         }

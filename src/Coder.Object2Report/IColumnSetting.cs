@@ -7,5 +7,6 @@ namespace Coder.Object2Report
         FooterCell<TResult> Footer { get; set; }
 
         string Format { get; set; }
+
     }
 }

@@ -19,7 +19,7 @@
         /// <param name="cellCursor"></param>
         /// <param name="title"></param>
         /// <param name="format"></param>
-        public abstract void WriteHeader(CellCursor cellCursor, string title, string format);
+        public abstract void WriteHeader<TObject>(CellCursor<TObject> cellCursor, string title, string format);
 
         /// <summary>
         /// </summary>
@@ -33,13 +33,9 @@
         {
         }
 
-        /// <summary>
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="currentPosition"></param>
-        /// <param name="v"></param>
-        /// <param name="format"></param>
-        public abstract void WriteBodyCell<T>(CellCursor currentPosition, T v, string format);
+        public abstract void WriteBodyCell<T, TObject>(CellCursor<TObject> currentPosition, T v, string format);
+
+
 
         /// <summary>
         /// </summary>
@@ -54,13 +50,14 @@
         /// <summary>
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TObject"></typeparam>
         /// <param name="currentPosition"></param>
         /// <param name="v"></param>
         /// <param name="format"></param>
-        public abstract void WriteFooterCell<T>(CellCursor currentPosition, T v, string format);
-
-        /// <summary>
-        /// </summary>
+        public abstract void WriteFooterCell<T, TObject>(CellCursor<TObject> currentPosition, T v, string format);
+       
+   
+   
         public virtual void OnFooterWrote()
         {
         }
@@ -81,7 +78,7 @@
         /// </summary>
         /// <param name="cellCursor"></param>
         /// <param name="rowIndex"></param>
-        public virtual void OnRowWriting(CellCursor cellCursor, int rowIndex)
+        public virtual void OnRowWriting<TObject>(CellCursor<TObject> cellCursor, int rowIndex)
         {
         }
     }

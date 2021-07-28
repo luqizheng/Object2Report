@@ -20,7 +20,7 @@
         /// <param name="cellCursor"></param>
         /// <param name="title"></param>
         /// <param name="format"></param>
-        void WriteHeader(CellCursor cellCursor, string title, string format);
+        void WriteHeader<TObject>(CellCursor<TObject> cellCursor, string title, string format);
 
         /// <summary>
         /// </summary>
@@ -35,7 +35,7 @@
         /// <param name="currentPosition"></param>
         /// <param name="v"></param>
         /// <param name="format"></param>
-        void WriteBodyCell<T>(CellCursor currentPosition, T v, string format);
+        void WriteBodyCell<T, TObject>(CellCursor<TObject> currentPosition, T v, string format);
 
         /// <summary>
         /// </summary>
@@ -50,7 +50,7 @@
         /// <param name="currentPosition"></param>
         /// <param name="v"></param>
         /// <param name="format"></param>
-        void WriteFooterCell<T>(CellCursor currentPosition, T v, string format);
+        void WriteFooterCell<T, TObject>(CellCursor<TObject> currentPosition, T v, string format);
 
         /// <summary>
         /// </summary>
@@ -68,6 +68,6 @@
         /// </summary>
         /// <param name="cellCursor"></param>
         /// <param name="rowIndex"></param>
-        void OnRowWriting(CellCursor cellCursor, int rowIndex);
+        void OnRowWriting<TObject>(CellCursor<TObject> cellCursor, int rowIndex);
     }
 }

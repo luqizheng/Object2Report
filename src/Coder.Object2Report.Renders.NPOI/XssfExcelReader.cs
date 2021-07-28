@@ -48,6 +48,7 @@ namespace Coder.Object2Report.Renders.NPOI
 
         protected override void InitWorkbookInfo(IWorkbook book, ExcelInfo info)
         {
+            if (book == null) throw new ArgumentNullException(nameof(book));
             if (info == null) throw new ArgumentNullException(nameof(info));
             var workbook = (XSSFWorkbook)book;
             var xmlProps = workbook.GetProperties();

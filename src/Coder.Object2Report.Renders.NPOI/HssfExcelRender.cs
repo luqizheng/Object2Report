@@ -1,4 +1,5 @@
 ﻿
+using System;
 using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
 using NPOI.POIFS.FileSystem;
@@ -46,6 +47,8 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <param name="info"></param>
         protected override void InitWorkbookInfo(IWorkbook book, ExcelInfo info)
         {
+            if (book == null) throw new ArgumentNullException(nameof(book));
+            if (info == null) throw new ArgumentNullException(nameof(info));
             var workbook = (HSSFWorkbook)book;
             workbook.DocumentSummaryInformation = info.CreateDocumentInfo();
             workbook.SummaryInformation = info.CreateWorkBookInfo();

@@ -35,12 +35,12 @@ namespace Coder.Object2Report.Renders
         }
 #endif
 
-        public override void WriteHeader(CellCursor cellCursor, string title, string fromat)
+        public override void WriteHeader<TObject>(CellCursor<TObject> cellCursor, string title, string fromat)
         {
             Write(cellCursor, title);
         }
 
-        public override void WriteBodyCell<T>(CellCursor currentPosition, T v, string format)
+        public override void WriteBodyCell<T, TObject>(CellCursor<TObject> currentPosition, T v, string format)
         {
             Write(currentPosition, string.Format(GetFormatPatten(format), v));
         }
@@ -53,17 +53,22 @@ namespace Coder.Object2Report.Renders
             return "{0:" + format + "}";
         }
 
-        public override void WriteFooterCell<T>(CellCursor currentPosition, T v, string format)
+        public override void WriteFooterCell<T, TObject>(CellCursor<TObject> currentPosition, T v, string format)
         {
             Write(currentPosition, string.Format(GetFormatPatten(format), v));
         }
 
-        public override void OnRowWriting(CellCursor cellCursor, int rowIndex)
+        public override void OnRowWriting<TObject>(CellCursor<TObject> cellCursor, int rowIndex)
         {
             _curRows = new string[cellCursor.MaxCell];
         }
 
-        private void Write(CellCursor currentPosition, object v)
+        //public override void OnRowWriting<TObject>(CellCursor<T, Object> cellCursor, int rowIndex)
+        //{
+        //    _curRows = new string[cellCursor.MaxCell];
+        //}
+
+        private void Write<TObject>(CellCursor<TObject> currentPosition, object v)
         {
             if (v == null)
                 return;

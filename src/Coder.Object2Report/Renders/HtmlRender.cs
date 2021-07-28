@@ -32,12 +32,12 @@ namespace Coder.Object2Report.Renders
             _writer.Write("</thead>");
         }
 
-        public override void WriteHeader(CellCursor cellCursor, string title, string format)
+        public override void WriteHeader<TObject>(CellCursor<TObject> cellCursor, string title, string format)
         {
             Write("th", cellCursor, title);
         }
 
-        public override void WriteBodyCell<T>(CellCursor currentPosition, T v, string format)
+        public override void WriteBodyCell<T,TObject>(CellCursor<TObject> currentPosition, T v, string format)
         {
             var value = string.Format(GetFormatPatten(format), v);
             Write("td", currentPosition, value);
@@ -53,7 +53,7 @@ namespace Coder.Object2Report.Renders
             _writer.Write("</tbody>");
         }
 
-        public override void WriteFooterCell<T>(CellCursor currentPosition, T v, string format)
+        public override void WriteFooterCell<T,TObject>(CellCursor<TObject> currentPosition, T v, string format)
         {
             var value = string.Format(GetFormatPatten(format), v);
             Write("td", currentPosition, value);
@@ -64,7 +64,7 @@ namespace Coder.Object2Report.Renders
             _writer.Write("</table>");
         }
 
-        protected virtual void Write(string tag, CellCursor currentPosition, string v)
+        protected virtual void Write<TObject>(string tag, CellCursor<TObject> currentPosition, string v)
         {
             if (currentPosition.Index == 0)
                 _writer.Write("<tr>");

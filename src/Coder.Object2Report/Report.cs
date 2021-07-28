@@ -10,7 +10,7 @@ namespace Coder.Object2Report
     {
         /// <summary>
         /// </summary>
-        private CellCursor _currentCellCursor;
+        private CellCursor<T> _currentCellCursor;
 
 
         /// <summary>
@@ -23,11 +23,11 @@ namespace Coder.Object2Report
 
         public int StartRowIndex { get; set; } = 0;
         public bool RenderTitle { get; set; } = true;
-        internal CellCursor CellCursor => _currentCellCursor ?? (_currentCellCursor = new CellCursor(Columns.Count));
+        internal CellCursor<T> CellCursor => _currentCellCursor ?? (_currentCellCursor = new CellCursor<T>(Columns));
 
 
 
-        public void SetStartRowIndex(int rowIndex)
+        public void SetStartRowIndex()
         {
             CellCursor.RowIndex = 0;
         }
@@ -69,6 +69,7 @@ namespace Coder.Object2Report
                 {
                     CellCursor.Index = col.Index;
                     col.Write(item, render.WriteBodyCell, CellCursor);
+                   
                 }
 
                 render.OnRowWrote();

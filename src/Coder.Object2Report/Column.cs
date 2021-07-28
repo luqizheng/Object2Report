@@ -4,9 +4,7 @@ using Coder.Object2Report.Footers;
 
 namespace Coder.Object2Report
 {
-    public class Column<T, TResult>
-        : IColumn<T>,
-            IColumnSetting<TResult>
+    public class Column<T, TResult> : IColumn<T>, IColumnSetting<TResult>
     {
         public Column(string title, Expression<Func<T, TResult>> itemExpression)
         {
@@ -36,18 +34,23 @@ namespace Coder.Object2Report
         /// </summary>
         public string Format { get; set; }
 
-        public virtual void Write(T t, Action<CellCursor, object, string> action, CellCursor cellCursor)
+        public BuiltEvent<T> OnBuiltCell { get; set; }
+
+        public virtual void Write(T t, Action<CellCursor<T>, object, string> action, CellCursor<T> cellCursor)
         {
             var value = Func(t);
             action(cellCursor, value, Format);
             Footer?.Calculate(value);
         }
 
-        public void WriteFooter(Action<CellCursor, object, string> action, CellCursor cellCursor)
+        public void WriteFooter(Action<CellCursor<T>, object, string> action, CellCursor<T> cellCursor)
         {
             Footer?.Write(action, cellCursor);
         }
 
         public FooterCell<TResult> Footer { get; set; }
+
+
+        
     }
 }

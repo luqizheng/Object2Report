@@ -11,7 +11,7 @@ namespace Coder.Object2Report
             Func = t => _rowIndex;
         }
 
-        public override void Write(T t, Action<CellCursor, object, string> action, CellCursor cellCursor)
+        public override void Write(T t, Action<CellCursor<T>, object, string> action, CellCursor<T> cellCursor)
         {
             base.Write(t, action, cellCursor);
             _rowIndex++;

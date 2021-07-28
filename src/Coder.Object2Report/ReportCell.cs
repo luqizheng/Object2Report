@@ -1,17 +1,21 @@
-﻿namespace Coder.Object2Report
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace Coder.Object2Report
 {
     /// <summary>
     /// </summary>
-    public class CellCursor
+    public class CellCursor<TObject>
     {
         /// <summary>
         /// </summary>
         /// <param name="maxCell"></param>
-        public CellCursor(int maxCell)
+        public CellCursor(IList<IColumn<TObject>> columns)
         {
-            MaxCell = maxCell;
+            this.Columns = columns;
+            MaxCell = columns.Count;
         }
-
+        public IList<IColumn<TObject>> Columns { get; set; }
         /// <summary>
         ///     Get or set RowIndex
         /// </summary>
@@ -25,6 +29,8 @@
         /// <summary>
         /// </summary>
         public int Index { get; internal set; }
+
+        public IColumn<TObject> Current => Columns[this.Index];
 
         /// <summary>
         /// </summary>

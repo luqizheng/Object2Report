@@ -14,7 +14,7 @@ namespace Coder.Object2Report.Footers.Avg
 
         protected abstract object GetAvgResult(int totalCount, T sumResult);
 
-        public override void Write(Action<CellCursor, object, string> action, CellCursor cellCursor)
+        public override void Write<TObject>(Action<CellCursor<TObject>, object, string> action, CellCursor<TObject> cellCursor)
         {
             var v = GetAvgResult(_total, CellValue);
             action(cellCursor, v, Format);

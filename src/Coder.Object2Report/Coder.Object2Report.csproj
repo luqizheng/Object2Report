@@ -9,7 +9,7 @@
     <RepositoryUrl>https://github.com/luqizheng/Object2Report</RepositoryUrl>
     <Description>Object to CSV Markdown</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.4.5</Version>
+    <Version>1.5.0-preview1</Version>
 
   </PropertyGroup>
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using static System.Convert;
 
 namespace Coder.Object2Report.Renders.NPOI
 {
@@ -154,11 +155,14 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <param name="v"></param>
         /// <param name="format"></param>
         /// <typeparam name="T"></typeparam>
-        public override void WriteBodyCell<T>(CellCursor currentPosition, T v, string format)
+        /// <typeparam name="TObject"></typeparam>
+        public override void WriteBodyCell<T, TObject>(CellCursor<TObject> currentPosition, T v, string format)
         {
+            if (currentPosition == null) throw new ArgumentNullException(nameof(currentPosition));
             var bodyCell = Write(currentPosition, v);
             if (!string.IsNullOrEmpty(format))
                 bodyCell.CellStyle = GetCellStyleFrom(_bodyCellStyle, currentPosition.Index, format);
+
         }
 
 
@@ -190,31 +194,45 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <param name="v"></param>
         /// <param name="format"></param>
         /// <typeparam name="T"></typeparam>
-        public override void WriteFooterCell<T>(CellCursor currentPosition, T v, string format)
+        /// <typeparam name="TObject"></typeparam>
+        public override void WriteFooterCell<T, TObject>(CellCursor<TObject> currentPosition, T v, string format)
         {
+            if (currentPosition == null) throw new ArgumentNullException(nameof(currentPosition));
             var cell = Write(currentPosition, v);
             cell.CellStyle = string.IsNullOrEmpty(format)
                 ? FooterStyle
                 : GetCellStyleFrom(_footerCellStyle, currentPosition.Index, format);
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="cellCursor"></param>
-        /// <param name="title"></param>
-        /// <param name="format"></param>
-        public override void WriteHeader(CellCursor cellCursor, string title, string format)
+        public override void WriteHeader<TObject>(CellCursor<TObject> cellCursor, string title, string format)
         {
+            if (cellCursor == null) throw new ArgumentNullException(nameof(cellCursor));
             var cell = Write(cellCursor, title);
 
-            if (HeaderStyle != null) cell.CellStyle = HeaderStyle;
+            if (HeaderStyle != null)
+                cell.CellStyle = HeaderStyle;
+
+
+
         }
+
+        ///// <summary>
+        ///// </summary>
+        ///// <param name="cellCursor"></param>
+        ///// <param name="title"></param>
+        ///// <param name="format"></param>
+        //public override void WriteHeader(CellCursor cellCursor, string title, string format)
+        //{
+        //    var cell = Write(cellCursor, title);
+
+        //    if (HeaderStyle != null) cell.CellStyle = HeaderStyle;
+        //}
 
         /// <summary>
         /// </summary>
         /// <param name="cellCursor"></param>
         /// <param name="rowIndex"></param>
-        public override void OnRowWriting(CellCursor cellCursor, int rowIndex)
+        public override void OnRowWriting<TObject>(CellCursor<TObject> cellCursor, int rowIndex)
         {
             _currentRow = WorkSheet.CreateRow(rowIndex);
         }
@@ -225,11 +243,16 @@ namespace Coder.Object2Report.Renders.NPOI
         /// <param name="currentPosition"></param>
         /// <param name="v"></param>
         /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TObject"></typeparam>
         /// <returns></returns>
-        private ICell Write<T>(CellCursor currentPosition, T v)
+        private ICell Write<T, TObject>(CellCursor<TObject> currentPosition, T v)
         {
             var cell = _currentRow.CreateCell(currentPosition.Index);
             SetCellValue(cell, v);
+            var column = currentPosition.Current;
+            if (column != null && column.OnBuiltCell != null)
+                column.OnBuiltCell(currentPosition.Current, currentPosition.RowIndex, currentPosition.Index, cell);
+
             return cell;
         }
 
@@ -251,21 +274,21 @@ namespace Coder.Object2Report.Renders.NPOI
             if (valType == typeof(decimal) || valType == typeof(int) || valType == typeof(double) ||
                 valType == typeof(long) || valType == typeof(float) || valType == typeof(short))
             {
-                var num = Convert.ToDouble(v);
+                var num = ToDouble(v);
                 cell.SetCellValue(num);
             }
             else if (valType == typeof(DateTime))
             {
-                cell.SetCellValue(Convert.ToDateTime((object)v));
+                cell.SetCellValue(ToDateTime(v));
             }
             else if (valType == typeof(bool))
             {
-                var value = Convert.ToBoolean(v);
+                var value = ToBoolean(v);
                 cell.SetCellValue(value);
             }
             else if (valType == typeof(char))
             {
-                var value = Convert.ToChar(v);
+                var value = ToChar(v);
                 cell.SetCellValue(value);
             }
             else
